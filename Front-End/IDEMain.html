@@ -2,8 +2,8 @@
 <html>
 <head>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="IDEMainStyle.css">
-	<script src="IDEScript.js"></script>
+	<link rel="stylesheet" type="text/css" href="CSS/IDEMainStyle.css">
+	<script src="JavaScript/IDEScript.js"></script>
 </head>
 <title> Online IDE </title>
 <meta charset="utf-8">
@@ -29,11 +29,11 @@
 <br>
 <br>
 <ul class="tab">
-  <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'London')">Test 1</a></li>
-  <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'Paris')">Test 2</a></li>
-  <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'Tokyo')">Test 3</a></li>
+  <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'class1')">Test 1</a></li>
+  <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'class2')">Test 2</a></li>
+  <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'class3')">Test 3</a></li>
 </ul>
-<div id="London" class="tabcontent">
+<div id="class1" class="tabcontent">
 <div>
 <textarea rows="45" cols="210">
 public class Test 1
@@ -46,7 +46,7 @@ public class Test 1
 </div> 
 </div>
 
-<div id="Paris" class="tabcontent">
+<div id="class2" class="tabcontent">
 <div>
 <textarea rows="45" cols="210">
 public class Test 2
@@ -59,7 +59,7 @@ public class Test 2
 </div> 
 </div>
 
-<div id="Tokyo" class="tabcontent">
+<div id="class3" class="tabcontent">
 <div>
 <textarea rows="45" cols="210">
 public class Test 3
@@ -74,5 +74,5 @@ public class Test 3
 <!-- Textarea (code goes in here) -->
 
 </body>
-<p> Created by: John, Brandon, Jarel, Alec </p>
+<!-- <p> Created by: John, Brandon, Jarel, Alec </p> -->
 </html>

@@ -1,8 +1,6 @@
 /* Dropdown Button */
 .dropbtn {
-    background-color: #4CAF50;
 	background-color: #f1f1f1;
-  
     padding: 16px;
     font-size: 16px;
     border: none;
@@ -54,8 +52,6 @@ p
 {
 	text-align: center;
 }
-
-
 
 /* Style the list */
 ul.tab {
