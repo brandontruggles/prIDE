@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="IDEMainStyle.css">
+	<script src="IDEScript.js"></script>
+</head>
+<title> Online IDE </title>
+<meta charset="utf-8">
+
+<body>
+<h1> Online IDE </h1>
+<!-- Dropdowns go in here -->
+<div class="dropdown">
+  <button onclick="showFileDropdown()" class="dropbtn">File</button>
+  <div id="fileDropdown" class="dropdown-content">
+    <a href="#">Save As</a>
+    <a href="#">Open</a>
+    <a href="#">Compile</a>
+  </div>
+  
+    <button onclick="showEditDropdown()" class="dropbtn">Edit</button>
+  <div id="editDropdown" class="dropdown-content">
+    <a href="#">Cut</a>
+    <a href="#">Copy</a>
+    <a href="#">Paste</a>
+  </div>
+</div>
+<br>
+<br>
+<ul class="tab">
+  <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'London')">Test 1</a></li>
+  <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'Paris')">Test 2</a></li>
+  <li><a href="javascript:void(0)" class="tablinks" onclick="openCity(event, 'Tokyo')">Test 3</a></li>
+</ul>
+<div id="London" class="tabcontent">
+<div>
+<textarea rows="45" cols="210">
+public class Test 1
+{
+	public static void main(String[] args) 
+	{
+		//Your Code Here
+	} 
+}</textarea>
+</div> 
+</div>
+
+<div id="Paris" class="tabcontent">
+<div>
+<textarea rows="45" cols="210">
+public class Test 2
+{
+	public static void main(String[] args) 
+	{
+		//Your Code Here
+	} 
+}</textarea>
+</div> 
+</div>
+
+<div id="Tokyo" class="tabcontent">
+<div>
+<textarea rows="45" cols="210">
+public class Test 3
+{
+	public static void main(String[] args) 
+	{
+		//Your Code Here
+	} 
+}</textarea>
+</div> 
+</div>
+<!-- Textarea (code goes in here) -->
+
+</body>
+<p> Created by: John, Brandon, Jarel, Alec </p>
+</html>
