@@ -5,27 +5,34 @@
 	<link rel="stylesheet" type="text/css" href="CSS/IDEMainStyle.css">
 	<script src="JavaScript/IDEScript.js"></script>
 </head>
-<title> Online IDE </title>
+<title> gayprIDE </title>
 <meta charset="utf-8">
 
 <body>
-<h1> Online IDE </h1>
+<h1> gayprIDE </h1>
+<!-- Buttons go in here -->
+ <button class="savebtn" id="save">Save </button>
+ <button class="saveasbtn" id="saveas">Save As...</button>
+ <button class="filebtn" id="file">File </button>
+ <button class="runbtn" id="run">Run </button>
+ <button class="compilebtn" id="compile">Compile </button>
+ <button class="openbtn" id="open">Open... </button>
 <!-- Dropdowns go in here -->
-<div class="dropdown">
-  <button onclick="showFileDropdown()" class="dropbtn">File</button>
+<!-- <div class="dropdown">
+  <button onclick="showFileDropdown()" class="filebtn">File</button>
   <div id="fileDropdown" class="dropdown-content">
     <a href="#">Save As</a>
     <a href="#">Open</a>
     <a href="#">Compile</a>
-  </div>
+  </div> -->
   
-    <button onclick="showEditDropdown()" class="dropbtn">Edit</button>
+  <!--  <button onclick="showEditDropdown()" class="dropbtn">Edit</button>
   <div id="editDropdown" class="dropdown-content">
     <a href="#">Cut</a>
     <a href="#">Copy</a>
     <a href="#">Paste</a>
-  </div>
-</div>
+  </div> 
+</div> -->
 <br>
 <br>
 <ul class="tab">
@@ -35,7 +42,7 @@
 </ul>
 <div id="class1" class="tabcontent">
 <div>
-<textarea rows="45" cols="210">
+<textarea rows="36" cols="172" id="codespace1">
 public class Test 1
 {
 	public static void main(String[] args) 
@@ -48,7 +55,7 @@ public class Test 1
 
 <div id="class2" class="tabcontent">
 <div>
-<textarea rows="45" cols="210">
+<textarea rows="36" cols="172" id="codespace2">
 public class Test 2
 {
 	public static void main(String[] args) 
@@ -61,7 +68,7 @@ public class Test 2
 
 <div id="class3" class="tabcontent">
 <div>
-<textarea rows="45" cols="210">
+<textarea rows="36" cols="172" id="codespace3">
 public class Test 3
 {
 	public static void main(String[] args) 
@@ -71,8 +78,12 @@ public class Test 3
 }</textarea>
 </div> 
 </div>
-<!-- Textarea (code goes in here) -->
 
+
+<textarea id="consoleWindow" rows="10" cols="25">Console</textarea>
+<textarea id="chatWindow" rows="10" cols="25">Chat</textarea>
+<button onclick="openConsole(event)" class="consolebtn" id="console">Console </button>
+<button onclick = "openChat(event)" class="chatbtn" id="chat">Chat </button>
 </body>
 <!-- <p> Created by: John, Brandon, Jarel, Alec </p> -->
 </html>

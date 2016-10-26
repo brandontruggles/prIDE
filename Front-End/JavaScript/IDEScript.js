@@ -8,6 +8,26 @@ function showEditDropdown() {
     document.getElementById("editDropdown").classList.toggle("show");
 }
 
+
+function openConsole(evt){
+	var i, consolecontent, clicked;
+	if(document.getElementById("consoleWindow").style.display == "block")
+		document.getElementById("consoleWindow").style.display = "none"
+	else
+		document.getElementById("consoleWindow").style.display = "block"
+}
+
+function openChat(evt){
+	var i, chatcontent, clicked;
+	if(document.getElementById("chatWindow").style.display == "block")
+		clicked = "true";
+	else
+		clicked = "false;"
+	if(clicked == "true")
+		document.getElementById("chatWindow").style.display = "none";
+	else
+		document.getElementById("chatWindow").style.display = "block";
+}
 function openTab(evt, fileName) {
     // Declare all variables
     var i, tabcontent, tablinks;
@@ -32,7 +52,6 @@ function openTab(evt, fileName) {
 // Close the dropdown menu if the user clicks outside of it
 window.onclick = function(event) {
   if (!event.target.matches('.dropbtn')) {
-
     var dropdowns = document.getElementsByClassName("dropdown-content");
     var i;
     for (i = 0; i < dropdowns.length; i++) {
