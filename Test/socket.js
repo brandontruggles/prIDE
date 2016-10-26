@@ -1,12 +1,17 @@
-function Send()
-{
+var sock;
 
-    var sock = new WebSocket("afsaccess2.njit.edu/~btr2:8001");
+function Connection()
+{
+    sock = new WebSocket("afsaccess2.njit.edu/~btr2:8001");
     sock.onopen = function()
     {
         sock.send("Connected");
     };
+}
 
+
+function Update()
+{
     sock.send(document.getElementById('code').value);
     sock.close();
 
