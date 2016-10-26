@@ -2,11 +2,11 @@ var sock;
 
 function Connection()
 {
-    sock = new WebSocket("localhost:"+document.getElementbyiId('port'));
+    sock = new WebSocket("ws://0.0.0.0:"+document.getElementById('port').value);
     sock.onopen = function()
     {
         var connect = {
-            "nickname": document.getElementbyId('name').value,
+            "nickname": document.getElementById('name').value,
             "contents": "connect"
         };
         sock.send(connect);
@@ -19,7 +19,6 @@ function Connection()
         else{
             alert("Could not connect because"+res.Reason);
         }
-
     }
 }
 
