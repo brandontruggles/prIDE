@@ -6,7 +6,7 @@ function Connection()
     sock.onopen = function()
     {
         var connect = {
-            "nickname": document.getElementById('name').value,
+            "nickname": document.getElementById('nickname').value,
             "contents": "connect"
         };
         sock.send(connect);
