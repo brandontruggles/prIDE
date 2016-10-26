@@ -2,7 +2,7 @@ var sock;
 
 function Connection()
 {
-    sock = new WebSocket("localhost");
+    sock = new WebSocket("localhost:"+document.getElementbyiId('port'));
     sock.onopen = function()
     {
         var connect = {
@@ -34,7 +34,7 @@ function Update()
 
 
 }
- 
+
 
 function Receive()
 {
@@ -43,7 +43,7 @@ function Receive()
         if(message)
         document.getElementById('code').value = message;
     }
-    
+
 }
 
 function compile()

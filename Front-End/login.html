@@ -3,13 +3,14 @@
 <head>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="CSS/IDEStyle.css">
-	<script>
+	<script src="js/socket.js"></script>
+	<!--<script>
 	$(document).ready(function(){
 		$("#submitButton").click(function(){
 			alert("success");
 		});
 	});
-	</script>
+</script>-->
 </head>
 <title> Online IDE </title>
 <meta charset="utf-8">
@@ -19,11 +20,11 @@
 <br><p> Please enter your external IP Address, a port number, and a temporary display name  </p>
  <!-- <form action="" method="post"> -->
 	<br><input type="text" placeholder="IP Address" name="ip">
-	<br><input type="text" placeholder="Port Number" name="port">
+	<br><input type="text" placeholder="Port Number" name="port" id="port">
 	<br><input type="text" placeholder="Display name" name="displayName">
-	<br><input type="submit" name="submitButton" id="submitButton">
+	<br><input type="submit" name="submitButton" id="submitButton" onclick="Connection()">
 <!--</form>-->
-<div id="pageContent"> 
+<div id="pageContent">
 
 </div>
 
