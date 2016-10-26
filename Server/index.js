@@ -1,5 +1,6 @@
 var WebSocketServer = require('ws').Server;
 var fs = require('fs');
+var configObj = {};
 
 function configExists()
 {
@@ -20,13 +21,95 @@ function createConfig()
 	console.log("No server.conf file detected! Generating server.conf...");	
 	try
 	{
-		fs.writeFileSync("server.conf", "Test");
+		fs.writeFileSync("server.conf", "{\n\t\"port\": 8080,\n\t\"max_clients\": 8,\n\t\"projects\": [],\n\t\"current_project\": \"\"\n}");
 		console.log("Successfully generated server.conf!");
 	}
 	catch(err)
 	{
 		console.log("Failed to generate server.conf! Reason: " + err);
 	}
+}
+
+function readConfig()
+{
+	try
+	{
+		configObj = JSON.parse(fs.readFileSync("server.conf"));
+	}
+	catch(err)
+	{
+		console.log("Failed to read server.conf! Reason: " + err);
+	}
+}
+
+function writeConfig()
+{
+	try
+	{
+		fs.writeFileSync("server.conf", JSON.stringify(configObj, null, "\t"));
+	}
+	catch(err)
+	{
+		console.log("Failed to write server.conf! Reason: " + err);
+	}
+}
+
+function createFile(fileName)
+{
+	if(!fs.existsSync(configObj.current_project + "/" + fileName))
+	{
+		fs.writeFileSync(configObj.current_project + "/" + fileName, "");	
+	}	
+	else
+	{
+		console.log("Failed to create a file with the name '" + fileName + "' within the current project because a file with that name already exists!");
+		return false;
+	}
+	return true;		
+}
+
+function createDirectory(dirName)
+{
+	if(!fs.existsSync(configObj.current_project + "/" + dirName))
+	{
+		fs.mkdirSync(configObj.current_project + "/" + dirName);	
+	}	
+	else
+	{
+		console.log("Failed to create a directory with the name '" + dirName + "' within the current project because a file with that name already exists!");
+		return false;
+	}
+	return true;		
+} 
+
+function createProject(projectName)
+{
+	if(!fs.existsSync(projectName))
+	{
+		fs.mkdirSync(projectName);	
+		configObj.projects.push(projectName);
+		writeConfig();
+	}	
+	else
+	{
+		console.log("Failed to create a project with the name '" + projectName + "' since one already exists!");
+		return false;
+	}
+	return true;			
+}
+
+function getProjectFiles()
+{
+	var files = null;
+	try
+	{
+		files = fs.readdirSync(configObj.current_project);
+	}
+	catch(err)
+	{
+		console.log("Failed to read files from the current project directory!");
+	} 
+	return files;
 }
 
 function broadcastResponse(connectionList, responseString)
@@ -48,7 +131,7 @@ function runServer(portNumber)
 		ws.on('message', function incoming(message)
 		{
 			console.log('received: %s', message);
-			var response = {"type": null, "contents": null};
+			var response = {"type": "", "contents": null};
 			try
 			{
 				var json_message = JSON.parse(message);
@@ -77,9 +160,63 @@ function runServer(portNumber)
 						}
 						ws.send(JSON.stringify(response));
 						break;
+					case "compile":
+						console.log("Received command to compile!");
+						break;
 					case "message":
 						console.log("Received chat message: " + params);
 						break;
+					case "newproject":
+						response.type = "Project-Created-Status";
+						if(!createProject(params))
+						{
+							response.contents = {"Created": false, "Reason": "Failed to create a new project with the name '" + params + "'! That project name is already taken."};				
+						}
+						else
+						{
+							response.contents = {"Created": true};
+						}
+						ws.send(JSON.stringify(response));
+						break;
+					case "newfile":
+						response.type = "File-Created-Status";
+						if(!createFile(params))
+						{
+							response.contents = {"Created": false, "Reason": "Failed to create a new file with the name '" + params + "'! That file already exists in the current project."};				
+						}
+						else
+						{
+							response.contents = {"Created": true};
+						}
+						ws.send(JSON.stringify(response));
+						break;
+					case "newdir":
+						response.type = "Directory-Created-Status";
+						if(!createFile(params))
+						{
+							response.contents = {"Created": false, "Reason": "Failed to create a new directory with the name '" + params + "'! That file already exists in the current project."};				
+						}
+						else
+						{
+							response.contents = {"Created": true};
+						}
+						ws.send(JSON.stringify(response));
+						break;
+					case "openproject":
+						response.type = "Project-Open-Response";
+						configObj.current_project = params;
+						var files = getFiles();
+						if(files != null)
+							response.contents = {"Opened": true, "Files": files};
+						else
+							response.contents = {"Opened": false};
+						ws.send(JSON.stringify(response));
+						break;
+					case "updatefile":
+						response.type = "File-Update-Response";
+						fileToUpdate = params.split(' ')[0];
+						newText = params.split(' ')[1];
+						console.log("Received a command to update the file '" + fileToUpdate + "'");
 					default:
 						response.type = "Error";
 						response.contents = "Unrecognized command '" + command  + "'!";
@@ -116,4 +253,6 @@ function runServer(portNumber)
 if(!configExists())
 	createConfig();
 
-runServer(8080);
+readConfig();
+
+runServer(configObj.port);
