@@ -2,22 +2,24 @@ var sock;
 
 function Connection()
 {
-    sock = new WebSocket("ws://0.0.0.0:"+document.getElementById('port').value);
+    sock = new WebSocket("ws://45.55.218.73:"+document.getElementById('port').value);
     sock.onopen = function()
     {
         var connect = {
             "nickname": document.getElementById('nickname').value,
             "contents": "connect"
         };
-        sock.send(connect);
+        sock.send(JSON.stringify(connect));
     };
     sock.onmessage = function(response){
-        var res = JSON.parse(response);
-        if(res.Accepted){
+        var res = JSON.parse(response.data);
+        var contents = res.contents;
+        if(contents.Accepted){
             alert("Connected");
+            document.location.href = "index.html";
         }
         else{
-            alert("Could not connect because"+res.Reason);
+            alert("Could not connect because"+ contents.Reason);
         }
     }
 }
@@ -29,7 +31,7 @@ function Update()
         "nickname": document.getElementById('name').value,
         "contents": "updatefile "+document.getElementById('filename')+" "+document.getElementById('code').value
     };
-    sock.send(message);
+    sock.send(JSON.stringify(message));
 
 
 }
@@ -37,8 +39,9 @@ function Update()
 
 function Receive()
 {
-    sock.onmessage = function(sent){
-        var message = JSON.parse(sent);
+    sock.onmessage = function(response){
+        var res = JSON.parse(response.data);
+        var message = res.contents;
         if(message)
         document.getElementById('code').value = message;
     }
@@ -51,7 +54,7 @@ function compile()
         "nickname": document.getElementById('name').value,
         "contents": "compile"
     }
-    sock.send(message);
+    sock.send(JSON.stringify(message));
 }
 
 
@@ -61,7 +64,7 @@ function newproject()
         "nickname": document.getElementById('name').value,
         "contents": "newproject"
     }
-    sock.send(message);
+    sock.send(JSON.stringify(message));
 }
 
 function newfile()
@@ -70,7 +73,7 @@ function newfile()
         "nickname": document.getElementById('name').value,
         "contents": "newfile"
     }
-    sock.send(message);
+    sock.send(JSON.stringify(message));
 }
 
 function message()
@@ -79,7 +82,7 @@ function message()
         "nickname": document.getElementById('name').value,
         "contents": "message "+document.getElementById('chat').value
     }
-    sock.send(message);
+    sock.send(JSON.stringify(message));
 }
 
 function newdir()
@@ -88,7 +91,7 @@ function newdir()
         "nickname": document.getElementById('name').value,
         "contents": "newdir"
     }
-    sock.send(message);
+    sock.send(JSON.stringify(message));
 }
 
 function openproject()
@@ -97,5 +100,23 @@ function openproject()
         "nickname": document.getElementById('name').value,
         "contents": "openproject"
     }
-    sock.send(message);
+    sock.send(JSON.stringify(message));
+
+    sock.onmessage = function(response){
+        var res = JSON.parse(response.data);
+        var contents = res.contents;
+        if(contents.Opened){
+          var fileList = document.getElementById('openproj');
+          fileList.innerHTML = "";//empty out file explorer
+          for(var i = 0; i < contents.Files.length; i++){
+            fileList.innerHTML += '<a href="#">'+contents.Files[i]+'</a>';
+          }
+
+        }
+        else{
+          alert("no projects make one");
+        }
+
+    }
+
 }
