@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<link rel="stylesheet" type="text/css" href="css/IDEMainStyle.css">
+
+</head>
+<title> prIDE </title>
+<meta charset="utf-8">
+
+<body>
+<!-- Buttons go in here -->
+<!-- Dropdowns go in here -->
+ <div class="dropdown">
+  <button onclick="showNewDropdown()" class="newbtn">New...</button>
+  <div id="newDropdown" class="dropdown-content">
+    <a href="#" id="newfile">New File</a>
+    <a href="#" id="newdir">New Directory</a>
+    <a href="#" id="newproj">New Project</a>
+  </div>
+  </div>
+ <!--<button class="newbtn" id="new">Save </button>-->
+ <button class="saveasbtn" id="saveas">Commit</button>
+ <button class="filebtn" id="file">Push </button>
+ <button class="runbtn" id="run">Run </button>
+ <button class="compilebtn" id="compile">Compile </button>
+ <button class="openbtn" id="openproj">Open Project </button>
+  
+  <!--  <button onclick="showEditDropdown()" class="dropbtn">Edit</button>
+  <div id="editDropdown" class="dropdown-content">
+    <a href="#">Cut</a>
+    <a href="#">Copy</a>
+    <a href="#">Paste</a>
+  </div> 
+</div> -->
+<br>
+<br>
+
+<ul class="tab">
+  <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'class1')">Test 1</a></li>
+  <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'class2')">Test 2</a></li>
+  <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'class3')">Test 3</a></li>
+</ul>
+
+
+
+<div id="class1" class="tabcontent">
+<!-- <div> -->
+	<textarea id="consoleWindow" rows="20" cols="25">Console</textarea>
+
+<textarea rows="10" cols="25" id="codespace1">
+public class Test 1
+{
+	public static void main(String[] args) 
+	{
+		//Your Code Here
+	} 
+}</textarea>
+	<textarea id="chatWindow" rows="20" cols="25">Chat</textarea>
+<!-- </div> -->
+</div>
+<div id="class2" class="tabcontent">
+
+<textarea id="consoleWindow" rows="20" cols="25">Console</textarea>
+<textarea rows="10" cols="25" id="codespace2">
+public class Test 2
+{
+	public static void main(String[] args) 
+	{
+		//Your Code Here
+	} 
+}</textarea>
+<textarea id="chatWindow" rows="20" cols="25">Chat</textarea>
+</div> 
+
+<div id="class3" class="tabcontent">
+<textarea id="consoleWindow" rows="20" cols="25">Console</textarea>
+<textarea rows="10" cols="25" id="codespace3">
+public class Test 3
+{
+	public static void main(String[] args) 
+	{
+		//Your Code Here
+	} 
+}</textarea>
+<textarea id="chatWindow" rows="20" cols="25">Chat</textarea>
+</div>
+
+<!--<button onclick="openConsole(event)" class="consolebtn" id="console">Console </button> -->
+<textarea id="commandArea" rows="3" cols="20"> Commands and chat here </textarea>
+<button onclick = "submitCommand(event)" class="submitbtn" id="submit">Submit </button>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="js/IDEScript.js"></script>
+<script src="js/socket.js"></script>
+</html>
