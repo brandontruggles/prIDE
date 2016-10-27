@@ -164,15 +164,25 @@ function createFile(fileName)
 	if(!fs.existsSync(configObj.current_project + "/" + fileName))
 	{
 		fs.writeFileSync(configObj.current_project + "/" + fileName, "");
-<<<<<<< HEAD
 		configObj.current_file = fileName;	
 	}	
-=======
-	}
->>>>>>> 1052a887054eff108ab74341d1210c38847aac09
 	else
 	{
 		console.log("Failed to create a file with the name '" + fileName + "' within the current project because a file with that name already exists!");
+		return false;
+	}
+	return true;
+}
+
+function updateFile(fileName, newText)
+{
+	if(fs.existsSync(configObj.current_project + "/" + fileName))
+	{
+		fs.writeFileSync(configObj.current_project + "/" + fileName, newText);	
+	}
+	else
+	{
+		console.log("Failed to write to the file " + fileName + "!"); 
 		return false;
 	}
 	return true;
@@ -183,12 +193,8 @@ function createDirectory(dirName)
 	if(!fs.existsSync(configObj.current_project + "/" + dirName))
 	{
 		fs.mkdirSync(configObj.current_project + "/" + dirName);
-<<<<<<< HEAD
 		configObj.current_directory = dirName;	
-	}	
-=======
 	}
->>>>>>> 1052a887054eff108ab74341d1210c38847aac09
 	else
 	{
 		console.log("Failed to create a directory with the name '" + dirName + "' within the current project because a file with that name already exists!");
@@ -235,7 +241,7 @@ function broadcastResponse(connectionList, responseString)
 	});
 }
 
-function runServer(portNumber)
+function uunServer(portNumber)
 {
 	console.log("Running the IDE server on port " + portNumber + "...");
 	var server = new WebSocketServer({port: portNumber});
@@ -311,6 +317,10 @@ function runServer(portNumber)
 						console.log("Received command to compile!");
 						compile();
 						break;
+					case "run":
+						console.log("Running code...");
+						run(configObj.current_project + "/" + configObj.current_file);
+						break;
 					case "message":
 						console.log("Received chat message: " + params);
 						break;
@@ -381,6 +391,7 @@ function runServer(portNumber)
 						response.type = "File-Update-Response";
 						fileToUpdate = params.split(' ')[0];
 						newText = params.split(' ')[1];
+						updateFile(fileToUpdate, newText);					
 						console.log("Received a command to update the file '" + fileToUpdate + "'");
 					case "git_commit":
 						if (connectionList[connind].valid)
