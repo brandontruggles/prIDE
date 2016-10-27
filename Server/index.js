@@ -19,7 +19,7 @@ function configExists()
 
 function createConfig()
 {
-	console.log("No server.conf file detected! Generating server.conf...");	
+	console.log("No server.conf file detected! Generating server.conf...");
 	try
 	{
 		fs.writeFileSync("server.conf", "{\n\t\"port\": 8080,\n\t\"max_clients\": 8,\n\t\"projects\": [],\n\t\"current_project\": \"\"\n}");
@@ -59,44 +59,44 @@ function createFile(fileName)
 {
 	if(!fs.existsSync(configObj.current_project + "/" + fileName))
 	{
-		fs.writeFileSync(configObj.current_project + "/" + fileName, "");	
-	}	
+		fs.writeFileSync(configObj.current_project + "/" + fileName, "");
+	}
 	else
 	{
 		console.log("Failed to create a file with the name '" + fileName + "' within the current project because a file with that name already exists!");
 		return false;
 	}
-	return true;		
+	return true;
 }
 
 function createDirectory(dirName)
 {
 	if(!fs.existsSync(configObj.current_project + "/" + dirName))
 	{
-		fs.mkdirSync(configObj.current_project + "/" + dirName);	
-	}	
+		fs.mkdirSync(configObj.current_project + "/" + dirName);
+	}
 	else
 	{
 		console.log("Failed to create a directory with the name '" + dirName + "' within the current project because a file with that name already exists!");
 		return false;
 	}
-	return true;		
-} 
+	return true;
+}
 
 function createProject(projectName)
 {
 	if(!fs.existsSync(projectName))
 	{
-		fs.mkdirSync(projectName);	
+		fs.mkdirSync(projectName);
 		configObj.projects.push(projectName);
 		writeConfig();
-	}	
+	}
 	else
 	{
 		console.log("Failed to create a project with the name '" + projectName + "' since one already exists!");
 		return false;
 	}
-	return true;			
+	return true;
 }
 
 function getProjectFiles()
@@ -109,7 +109,7 @@ function getProjectFiles()
 	catch(err)
 	{
 		console.log("Failed to read files from the current project directory!");
-	} 
+	}
 	return files;
 }
 
@@ -117,7 +117,7 @@ function broadcastResponse(connectionList, responseString)
 {
 	connectionList.forEach(function(conn)
 	{
-		conn.connection.send(responseString);								
+		conn.connection.send(responseString);
 	});
 }
 
@@ -125,7 +125,7 @@ function runServer(portNumber)
 {
 	console.log("Running the IDE server on port " + portNumber + "...");
 	var server = new WebSocketServer({port: portNumber});
-	var connectionList = []; 
+	var connectionList = [];
 	var connind = -1;
 	server.on('connection', function connection(ws)
 	{
@@ -141,7 +141,7 @@ function runServer(portNumber)
 				var contents = json_message.contents;
 				var command = contents.split(' ')[0].toLowerCase();
 				var spaceIndex = contents.indexOf(' ');
-				var params = contents.substring(spaceIndex + 1, contents.length - command.length);
+				var params = contents.substring(spaceIndex + 1);
 
 				var found = false;
 				connectionList.forEach(function(conn)
@@ -151,11 +151,11 @@ function runServer(portNumber)
 						found = true;
 						connind = connectionList.indexOf(conn);
 					}
-				});	
+				});
 				if(!found)
 				{
 					console.log("User not found");
-				}					
+				}
 
 				switch(command)
 				{
@@ -204,7 +204,7 @@ function runServer(portNumber)
 						response.type = "Project-Created-Status";
 						if(!createProject(params))
 						{
-							response.contents = {"Created": false, "Reason": "Failed to create a new project with the name '" + params + "'! That project name is already taken."};				
+							response.contents = {"Created": false, "Reason": "Failed to create a new project with the name '" + params + "'! That project name is already taken."};
 						}
 						else
 						{
@@ -220,7 +220,7 @@ function runServer(portNumber)
 						response.type = "File-Created-Status";
 						if(!createFile(params))
 						{
-							response.contents = {"Created": false, "Reason": "Failed to create a new file with the name '" + params + "'! That file already exists in the current project."};				
+							response.contents = {"Created": false, "Reason": "Failed to create a new file with the name '" + params + "'! That file already exists in the current project."};
 						}
 						else
 						{
@@ -236,7 +236,7 @@ function runServer(portNumber)
 						response.type = "Directory-Created-Status";
 						if(!createFile(params))
 						{
-							response.contents = {"Created": false, "Reason": "Failed to create a new directory with the name '" + params + "'! That file already exists in the current project."};				
+							response.contents = {"Created": false, "Reason": "Failed to create a new directory with the name '" + params + "'! That file already exists in the current project."};
 						}
 						else
 						{
@@ -287,7 +287,7 @@ function runServer(portNumber)
 				response.type = "Error";
 				response.contents = "The message received did not match the proper protocol!\n Message: " + message + "\nExact error: " + err;
 				console.log(err);
-			}			
+			}
 		});
 		ws.on('close', function()
 		{
@@ -300,11 +300,11 @@ function runServer(portNumber)
 					console.log("User '" + conn.nickname  + "' has disconnected!");
 					connectionList.splice(connectionList.indexOf(conn), 1);
 				}
-			});	
+			});
 			if(!found)
 			{
 				console.log("An unknown client disconnected!");
-			}					
+			}
 		});
 	});
 }
