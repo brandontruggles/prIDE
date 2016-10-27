@@ -152,6 +152,12 @@ function message()
         "contents": "message "+document.getElementById('chat').value
     }
     sock.send(JSON.stringify(message));
+
+    sock.onmessage = function (response) {
+      var res = JSON.parse(response.data);
+      alert(res.contents);
+
+    }
 }
 
 function newdir()//works
@@ -183,11 +189,9 @@ function openproject()//works
         "contents": "openproject"
     }
     sock.send(JSON.stringify(message));
-    alert("sends message");
     sock.onmessage = function(response){
         var res = JSON.parse(response.data);
         var contents = res.contents;
-        alert("gets to onmessage");
         if(contents.Opened){
           var fileList = document.getElementById('openproj');
           fileList.innerHTML = '';//empty out file explorer
