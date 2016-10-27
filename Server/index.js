@@ -1,7 +1,7 @@
 var WebSocketServer = require('ws').Server;
 var fs = require('fs');
 var configObj = {};
-var github = require('./github');
+var github = require('./github.js');
 
 function configExists()
 {

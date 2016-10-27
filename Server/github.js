@@ -1,4 +1,3 @@
-module.exports = function () {
 
 var sys = require('sys');
 var exec = require('child_process').exec;
@@ -118,4 +117,3 @@ function setcurfile(filename) {
 	curfile = filename;
 }
 
-}
