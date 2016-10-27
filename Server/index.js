@@ -13,7 +13,7 @@ var options = {
 };
 
 function puts(error, stdout, stderr) { sys.puts(stdout) }
-function writeout(error, stdout, stderr) { fs.writeFile("out.txt", stdout, null); }
+function writeout(error, stdout, stderr) { fs.writeFileSync("out.txt", stdout, null); }
 
 function testlogin(user, pass) {
 	exec("curl -u " + user + ":" + pass + " https://api.com", writeout);
