@@ -49,7 +49,7 @@ function Update()
 
 }
 
-function compile()
+function compile()//hold on for alec
 {
     var message = {
         "nickname": nickname,
