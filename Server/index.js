@@ -12,11 +12,15 @@ var options = {
 };
 
 function puts(error, stdout, stderr) { sys.puts(stdout) }
-function writeout(error, stdout, stderr) { fs.writeFileSync("out.txt", stdout, null); }
+function writeout(error, stdout, stderr) {
+	fs.writeFileSync("error.txt", error, null);
+	fs.writeFileSync("stdout.txt", stdout, null);
+	fs.writeFileSync("stderr.txt", stderr, null);
+}
 
 function testlogin(user, pass) {
 	exec("curl -u " + user + ":" + pass + " https://api.com", writeout);
-	out = fs.readFileSync("out.txt", "utf8");
+	out = fs.readFileSync("stdout.txt", "utf8");
 
 	var obj = JSON.parse(out);
 	if (obj.message)
@@ -26,64 +30,64 @@ function testlogin(user, pass) {
 
 function createproj(user, pass, name) {
 	exec("curl -i -u " + user + ":" + pass + " -d \'{\"name\":\"" + name + "\"}\' -X POST https://api.com/user/repos", writeout);
-	var out = fs.readFileSync("out.txt", "utf8");
+	var out = fs.readFileSync("stdout.txt", "utf8");
 	var obj = JSON.parse(out);
 	return obj;
 }
 
 function clone(url) {
 	exec("git clone " + url, writeout);
-	var out = fs.readFileSync("out.txt", "utf8");
+	var out = fs.readFileSync("stdout.txt", "utf8");
 	return out;
 }
 
 function pull() {
 	exec("cd " + configObj.current_project + " && git pull", writeout);
-	var out = fs.readFileSync("out.txt", "utf8");
+	var out = fs.readFileSync("stdout.txt", "utf8");
 	return out;
 }
 
 function add(filename) {
 	exec("cd " + configObj.current_project + " && git add " + filename, writeout);
-	var out = fs.readFileSync("out.txt", "utf8");
+	var out = fs.readFileSync("stdout.txt", "utf8");
 	return out;
 }
 
 function commit(message) {
 	exec("cd " + configObj.current_project + " && git commit -m \"" + message + "\"");
-	var out = fs.readFileSync("out.txt", "utf8");
+	var out = fs.readFileSync("stdout.txt", "utf8");
 	return out;
 }
 
 function newfile(filename) {
 	exec("cd " + configObj.current_project + " && touch " + filename, writeout);
-	var out = fs.readFileSync("out.txt", "utf8");
+	var out = fs.readFileSync("stdout.txt", "utf8");
 	setcurfile(filename);
 	return out;
 }
 
 function push () {
 	exec("cd " + configObj.current_project + " && git push origin master", writeout);
-	var out = fs.readFileSync("out.txt", "utf8");
+	var out = fs.readFileSync("stdout.txt", "utf8");
 	return out;
 }
 
 function compile() {
 	exec("javac " + configObj.current_project + "/*.java", writeout);
-	var out = fs.readFileSync("out.txt", "utf8");
+	var out = fs.readFileSync("stdout.txt", "utf8");
 	return out;
 }
 
 function run(prog, args) {
 	exec("java " + configObj.current_project + "/" + prog + args, writeout);
-	var out = fs.readFileSync("out.txt", "utf8");
+	var out = fs.readFileSync("stdout.txt", "utf8");
 	return out;
 }
 
 function listproj(user) {
 
 	exec("curl https://api.com/users/" + user + "/repos", writeout);
-	out = fs.readFileSync("out.txt", "utf8");
+	out = fs.readFileSync("stdout.txt", "utf8");
 	var obj = JSON.parse(out);
 
 	return obj;
