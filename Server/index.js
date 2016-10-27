@@ -1,3 +1,109 @@
+
+var sys = require('sys');
+var execFileSync = require('child_process').execFileSync;
+var read = require('read');
+var fs = require('fs');
+var curfile = "";
+
+var options = {
+	prompt: 'enter pass: ',
+	silent: true,
+	replace: '*'
+};
+
+function puts(error, stdout, stderr) { sys.puts(stdout) }
+function writeout(error, stdout, stderr) {
+//	fs.writeFileSync("error.txt", error);
+	fs.writeFileSync("stdout.txt", stdout);
+	fs.writeFileSync("stderr.txt", stderr);
+}
+
+function testlogin(user, pass) {
+	execFileSync("curl -u " + user + ":" + pass + " https://api.com", writeout);
+	out = fs.readFileSync("stdout.txt", "utf8");
+
+	var obj = JSON.parse(out);
+	if (obj.message)
+		return true;
+	return false;
+}
+
+function createproj(user, pass, name) {
+	execFileSync("curl -i -u " + user + ":" + pass + " -d \'{\"name\":\"" + name + "\"}\' -X POST https://api.com/user/repos", writeout);
+	var out = fs.readFileSync("stdout.txt", "utf8");
+	var obj = JSON.parse(out);
+	return obj;
+}
+
+function clone(url) {
+	execFileSync("git clone " + url, writeout);
+	var out = fs.readFileSync("stdout.txt", "utf8");
+	return out;
+}
+
+function pull() {
+	execFileSync("cd " + configObj.current_project + " && git pull", writeout);
+	var out = fs.readFileSync("stdout.txt", "utf8");
+	return out;
+}
+
+function add(filename) {
+	execFileSync("cd " + configObj.current_project + " && git add " + filename, writeout);
+	var out = fs.readFileSync("stdout.txt", "utf8");
+	return out;
+}
+
+function commit(message) {
+	execFileSync("cd " + configObj.current_project + " && git commit -m \"" + message + "\"");
+	var out = fs.readFileSync("stdout.txt", "utf8");
+	return out;
+}
+
+function newfile(filename) {
+	execFileSync("cd " + configObj.current_project + " && touch " + filename, writeout);
+	var out = fs.readFileSync("stdout.txt", "utf8");
+	setcurfile(filename);
+	return out;
+}
+
+function push () {
+	execFileSync("cd " + configObj.current_project + " && git push origin master", writeout);
+	var out = fs.readFileSync("stdout.txt", "utf8");
+	return out;
+}
+
+function compile() {
+	//console.log("javac " + configObj.current_project + "/p.java");
+	//execFileSync("\'javac " + configObj.current_project + "/p.java\'");
+	var files = getProjectFiles();
+	var flies = [];
+	for (var i = 0; i < files.length; i++)
+		if (files[i].substr(files[i].length - 5) == ".java")
+			flies.push(configObj.current_project + "/" + files[i]);
+	return execFileSync("javac", flies);
+}
+
+function run(prog, args) {
+	execFileSync("java " + configObj.current_project + "/" + prog + args, writeout);
+	var out = fs.readFileSync("stdout.txt", "utf8");
+	return out;
+}
+
+function listproj(user) {
+
+	execFileSync("curl https://api.com/users/" + user + "/repos", writeout);
+	out = fs.readFileSync("stdout.txt", "utf8");
+	var obj = JSON.parse(out);
+
+	return obj;
+}
+
+function setcurfile(filename) {
+	curfile = filename;
+}
+
+
+
 var WebSocketServer = require('ws').Server;
 var fs = require('fs');
 var configObj = {};
@@ -17,7 +123,7 @@ function configExists()
 
 function createConfig()
 {
-	console.log("No server.conf file detected! Generating server.conf...");	
+	console.log("No server.conf file detected! Generating server.conf...");
 	try
 	{
 		fs.writeFileSync("server.conf", "{\n\t\"port\": 8080,\n\t\"max_clients\": 8,\n\t\"projects\": [],\n\t\"current_project\": \"\",\n\t\"current_file\": \"\",\n\t\"current_directory\": \"\"\n}");
@@ -58,14 +164,18 @@ function createFile(fileName)
 	if(!fs.existsSync(configObj.current_project + "/" + fileName))
 	{
 		fs.writeFileSync(configObj.current_project + "/" + fileName, "");
+<<<<<<< HEAD
 		configObj.current_file = fileName;	
 	}	
+=======
+	}
+>>>>>>> 1052a887054eff108ab74341d1210c38847aac09
 	else
 	{
 		console.log("Failed to create a file with the name '" + fileName + "' within the current project because a file with that name already exists!");
 		return false;
 	}
-	return true;		
+	return true;
 }
 
 function createDirectory(dirName)
@@ -73,30 +183,34 @@ function createDirectory(dirName)
 	if(!fs.existsSync(configObj.current_project + "/" + dirName))
 	{
 		fs.mkdirSync(configObj.current_project + "/" + dirName);
+<<<<<<< HEAD
 		configObj.current_directory = dirName;	
 	}	
+=======
+	}
+>>>>>>> 1052a887054eff108ab74341d1210c38847aac09
 	else
 	{
 		console.log("Failed to create a directory with the name '" + dirName + "' within the current project because a file with that name already exists!");
 		return false;
 	}
-	return true;		
-} 
+	return true;
+}
 
 function createProject(projectName)
 {
 	if(!fs.existsSync(projectName))
 	{
-		fs.mkdirSync(projectName);	
+		fs.mkdirSync(projectName);
 		configObj.projects.push(projectName);
 		writeConfig();
-	}	
+	}
 	else
 	{
 		console.log("Failed to create a project with the name '" + projectName + "' since one already exists!");
 		return false;
 	}
-	return true;			
+	return true;
 }
 
 function getProjectFiles()
@@ -109,7 +223,7 @@ function getProjectFiles()
 	catch(err)
 	{
 		console.log("Failed to read files from the current project directory!");
-	} 
+	}
 	return files;
 }
 
@@ -117,7 +231,7 @@ function broadcastResponse(connectionList, responseString)
 {
 	connectionList.forEach(function(conn)
 	{
-		conn.connection.send(responseString);								
+		conn.connection.send(responseString);
 	});
 }
 
@@ -125,7 +239,8 @@ function runServer(portNumber)
 {
 	console.log("Running the IDE server on port " + portNumber + "...");
 	var server = new WebSocketServer({port: portNumber});
-	var connectionList = []; 
+	var connectionList = [];
+	var connind = -1;
 	server.on('connection', function connection(ws)
 	{
 		console.log('New connection attempted!');
@@ -140,7 +255,22 @@ function runServer(portNumber)
 				var contents = json_message.contents;
 				var command = contents.split(' ')[0].toLowerCase();
 				var spaceIndex = contents.indexOf(' ');
-				var params = contents.substring(spaceIndex + 1, contents.length - command.length);
+				var params = contents.substring(spaceIndex + 1);
+
+				var found = false;
+				connectionList.forEach(function(conn)
+				{
+					if(conn.connection == ws)
+					{
+						found = true;
+						connind = connectionList.indexOf(conn);
+					}
+				});
+				if(!found)
+				{
+					console.log("User not found");
+				}
+
 				switch(command)
 				{
 					case "connect":
@@ -155,14 +285,31 @@ function runServer(portNumber)
 						});
 						if(response.contents == null)
 						{
-							connectionList.push({"connection":ws,"nickname":nickname});
+							connectionList.push({"connection":ws,"nickname":nickname,"user":null,"pass":null,"valid":false});
 							response.contents = {"Accepted": true};
 							console.log("Accepted incoming connection from user '"+ nickname  +"'.");
 						}
 						ws.send(JSON.stringify(response));
 						break;
+					case "setusername":
+						connectionList[connind].user = params;
+						break;
+					case "setpassword":
+						connectionList[connind].pass = params;
+						break;
+					case "testcredentials":
+						var user, pass;
+						var valid = false;
+						user = connectionList[connind].user;
+						pass = connectionList[connind].pass;
+						valid = testlogin(user, pass);
+						connectionList[connectionList.indexOf(conn)].valid = valid;
+						response.type = "Valid-Credentials-Status";
+						response.contents = {"Valid": valid};
+						break;
 					case "compile":
 						console.log("Received command to compile!");
+						compile();
 						break;
 					case "message":
 						console.log("Received chat message: " + params);
@@ -171,19 +318,24 @@ function runServer(portNumber)
 						response.type = "Project-Created-Status";
 						if(!createProject(params))
 						{
-							response.contents = {"Created": false, "Reason": "Failed to create a new project with the name '" + params + "'! That project name is already taken."};				
+							response.contents = {"Created": false, "Reason": "Failed to create a new project with the name '" + params + "'! That project name is already taken."};
 						}
 						else
 						{
+							configObj.current_project = params;
 							response.contents = {"Created": true};
 						}
 						ws.send(JSON.stringify(response));
+						break;
+					case "git_newproject":
+						if (connectionList[connind].valid)
+							createproj(connectionList[connind].user, connectionList[connind].pass, configObj.current_project);
 						break;
 					case "newfile":
 						response.type = "File-Created-Status";
 						if(!createFile(params))
 						{
-							response.contents = {"Created": false, "Reason": "Failed to create a new file with the name '" + params + "'! That file already exists in the current project."};				
+							response.contents = {"Created": false, "Reason": "Failed to create a new file with the name '" + params + "'! That file already exists in the current project."};
 						}
 						else
 						{
@@ -191,11 +343,15 @@ function runServer(portNumber)
 						}
 						ws.send(JSON.stringify(response));
 						break;
+					case "git_add":
+						if (connectionList[connind].valid)
+							add(params);
+						break;
 					case "newdir":
 						response.type = "Directory-Created-Status";
 						if(!createFile(params))
 						{
-							response.contents = {"Created": false, "Reason": "Failed to create a new directory with the name '" + params + "'! That file already exists in the current project."};				
+							response.contents = {"Created": false, "Reason": "Failed to create a new directory with the name '" + params + "'! That file already exists in the current project."};
 						}
 						else
 						{
@@ -206,18 +362,34 @@ function runServer(portNumber)
 					case "openproject":
 						response.type = "Project-Open-Response";
 						configObj.current_project = params;
-						var files = getFiles();
+						var files = getProjectFiles();
 						if(files != null)
 							response.contents = {"Opened": true, "Files": files};
 						else
 							response.contents = {"Opened": false};
 						ws.send(JSON.stringify(response));
 						break;
+					case "git_clone":
+						if (connectionList[connind].valid)
+							clone(params);
+						break;
+					case "git_pull":
+						if (connectionList[connind].valid)
+							pull(params);
+						break;
 					case "updatefile":
 						response.type = "File-Update-Response";
 						fileToUpdate = params.split(' ')[0];
 						newText = params.split(' ')[1];
 						console.log("Received a command to update the file '" + fileToUpdate + "'");
+					case "git_commit":
+						if (connectionList[connind].valid)
+							commit(params);
+						break;
+					case "git_push":
+						if (connectionList[connind].valid)
+							push();
+						break;
 					default:
 						response.type = "Error";
 						response.contents = "Unrecognized command '" + command  + "'!";
@@ -229,7 +401,7 @@ function runServer(portNumber)
 				response.type = "Error";
 				response.contents = "The message received did not match the proper protocol!\n Message: " + message + "\nExact error: " + err;
 				console.log(err);
-			}			
+			}
 		});
 		ws.on('close', function()
 		{
@@ -242,11 +414,11 @@ function runServer(portNumber)
 					console.log("User '" + conn.nickname  + "' has disconnected!");
 					connectionList.splice(connectionList.indexOf(conn), 1);
 				}
-			});	
+			});
 			if(!found)
 			{
 				console.log("An unknown client disconnected!");
-			}					
+			}
 		});
 	});
 }

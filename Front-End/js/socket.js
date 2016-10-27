@@ -1,26 +1,33 @@
 var sock;
 var nickname;
-function Connection()
+function Connection()//works
 {
-    sock = new WebSocket("ws://45.55.218.73:"+document.getElementById('port').value);
+
+  var port = prompt("Enter port");
+  nickname = prompt("Enter nickname");
+    sock = new WebSocket("ws://45.55.218.73:"+port);
     sock.onopen = function()
     {
         var connect = {
-            "nickname": document.getElementById('nickname').value,
+            "nickname": nickname,
             "contents": "connect"
         };
         sock.send(JSON.stringify(connect));
+
     };
     sock.onmessage = function(response){
         var res = JSON.parse(response.data);
         var contents = res.contents;
         if(contents.Accepted){
             alert("Connected");
-            nickname = document.getElementById('nickname').value;
-            document.location.href = "index.html";
+            //nickname = document.getElementById('nickname').value;
+            //document.location.href = "IDEMain.html";
         }
         else{
-            alert("Could not connect because"+ contents.Reason);
+          port = prompt("Enter port");
+          nickname = prompt("Enter nickname");
+          sock.close();
+          sock = new WebSocket("ws://45.55.218.73:"+port);
         }
     }
 }
@@ -34,48 +41,76 @@ function Update()
         "contents": "updatefile "+document.getElementById('filename')+" "+document.getElementById('code').value
     };
     sock.send(JSON.stringify(message));
-
-
-}
-
-
-function Receive()
-{
     sock.onmessage = function(response){
         var res = JSON.parse(response.data);
         var message = res.contents;
-        if(message)
         document.getElementById('code').value = message;
     }
 
 }
 
-function compile()
+function compile()//hold on for alec
 {
     var message = {
         "nickname": nickname,
         "contents": "compile"
     }
     sock.send(JSON.stringify(message));
+
+    sock.onmessage = function (response) {
+      var res = JSON.parse(response.data);
+
+    }
 }
 
 
-function newproject()
+function newproject()//works
 {
+    var name = prompt("name of project");
     var message = {
         "nickname": nickname,
-        "contents": "newproject"
+        "contents": "newproject "+name
     }
     sock.send(JSON.stringify(message));
+
+    sock.onmessage = function(response){
+      var res = JSON.parse(response.data);
+      var contents = res.contents;
+      if(contents.Created){
+        alert("new project created");
+        var fileList = document.getElementById('openproj');
+        fileList.innerHTML += '<li><a href="#">'+name+'/</a></li>';
+
+
+      }
+      else{
+        alert(contents.Reason);
+      }
+    }
 }
 
-function newfile()//not now
+function newfile()//works
 {
+    var name = prompt("name file");
     var message = {
         "nickname": nickname,
-        "contents": "newfile"
+        "contents": "newfile "+name
     }
     sock.send(JSON.stringify(message));
+    sock.onmessage = function(response){
+      var res = JSON.parse(response.data);
+      var contents = res.contents;
+      if(contents.Created){
+        alert("new file created");
+        var fileList = document.getElementById('openproj');
+        fileList.innerHTML += '<li><a href="#">'+name+'</a></li>';
+
+
+      }
+      else{
+        alert(contents.Reason);
+      }
+    }
 }
 
 function message()
@@ -87,33 +122,47 @@ function message()
     sock.send(JSON.stringify(message));
 }
 
-function newdir()
+function newdir()//works
 {
+    var name = prompt("name new directory");
     var message = {
         "nickname": nickname,
-        "contents": "newdir"
+        "contents": "newdir "+ name
     }
     sock.send(JSON.stringify(message));
+    sock.onmessage = function(response){
+      var res = JSON.parse(response.data);
+      var contents = res.contents;
+      if(contents.Created){
+        alert("directory created");
+        var fileList = document.getElementById('openproj');
+        fileList.innerHTML += '<li><a href="#">'+name+'/</a></li>';
+      }
+      else{
+        alert(contents.Reason);
+      }
+    }
 }
 
-function openproject()//need testing possibly done
+function openproject()//works
 {
     var message = {
         "nickname": nickname,
         "contents": "openproject"
     }
     sock.send(JSON.stringify(message));
-
+    alert("sends message");
     sock.onmessage = function(response){
         var res = JSON.parse(response.data);
         var contents = res.contents;
+        alert("gets to onmessage");
         if(contents.Opened){
           var fileList = document.getElementById('openproj');
-          fileList.innerHTML = '<ul>';//empty out file explorer
+          fileList.innerHTML = '';//empty out file explorer
           for(var i = 0; i < contents.Files.length; i++){
             fileList.innerHTML += '<li><a href="#">'+contents.Files[i]+'</a></li>';
           }
-          fileList.innerHTML += '</ul>;'
+
 
         }
         else{
@@ -121,5 +170,15 @@ function openproject()//need testing possibly done
         }
 
     }
+
+}
+
+function run()
+{
+  var message = {
+    "nickname": nickname,
+    "contents": "run "
+  }
+  sock.send(JSON.stringify(message));
 
 }

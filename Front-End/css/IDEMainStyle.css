@@ -111,22 +111,23 @@
 
 #consoleWindow
 {
-	 display: hide; 
+	 display: hide;
+	 resize: none;
 }
 
 #chatWindow
 {
 	 display: hide;
+	 resize: none;
 }
 
 #codespace1, #codespace2, #codespace3
 {
     display: inline-block;
-    width: 1025px;
+    width: 1025px; /*normally 1025px */
 	height: 500px;
 	margin-top:10px;
-	/*margin-left: 175px;*/
-	
+	resize: none;
 }
 
 #commandArea
@@ -136,8 +137,30 @@
 	height: 50px;
 	margin-top:7px;
 	margin-left: 238px;
+	resize: none;
 }
 
+#donatelink
+{
+	background-color: #006699;
+	padding: 16px;
+	font-size: 16px;
+	border: none;
+	cursor: pointer;
+	float: right;
+}
+#openproj
+{
+		display:inline-block;
+		vertical-align: top;
+		min-width: 179px;
+}
+p
+{
+		/*display:inline-block;*/
+		vertical-align: top;
+		min-width: 179px;
+}
 /* Style the list */
 ul.tab {
     list-style-type: none;
