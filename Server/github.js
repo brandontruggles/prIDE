@@ -61,7 +61,7 @@ function add(filename) {
 }
 
 function commit(message) {
-	exec("cd " + curfolder + " && git commit -m \"" + message "\"");
+	exec("cd " + curfolder + " && git commit -m \"" + message + "\"");
 }
 
 function newfile(filename) {

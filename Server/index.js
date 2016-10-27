@@ -208,6 +208,7 @@ function runServer(portNumber)
 						}
 						else
 						{
+							configObj.current_project = params;
 							response.contents = {"Created": true};
 						}
 						ws.send(JSON.stringify(response));
