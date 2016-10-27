@@ -67,7 +67,7 @@ function newproject()
     sock.send(JSON.stringify(message));
 }
 
-function newfile()
+function newfile()//not now
 {
     var message = {
         "nickname": document.getElementById('name').value,
@@ -94,7 +94,7 @@ function newdir()
     sock.send(JSON.stringify(message));
 }
 
-function openproject()
+function openproject()//need testing possibly done
 {
     var message = {
         "nickname": document.getElementById('name').value,
@@ -107,10 +107,11 @@ function openproject()
         var contents = res.contents;
         if(contents.Opened){
           var fileList = document.getElementById('openproj');
-          fileList.innerHTML = "";//empty out file explorer
+          fileList.innerHTML = '<ul>';//empty out file explorer
           for(var i = 0; i < contents.Files.length; i++){
-            fileList.innerHTML += '<a href="#">'+contents.Files[i]+'</a>';
+            fileList.innerHTML += '<li><a href="#">'+contents.Files[i]+'</a></li>';
           }
+          fileList.innerHTML += '</ul>;'
 
         }
         else{
