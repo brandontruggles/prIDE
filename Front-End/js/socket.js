@@ -1,6 +1,6 @@
 var sock;
 var nickname;
-var ntabs = 1;
+var ntabs = 0;
 function Connection()//works
 {
 
@@ -125,14 +125,9 @@ public class Test "+ntabs+"\n\
 </div>\n\
 ";
 	    var fileList = document.getElementById('openproj');
-		//if(num)
-		//var tab1 = document.getElementById('tab1');
-        fileList.innerHTML += '<li><a href="#">'+name+'</a></li>';
+		fileList.innerHTML += '<li><a href="#">'+name+'</a></li>';
 		
 		var tabList = document.getElementById('tabs');
-		//var class4 = document.getElementById('class4');
-		//class4String = '
-		//tab1.innerHTML = name;
 		tabList.innerHTML += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+ntabs+'" onclick="openTab(event, \'class'+ntabs+'\')">'+name+'</a></li>';
 		}
       else{
@@ -205,7 +200,7 @@ function run()
 {
   var message = {
     "nickname": nickname,
-    "contents": "run "
+    "contents": "message hellow world"
   }
   sock.send(JSON.stringify(message));
 
