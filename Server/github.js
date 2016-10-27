@@ -1,6 +1,7 @@
 var sys = require('sys');
 var exec = require('child_process').exec;
 var read = require('read');
+var fs = require('fs');
 
 var options = {
 	prompt: 'enter pass: ',
@@ -12,7 +13,9 @@ read(options, function (error, result, isDefault) {
 		
 	//testLogin("friedcook", result);
 	//createProj("friedcook", result, "test");
-	//listProj("friedcook");
+	var obj = listProj("brandonrninefive");
+	for (var i = 0; i < obj.length; i++) console.log(obj[i].name);
+	//clone(obj[2].url);
 });
 
 
@@ -27,16 +30,24 @@ function createProj(user, pass, name) {
 }
 
 function listProj(user) {
-		exec("curl https://api.github.com/users/" + user + "/repos", function (error, stdout, stderr) {
-			
-			var obj = JSON.parse(stdout);
-			for (var i = 0; i < obj.length; i++) {
-				console.log(obj[i].name);
-			}
-		
-		});
+
+	exec("curl https://api.github.com/users/" + user + "/repos", function (error, stdout, stderr) {
+		fs.writeFile("out.txt", stdout, null);
+	});
+	out = fs.readFileSync("out.txt", "utf8");
+
+	var obj = JSON.parse(out);
+	return obj;
 }
 
-function pull(repo) {
-	;
+function clone(url) {
+	exec("git clone " + repo, null);
+}
+
+function pull(url) {
+	exec("git pull" + repo, null);
+}
+
+function add(filename) {
+	exec("git add " + filename, null);
 }
