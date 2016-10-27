@@ -103,7 +103,6 @@ function setcurfile(filename) {
 var WebSocketServer = require('ws').Server;
 var fs = require('fs');
 var configObj = {};
-var github = require('./js');
 
 function configExists()
 {
