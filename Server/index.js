@@ -241,7 +241,7 @@ function broadcastResponse(connectionList, responseString)
 	});
 }
 
-function uunServer(portNumber)
+function runServer(portNumber)
 {
 	console.log("Running the IDE server on port " + portNumber + "...");
 	var server = new WebSocketServer({port: portNumber});
