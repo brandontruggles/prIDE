@@ -84,6 +84,7 @@ function compile() {
 }
 
 function run(prog, args) {
+	prog = prog.replace(".java","");
 	execFileSync("java " + configObj.current_project + "/" + prog + args, writeout);
 	var out = fs.readFileSync("stdout.txt", "utf8");
 	return out;
