@@ -314,15 +314,20 @@ function runServer(portNumber)
 						response.contents = {"Valid": valid};
 						break;
 					case "compile":
+						response.type = "Compile-Running-Status";
 						console.log("Received command to compile!");
 						compile();
 						break;
 					case "run":
+						response.type = "Code-Running-Status";		
 						console.log("Running code...");
 						run(configObj.current_project + "/" + configObj.current_file);
 						break;
 					case "message":
-						console.log("Received chat message: " + params);
+						response.type = "Message-Broadcast";
+						response.contents = nickname + ": " + params;
+						console.log("Received chat message from user '" + nickname + "': " + params);
+						broadcastResponse(connectionList, JSON.stringify(response));
 						break;
 					case "newproject":
 						response.type = "Project-Created-Status";
@@ -379,6 +384,9 @@ function runServer(portNumber)
 							response.contents = {"Opened": false};
 						ws.send(JSON.stringify(response));
 						break;
+					case "openfile":
+						response.type = "File-Open-Response";
+						break;
 					case "git_clone":
 						if (connectionList[connind].valid)
 							clone(params);
@@ -390,7 +398,7 @@ function runServer(portNumber)
 					case "updatefile":
 						response.type = "File-Update-Response";
 						fileToUpdate = params.split(' ')[0];
-						var spaceIndex = contents.indexOf(' ');
+						var spaceIndex = params.indexOf(' ');
 						newText = params.substring(spaceIndex + 1);
 						updateFile(fileToUpdate, newText);					
 						console.log("Received a command to update the file '" + fileToUpdate + "'");
