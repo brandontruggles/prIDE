@@ -2,25 +2,32 @@ var sock;
 var nickname;
 function Connection()
 {
-    sock = new WebSocket("ws://45.55.218.73:"+document.getElementById('port').value);
+
+  var port = prompt("Enter port");
+  nickname = prompt("Enter nickname");
+    sock = new WebSocket("ws://45.55.218.73:"+port);
     sock.onopen = function()
     {
         var connect = {
-            "nickname": document.getElementById('nickname').value,
+            "nickname": nickname,
             "contents": "connect"
         };
         sock.send(JSON.stringify(connect));
+
     };
     sock.onmessage = function(response){
         var res = JSON.parse(response.data);
         var contents = res.contents;
         if(contents.Accepted){
             alert("Connected");
-            nickname = document.getElementById('nickname').value;
-            document.location.href = "IDEMain.html";
+            //nickname = document.getElementById('nickname').value;
+            //document.location.href = "IDEMain.html";
         }
         else{
-            alert("Could not connect because"+ contents.Reason);
+          port = prompt("Enter port");
+          nickname = prompt("Enter nickname");
+          sock.close();
+          sock = new WebSocket("ws://45.55.218.73:"+port);
         }
     }
 }
@@ -49,6 +56,11 @@ function compile()
         "contents": "compile"
     }
     sock.send(JSON.stringify(message));
+
+    send.onmessage = function (response) {
+      var res = JSON.parse(response.data);
+
+    }
 }
 
 
@@ -86,6 +98,16 @@ function newdir()
         "contents": "newdir"
     }
     sock.send(JSON.stringify(message));
+    sock.onmessage = function(response){
+      var res = JSON.parse(response.data);
+      var contents = res.contents;
+      if(contents.Created){
+        alert("directory created");
+      }
+      else{
+        alert(contents.Reason);
+      }
+    }
 }
 
 function openproject()//need testing possibly done
@@ -101,11 +123,11 @@ function openproject()//need testing possibly done
         var contents = res.contents;
         if(contents.Opened){
           var fileList = document.getElementById('openproj');
-          fileList.innerHTML = '<ul>';//empty out file explorer
+          fileList.innerHTML = '';//empty out file explorer
           for(var i = 0; i < contents.Files.length; i++){
             fileList.innerHTML += '<li><a href="#">'+contents.Files[i]+'</a></li>';
           }
-          fileList.innerHTML += '</ul>;'
+
 
         }
         else{
@@ -114,4 +136,15 @@ function openproject()//need testing possibly done
 
     }
 
+}
+
+function run()
+{
+  var message = {
+    "nickname": nickname,
+    "contents": "run "+
+  }
+  sock.send(JSON.stringify(message));
+
+  sock.onmessage = function()
 }
