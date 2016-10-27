@@ -316,12 +316,14 @@ function runServer(portNumber)
 					case "compile":
 						response.type = "Compile-Running-Status";
 						console.log("Received command to compile!");
-						compile();
+						response.contents = {"output": compile()};
+						ws.send(JSON.stringify(response));
 						break;
 					case "run":
 						response.type = "Code-Running-Status";		
 						console.log("Running code...");
-						run(configObj.current_project + "/" + configObj.current_file);
+						response.contents = {"output": run(configObj.current_project + "/" + configObj.current_file, "")};
+						ws.send(JSON.stringify(response));
 						break;
 					case "message":
 						response.type = "Message-Broadcast";
