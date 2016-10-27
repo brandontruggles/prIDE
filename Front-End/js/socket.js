@@ -1,5 +1,6 @@
 var sock;
 var nickname;
+var ntabs = 1;
 function Connection()//works
 {
 
@@ -91,6 +92,7 @@ function newproject()//works
 
 function newfile()//works
 {
+	ntabs++;
     var name = prompt("name file");
     var message = {
         "nickname": nickname,
@@ -100,13 +102,39 @@ function newfile()//works
     sock.onmessage = function(response){
       var res = JSON.parse(response.data);
       var contents = res.contents;
+	  var numOfFiles = 0;
       if(contents.Created){
         alert("new file created");
         var fileList = document.getElementById('openproj');
+		//if(num)
+		//var tab1 = document.getElementById('tab1');
         fileList.innerHTML += '<li><a href="#">'+name+'</a></li>';
-
-
-      }
+		
+		var textareas = document.getElementById("textareas");
+		textareas.innerHTML += "<div id=\"class"+ntabs+"\" class=\"tabcontent\">\n\
+		<ul id='openproj'>\n\
+		<li>Solution Explorer</li>\n\
+		</ul>\n\
+		\n\
+		\n\
+		<textarea rows=\"10\" cols=\"25\" id=\"codespace\">\n\
+		public class Test "+ntabs+"\n\
+		{\n\
+		public static void main(String[] args)\n\
+		{\n\
+			//Your Code Here\n\
+		}\n\
+		}</textarea>\n\
+		<textarea placeholder=\"Console\" id=\"consoleWindow\" rows=\"20\" cols=\"25\"></textarea>\n\
+		</div>\n\
+		";
+		
+		var tabList = document.getElementById('tabs');
+		//var class4 = document.getElementById('class4');
+		//class4String = '
+		//tab1.innerHTML = name;
+		tabList.innerHTML += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+ntabs+'" onclick="openTab(event, \'class'+ntabs+'\')">'+name+'</a></li>';
+		}
       else{
         alert(contents.Reason);
       }

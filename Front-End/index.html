@@ -37,22 +37,19 @@
 <br>
 <br>
 
-<ul class="tab">
-  <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'class1')">Test 1</a></li>
-  <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'class2')">Test 2</a></li>
-  <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'class3')">Test 3</a></li>
+<ul class="tab" id="tabs">
+  <li><a href="javascript:void(0)" class="tablinks" id="tab1" onclick="openTab(event, 'class1')">Test 1</a></li>
 </ul>
 
 
-
+<div id="textareas">
 <div id="class1" class="tabcontent">
-<!-- <div> -->
 <ul id='openproj'>
 	<li>Solution Explorer</li>
 </ul>
 	
 
-<textarea rows="10" cols="25" id="codespace1">
+<textarea rows="10" cols="25" id="codespace">
 public class Test 1
 {
 	public static void main(String[] args)
@@ -60,42 +57,12 @@ public class Test 1
 		//Your Code Here
 	}
 }</textarea>
-	<textarea id="consoleWindow" rows="20" cols="25">Console</textarea>
-<!-- </div> -->
+	<textarea placeholder="Console" id="consoleWindow" rows="20" cols="25"></textarea>
 </div>
-<div id="class2" class="tabcontent">
-<ul id='openproj'>
-	<li>Solution Explorer</li>
-</ul>
-
-<textarea rows="10" cols="25" id="codespace2">
-public class Test 2
-{
-	public static void main(String[] args)
-	{
-		//Your Code Here
-	}
-}</textarea>
-<textarea id="consoleWindow" rows="20" cols="25">Console</textarea>
-</div>
-
-<div id="class3" class="tabcontent">
-<ul id='openproj'>
-	<li>Solution Explorer</li>
-</ul>
-<textarea rows="10" cols="25" id="codespace3">
-public class Test 3
-{
-	public static void main(String[] args)
-	{
-		//Your Code Here
-	}
-}</textarea>
-<textarea id="consoleWindow" rows="20" cols="25">Console</textarea>
 </div>
 
 <!--<button onclick="openConsole(event)" class="consolebtn" id="console">Console </button> -->
-<textarea id="commandArea" rows="3" cols="20"> Commands and chat here </textarea>
+<textarea placeholder="Commands and chat here" id="commandArea" rows="3" cols="20"></textarea>
 <button onclick = "submitCommand(event)" class="submitbtn" id="submit">Submit </button>
 
 </body>

@@ -119,9 +119,10 @@
 {
 	 display: hide;
 	 resize: none;
+	 
 }
 
-#codespace1, #codespace2, #codespace3
+#codespace
 {
     display: inline-block;
     width: 1025px; /*normally 1025px */
@@ -142,7 +143,7 @@
 
 #donatelink
 {
-	background-color: #006699;
+	background-color: #4da6ff;
 	padding: 16px;
 	font-size: 16px;
 	border: none;
