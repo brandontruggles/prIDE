@@ -390,7 +390,8 @@ function runServer(portNumber)
 					case "updatefile":
 						response.type = "File-Update-Response";
 						fileToUpdate = params.split(' ')[0];
-						newText = params.split(' ')[1];
+						var spaceIndex = contents.indexOf(' ');
+						newText = params.substring(spaceIndex + 1);
 						updateFile(fileToUpdate, newText);					
 						console.log("Received a command to update the file '" + fileToUpdate + "'");
 					case "git_commit":
