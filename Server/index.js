@@ -1,7 +1,6 @@
 var WebSocketServer = require('ws').Server;
 var fs = require('fs');
 var configObj = {};
-
 function configExists()
 {
 	var exists = true;
@@ -21,7 +20,7 @@ function createConfig()
 	console.log("No server.conf file detected! Generating server.conf...");	
 	try
 	{
-		fs.writeFileSync("server.conf", "{\n\t\"port\": 8080,\n\t\"max_clients\": 8,\n\t\"projects\": [],\n\t\"current_project\": \"\"\n}");
+		fs.writeFileSync("server.conf", "{\n\t\"port\": 8080,\n\t\"max_clients\": 8,\n\t\"projects\": [],\n\t\"current_project\": \"\",\n\t\"current_file\": \"\",\n\t\"current_directory\": \"\"\n}");
 		console.log("Successfully generated server.conf!");
 	}
 	catch(err)
@@ -58,7 +57,8 @@ function createFile(fileName)
 {
 	if(!fs.existsSync(configObj.current_project + "/" + fileName))
 	{
-		fs.writeFileSync(configObj.current_project + "/" + fileName, "");	
+		fs.writeFileSync(configObj.current_project + "/" + fileName, "");
+		configObj.current_file = fileName;	
 	}	
 	else
 	{
@@ -72,7 +72,8 @@ function createDirectory(dirName)
 {
 	if(!fs.existsSync(configObj.current_project + "/" + dirName))
 	{
-		fs.mkdirSync(configObj.current_project + "/" + dirName);	
+		fs.mkdirSync(configObj.current_project + "/" + dirName);
+		configObj.current_directory = dirName;	
 	}	
 	else
 	{
