@@ -1,5 +1,5 @@
 var sock;
-
+var nickname;
 function Connection()
 {
     sock = new WebSocket("ws://45.55.218.73:"+document.getElementById('port').value);
@@ -16,7 +16,8 @@ function Connection()
         var contents = res.contents;
         if(contents.Accepted){
             alert("Connected");
-            document.location.href = "index.html";
+            nickname = document.getElementById('nickname').value;
+            document.location.href = "IDEMain.html";
         }
         else{
             alert("Could not connect because"+ contents.Reason);
@@ -25,24 +26,17 @@ function Connection()
 }
 
 
+
 function Update()
 {
     var message = {
-        "nickname": document.getElementById('name').value,
+        "nickname": nickname,
         "contents": "updatefile "+document.getElementById('filename')+" "+document.getElementById('code').value
     };
     sock.send(JSON.stringify(message));
-
-
-}
-
-
-function Receive()
-{
     sock.onmessage = function(response){
         var res = JSON.parse(response.data);
         var message = res.contents;
-        if(message)
         document.getElementById('code').value = message;
     }
 
@@ -51,7 +45,7 @@ function Receive()
 function compile()
 {
     var message = {
-        "nickname": document.getElementById('name').value,
+        "nickname": nickname,
         "contents": "compile"
     }
     sock.send(JSON.stringify(message));
@@ -61,7 +55,7 @@ function compile()
 function newproject()
 {
     var message = {
-        "nickname": document.getElementById('name').value,
+        "nickname": nickname,
         "contents": "newproject"
     }
     sock.send(JSON.stringify(message));
@@ -70,7 +64,7 @@ function newproject()
 function newfile()//not now
 {
     var message = {
-        "nickname": document.getElementById('name').value,
+        "nickname": nickname,
         "contents": "newfile"
     }
     sock.send(JSON.stringify(message));
@@ -79,7 +73,7 @@ function newfile()//not now
 function message()
 {//for chat
     var message = {
-        "nickname": document.getElementById('name').value,
+        "nickname": nickname,
         "contents": "message "+document.getElementById('chat').value
     }
     sock.send(JSON.stringify(message));
@@ -88,7 +82,7 @@ function message()
 function newdir()
 {
     var message = {
-        "nickname": document.getElementById('name').value,
+        "nickname": nickname,
         "contents": "newdir"
     }
     sock.send(JSON.stringify(message));
@@ -97,7 +91,7 @@ function newdir()
 function openproject()//need testing possibly done
 {
     var message = {
-        "nickname": document.getElementById('name').value,
+        "nickname": nickname,
         "contents": "openproject"
     }
     sock.send(JSON.stringify(message));

@@ -1,7 +1,7 @@
 /* When the user clicks on the button, 
 toggle between hiding and showing the dropdown content */
-function showFileDropdown() {
-    document.getElementById("fileDropdown").classList.toggle("show");
+function showNewDropdown() {
+    document.getElementById("newDropdown").classList.toggle("show");
 }
 
 function showEditDropdown() {
@@ -11,22 +11,22 @@ function showEditDropdown() {
 
 function openConsole(evt){
 	var i, consolecontent, clicked;
-	if(document.getElementById("consoleWindow").style.display == "block")
-		document.getElementById("consoleWindow").style.display = "none"
+	if(document.getElementById("consoleWindow").style.display == "inline-block")
+		document.getElementById("consoleWindow").style.display = "none";
 	else
-		document.getElementById("consoleWindow").style.display = "block"
+		document.getElementById("consoleWindow").style.display = "inline-block";
 }
 
 function openChat(evt){
 	var i, chatcontent, clicked;
-	if(document.getElementById("chatWindow").style.display == "block")
+	if(document.getElementById("chatWindow").style.display == "inline-block")
 		clicked = "true";
 	else
 		clicked = "false;"
 	if(clicked == "true")
 		document.getElementById("chatWindow").style.display = "none";
 	else
-		document.getElementById("chatWindow").style.display = "block";
+		document.getElementById("chatWindow").style.display = "inline-block";
 }
 function openTab(evt, fileName) {
     // Declare all variables
@@ -51,7 +51,7 @@ function openTab(evt, fileName) {
 
 // Close the dropdown menu if the user clicks outside of it
 window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
+  if (!event.target.matches('.newbtn')) {
     var dropdowns = document.getElementsByClassName("dropdown-content");
     var i;
     for (i = 0; i < dropdowns.length; i++) {
