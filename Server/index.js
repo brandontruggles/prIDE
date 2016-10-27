@@ -1,6 +1,7 @@
 var WebSocketServer = require('ws').Server;
 var fs = require('fs');
 var configObj = {};
+var github = require('./github');
 
 function configExists()
 {
@@ -154,14 +155,69 @@ function runServer(portNumber)
 						});
 						if(response.contents == null)
 						{
-							connectionList.push({"connection":ws,"nickname":nickname});
+							connectionList.push({"connection":ws,"nickname":nickname,"user":null,"pass":null,"valid":false});
 							response.contents = {"Accepted": true};
 							console.log("Accepted incoming connection from user '"+ nickname  +"'.");
 						}
 						ws.send(JSON.stringify(response));
 						break;
+					case "setusername":
+						var found = false;
+						connectionList.forEach(function(conn)
+						{
+							if(conn.connection == ws)
+							{
+								found = true;
+								connectionList[connectionList.indexOf(conn)].user = params;
+							}
+						});	
+						if(!found)
+						{
+							console.log("User not found");
+						}					
+						break;
+					case "setpassword":
+						var found = false;
+						connectionList.forEach(function(conn)
+						{
+							if(conn.connection == ws)
+							{
+								found = true;
+								connectionList[connectionList.indexOf(conn)].pass = params;
+							}
+						});	
+						if(!found)
+						{
+							console.log("User not found");
+						}					
+						break;
+					case "testcredentials":
+						var found = false;
+						var user, pass;
+						var valid = false;
+						connectionList.forEach(function(conn)
+						{
+							if(conn.connection == ws)
+							{
+								found = true;
+								user = connectionList[connectionList.indexOf(conn)].user;
+								pass = connectionList[connectionList.indexOf(conn)].pass;
+							}
+						});	
+						if(!found)
+						{
+							console.log("User not found");
+						}					
+						else {
+							valid = github.testlogin(user, pass);
+							connectionList[connectionList.indexOf(conn)].valid = valid;
+							response.type = "Valid-Credentials-Status";
+							response.contents = {"Valid": valid};
+						}
+						break;
 					case "compile":
 						console.log("Received command to compile!");
+						github.compile();
 						break;
 					case "message":
 						console.log("Received chat message: " + params);
@@ -178,6 +234,22 @@ function runServer(portNumber)
 						}
 						ws.send(JSON.stringify(response));
 						break;
+					case "git_newproject":
+						var found = false;
+						connectionList.forEach(function(conn)
+						{
+							if(conn.connection == ws)
+							{
+								found = true;
+								if (connectionList[connectionList.indexOf(conn)].valid)
+									github.createproj(cconnectionList[connectionList.indexOf(conn)].user, connectionList[connectionList.indexOf(conn)].pass, configObj.current_project);
+							}
+						});	
+						if(!found)
+						{
+							console.log("User not found");
+						}					
+						break;
 					case "newfile":
 						response.type = "File-Created-Status";
 						if(!createFile(params))
@@ -189,6 +261,9 @@ function runServer(portNumber)
 							response.contents = {"Created": true};
 						}
 						ws.send(JSON.stringify(response));
+						break;
+					case "git_add":
+						github.add(params);
 						break;
 					case "newdir":
 						response.type = "Directory-Created-Status";
@@ -202,10 +277,23 @@ function runServer(portNumber)
 						}
 						ws.send(JSON.stringify(response));
 						break;
+					case "git_clone":
+						github.clone(params);
+						break;
+					case "git_commit":
+						github.commit(params);
+						break;
+					case "git_pull":
+						github.pull(params);
+						break;
+					case "git_push":
+						github.push();
+						break;
 					case "openproject":
 						response.type = "Project-Open-Response";
 						configObj.current_project = params;
-						var files = getFiles();
+						github.setcurfolder(params);
+						var files = getProjectFiles();
 						if(files != null)
 							response.contents = {"Opened": true, "Files": files};
 						else

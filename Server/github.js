@@ -1,3 +1,5 @@
+module.exports = function () {
+
 var sys = require('sys');
 var exec = require('child_process').exec;
 var read = require('read');
@@ -13,35 +15,41 @@ var options = {
 
 read(options, function (error, result, isDefault) {
 		
-	//testLogin("friedcook", result);
-	//createProj("friedcook", result, "test");
+	//testlogin("friedcook", result);
+	//createproj("friedcook", result, "test");
 
 	//clone(projlist[2].html_url, projlist[2].name);
 	
-	createProj("friedcook", result, "test");
-	var projlist = listProj("friedcook");
+	createproj("friedcook", result, "test");
+	var projlist = listproj("friedcook");
 	for (var i = 0; i < projlist.length; i++) console.log(projlist[i].name);
 	clone(projlist[0].html_url, projlist[0].name);
 	pull();
 	newfile("test.java");
 	add("test.java");
-	//clone(obj[2].url);
+	push();
 });
 
 function puts(error, stdout, stderr) { sys.puts(stdout) }
 
-function testLogin(user, pass) {
-	exec("curl -u " + user + ":" + pass + " https://api.github.com", puts);
+function testlogin(user, pass) {
+	exec("curl -u " + user + ":" + pass + " https://api.github.com", function (error, stdout, stderr) {
+		fs.writeFile("out.txt", stdout, null);
+	});
+	out = fs.readFileSync("out.txt", "utf8");
+
+	var obj = JSON.parse(out);
+	if (obj.message)
+		return true;
+	return false;
 }
 
-function createProj(user, pass, name) {
+function createproj(user, pass, name) {
 	exec("curl -i -u " + user + ":" + pass + " -d \'{\"name\":\"" + name + "\"}\' -X POST https://api.github.com/user/repos", puts);
-	setcurfolder(name);
 }
 
-function clone(url, folder) {
+function clone(url) {
 	exec("git clone " + url, puts);
-	setcurfolder(folder);
 }
 
 function pull() {
@@ -50,6 +58,10 @@ function pull() {
 
 function add(filename) {
 	exec("cd " + curfolder + " && git add " + filename, puts);
+}
+
+function commit(message) {
+	exec("cd " + curfolder + " && git commit -m \"" + message "\"");
 }
 
 function newfile(filename) {
@@ -62,14 +74,14 @@ function push () {
 }
 
 function compile() {
-	exec("javac " + curfolder + "/*.java", puts, puts);
+	exec("javac " + curfolder + "/*.java", puts);
 }
 
 function run(prog, args) {
 	exec("java " + curfolder + "/" + prog + args, puts);
 }
 
-function listProj(user) {
+function listproj(user) {
 
 	exec("curl https://api.github.com/users/" + user + "/repos", function (error, stdout, stderr) {
 		fs.writeFile("out.txt", stdout, null);
@@ -86,4 +98,6 @@ function setcurfolder(filename) {
 
 function setcurfile(filename) {
 	curfile = filename;
+}
+
 }
