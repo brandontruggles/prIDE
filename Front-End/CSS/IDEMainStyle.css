@@ -23,7 +23,7 @@
 	cursor: pointer;
 }
 
-.savebtn{
+.newbtn{
 	background-color: #ff3300;
 	padding: 16px;
 	font-size: 16px;
@@ -55,7 +55,7 @@
 	cursor: pointer;
 }
 
-.consolebtn {
+.submitbtn {
 	background-color: #f1f1f1;
     padding: 16px;
     font-size: 16px;
@@ -73,7 +73,7 @@
 }
 .runbtn:hover, .runbtn:focus {background-color: #269900;}
 .compilebtn:hover, .compilebtn:focus {background-color: #0066cc;}
-.savebtn:hover, .savebtn:focus {background-color: #b32400;}
+.newbtn:hover, .newbtn:focus {background-color: #b32400;}
 .saveasbtn:hover, .saveasbtn:focus {background-color: #cc5200; }
 .openbtn:hover, .openbtn:focus {background-color: #7a0099; }
 .filebtn:hover, .filebtn:focus {background-color: #cccc00; }
@@ -111,26 +111,31 @@
 
 #consoleWindow
 {
-	 display: none; 
+	 display: hide; 
 }
 
 #chatWindow
 {
-	 margin-left: 90%;
-	 display: none; 
+	 display: hide;
 }
 
 #codespace1, #codespace2, #codespace3
 {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-	resize: none;
+    display: inline-block;
+    width: 1025px;
+	height: 500px;
+	margin-top:10px;
+	/*margin-left: 175px;*/
+	
 }
 
-p
+#commandArea
 {
-	text-align: center;
+	display: inline-block;
+	width: 1025px;
+	height: 50px;
+	margin-top:7px;
+	margin-left: 238px;
 }
 
 /* Style the list */

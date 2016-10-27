@@ -1,9 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-CS 490 Project
+<link rel="stylesheet" type="text/css" href="css/LoginStyle.css">
 </head>
+<title> Online IDE </title>
+<meta charset="utf-8">
+
 <body>
-<p>Hello World!</p>
+<h1> Welcome </h1>
+<br><p> Please enter your external IP Address, a port number, and a temporary display name  </p>
+ <!-- <form action="" method="post"> -->
+	<br><input type="text" placeholder="IP Address" id="ip">
+	<br><input type="text" placeholder="Port Number"id="port">
+	<br><input type="text" placeholder="Display name" id="nickName">
+	<br><input onclick="Connection()" type="submit" name="submitButton" id="submitButton">
+<!--</form>-->
+<div id="pageContent"> 
+
+</div>
 </body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script>js/socket.js</script>
 </html>
