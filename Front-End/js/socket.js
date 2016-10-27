@@ -1,6 +1,8 @@
 var sock;
 var nickname;
 var ntabs = 1;
+var currfile;
+var currproject;
 function Connection()//works
 {
 
@@ -39,7 +41,7 @@ function Update()
 {
     var message = {
         "nickname": nickname,
-        "contents": "updatefile "+document.getElementById('filename')+" "+document.getElementById('code').value
+        "contents": "updatefile "+currfile+" "+document.getElementById('codespace').value
     };
     sock.send(JSON.stringify(message));
     sock.onmessage = function(response){
@@ -81,6 +83,7 @@ function newproject()//works
         alert("new project created");
         var fileList = document.getElementById('openproj');
         fileList.innerHTML += '<li><a href="#">'+name+'/</a></li>';
+        currproject = name;
 
 
       }
@@ -105,7 +108,8 @@ function newfile()//works
 	  var numOfFiles = 0;
       if(contents.Created){
         alert("new file created");
-    	
+        currfile = name;
+
 		var textareas = document.getElementById("textareas");
 		textareas.innerHTML += "<div id=\"class"+ntabs+"\" class=\"tabcontent\">\n\
 <ul id='openproj'>\n\
@@ -113,7 +117,7 @@ function newfile()//works
 </ul>\n\
 \n\
 \n\
-<textarea rows=\"10\" cols=\"25\" id=\"codespace\">\n\
+<textarea rows=\"10\" cols=\"25\" id=\"codespace\" onkeydown=\"Update()\">\n\
 public class Test "+ntabs+"\n\
 {\n\
 	public static void main(String[] args)\n\
@@ -128,7 +132,7 @@ public class Test "+ntabs+"\n\
 		//if(num)
 		//var tab1 = document.getElementById('tab1');
         fileList.innerHTML += '<li><a href="#">'+name+'</a></li>';
-		
+
 		var tabList = document.getElementById('tabs');
 		//var class4 = document.getElementById('class4');
 		//class4String = '
