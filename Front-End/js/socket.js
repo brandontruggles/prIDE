@@ -105,29 +105,29 @@ function newfile()//works
 	  var numOfFiles = 0;
       if(contents.Created){
         alert("new file created");
-        var fileList = document.getElementById('openproj');
+    	
+		var textareas = document.getElementById("textareas");
+		textareas.innerHTML += "<div id=\"class"+ntabs+"\" class=\"tabcontent\">\n\
+<ul id='openproj'>\n\
+<li>Solution Explorer</li>\n\
+</ul>\n\
+\n\
+\n\
+<textarea rows=\"10\" cols=\"25\" id=\"codespace\">\n\
+public class Test "+ntabs+"\n\
+{\n\
+	public static void main(String[] args)\n\
+	{\n\
+		//Your Code Here\n\
+	}\n\
+}</textarea>\n\
+<textarea placeholder=\"Console\" id=\"consoleWindow\" rows=\"20\" cols=\"25\"></textarea>\n\
+</div>\n\
+";
+	    var fileList = document.getElementById('openproj');
 		//if(num)
 		//var tab1 = document.getElementById('tab1');
         fileList.innerHTML += '<li><a href="#">'+name+'</a></li>';
-		
-		var textareas = document.getElementById("textareas");
-		textareas.innerHTML += "<div id=\"class"+ntabs+"\" class=\"tabcontent\">\n\
-		<ul id='openproj'>\n\
-		<li>Solution Explorer</li>\n\
-		</ul>\n\
-		\n\
-		\n\
-		<textarea rows=\"10\" cols=\"25\" id=\"codespace\">\n\
-		public class Test "+ntabs+"\n\
-		{\n\
-		public static void main(String[] args)\n\
-		{\n\
-			//Your Code Here\n\
-		}\n\
-		}</textarea>\n\
-		<textarea placeholder=\"Console\" id=\"consoleWindow\" rows=\"20\" cols=\"25\"></textarea>\n\
-		</div>\n\
-		";
 		
 		var tabList = document.getElementById('tabs');
 		//var class4 = document.getElementById('class4');

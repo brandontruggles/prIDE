@@ -164,15 +164,25 @@ function createFile(fileName)
 	if(!fs.existsSync(configObj.current_project + "/" + fileName))
 	{
 		fs.writeFileSync(configObj.current_project + "/" + fileName, "");
-<<<<<<< HEAD
 		configObj.current_file = fileName;	
 	}	
-=======
-	}
->>>>>>> 1052a887054eff108ab74341d1210c38847aac09
 	else
 	{
 		console.log("Failed to create a file with the name '" + fileName + "' within the current project because a file with that name already exists!");
+		return false;
+	}
+	return true;
+}
+
+function updateFile(fileName, newText)
+{
+	if(fs.existsSync(configObj.current_project + "/" + fileName))
+	{
+		fs.writeFileSync(configObj.current_project + "/" + fileName, newText);	
+	}
+	else
+	{
+		console.log("Failed to write to the file " + fileName + "!"); 
 		return false;
 	}
 	return true;
@@ -183,12 +193,8 @@ function createDirectory(dirName)
 	if(!fs.existsSync(configObj.current_project + "/" + dirName))
 	{
 		fs.mkdirSync(configObj.current_project + "/" + dirName);
-<<<<<<< HEAD
 		configObj.current_directory = dirName;	
-	}	
-=======
 	}
->>>>>>> 1052a887054eff108ab74341d1210c38847aac09
 	else
 	{
 		console.log("Failed to create a directory with the name '" + dirName + "' within the current project because a file with that name already exists!");
@@ -308,11 +314,20 @@ function runServer(portNumber)
 						response.contents = {"Valid": valid};
 						break;
 					case "compile":
+						response.type = "Compile-Running-Status";
 						console.log("Received command to compile!");
 						compile();
 						break;
+					case "run":
+						response.type = "Code-Running-Status";		
+						console.log("Running code...");
+						run(configObj.current_project + "/" + configObj.current_file);
+						break;
 					case "message":
-						console.log("Received chat message: " + params);
+						response.type = "Message-Broadcast";
+						response.contents = nickname + ": " + params;
+						console.log("Received chat message from user '" + nickname + "': " + params);
+						broadcastResponse(connectionList, JSON.stringify(response));
 						break;
 					case "newproject":
 						response.type = "Project-Created-Status";
@@ -369,6 +384,9 @@ function runServer(portNumber)
 							response.contents = {"Opened": false};
 						ws.send(JSON.stringify(response));
 						break;
+					case "openfile":
+						response.type = "File-Open-Response";
+						break;
 					case "git_clone":
 						if (connectionList[connind].valid)
 							clone(params);
@@ -380,7 +398,9 @@ function runServer(portNumber)
 					case "updatefile":
 						response.type = "File-Update-Response";
 						fileToUpdate = params.split(' ')[0];
-						newText = params.split(' ')[1];
+						var spaceIndex = params.indexOf(' ');
+						newText = params.substring(spaceIndex + 1);
+						updateFile(fileToUpdate, newText);					
 						console.log("Received a command to update the file '" + fileToUpdate + "'");
 					case "git_commit":
 						if (connectionList[connind].valid)
