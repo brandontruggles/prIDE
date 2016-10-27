@@ -16,7 +16,7 @@ function puts(error, stdout, stderr) { sys.puts(stdout) }
 function writeout(error, stdout, stderr) { fs.writeFile("out.txt", stdout, null); }
 
 function testlogin(user, pass) {
-	exec("curl -u " + user + ":" + pass + " https://api.github.com", writeout);
+	exec("curl -u " + user + ":" + pass + " https://api.com", writeout);
 	out = fs.readFileSync("out.txt", "utf8");
 
 	var obj = JSON.parse(out);
@@ -26,7 +26,7 @@ function testlogin(user, pass) {
 }
 
 function createproj(user, pass, name) {
-	exec("curl -i -u " + user + ":" + pass + " -d \'{\"name\":\"" + name + "\"}\' -X POST https://api.github.com/user/repos", writeout);
+	exec("curl -i -u " + user + ":" + pass + " -d \'{\"name\":\"" + name + "\"}\' -X POST https://api.com/user/repos", writeout);
 	var out = fs.readFileSync("out.txt", "utf8");
 	var obj = JSON.parse(out);
 	return obj;
@@ -83,7 +83,7 @@ function run(prog, args) {
 
 function listproj(user) {
 
-	exec("curl https://api.github.com/users/" + user + "/repos", writeout);
+	exec("curl https://api.com/users/" + user + "/repos", writeout);
 	out = fs.readFileSync("out.txt", "utf8");
 	var obj = JSON.parse(out);
 
@@ -103,7 +103,7 @@ function setcurfile(filename) {
 var WebSocketServer = require('ws').Server;
 var fs = require('fs');
 var configObj = {};
-var github = require('./github.js');
+var github = require('./js');
 
 function configExists()
 {
@@ -290,14 +290,14 @@ function runServer(portNumber)
 						var valid = false;
 						user = connectionList[connind].user;
 						pass = connectionList[connind].pass;
-						valid = github.testlogin(user, pass);
+						valid = testlogin(user, pass);
 						connectionList[connectionList.indexOf(conn)].valid = valid;
 						response.type = "Valid-Credentials-Status";
 						response.contents = {"Valid": valid};
 						break;
 					case "compile":
 						console.log("Received command to compile!");
-						github.compile();
+						compile();
 						break;
 					case "message":
 						console.log("Received chat message: " + params);
@@ -317,7 +317,7 @@ function runServer(portNumber)
 						break;
 					case "git_newproject":
 						if (connectionList[connind].valid)
-							github.createproj(connectionList[connind].user, connectionList[connind].pass, configObj.current_project);
+							createproj(connectionList[connind].user, connectionList[connind].pass, configObj.current_project);
 						break;
 					case "newfile":
 						response.type = "File-Created-Status";
@@ -333,7 +333,7 @@ function runServer(portNumber)
 						break;
 					case "git_add":
 						if (connectionList[connind].valid)
-							github.add(params);
+							add(params);
 						break;
 					case "newdir":
 						response.type = "Directory-Created-Status";
@@ -350,7 +350,7 @@ function runServer(portNumber)
 					case "openproject":
 						response.type = "Project-Open-Response";
 						configObj.current_project = params;
-						github.setcurfolder(params);
+						setcurfolder(params);
 						var files = getProjectFiles();
 						if(files != null)
 							response.contents = {"Opened": true, "Files": files};
@@ -360,11 +360,11 @@ function runServer(portNumber)
 						break;
 					case "git_clone":
 						if (connectionList[connind].valid)
-							github.clone(params);
+							clone(params);
 						break;
 					case "git_pull":
 						if (connectionList[connind].valid)
-							github.pull(params);
+							pull(params);
 						break;
 					case "updatefile":
 						response.type = "File-Update-Response";
@@ -373,11 +373,11 @@ function runServer(portNumber)
 						console.log("Received a command to update the file '" + fileToUpdate + "'");
 					case "git_commit":
 						if (connectionList[connind].valid)
-							github.commit(params);
+							commit(params);
 						break;
 					case "git_push":
 						if (connectionList[connind].valid)
-							github.push();
+							push();
 						break;
 					default:
 						response.type = "Error";
