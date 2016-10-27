@@ -3,7 +3,6 @@ var sys = require('sys');
 var exec = require('child_process').exec;
 var read = require('read');
 var fs = require('fs');
-var curfolder = "";
 var curfile = "";
 
 var options = {
@@ -43,44 +42,44 @@ function clone(url) {
 }
 
 function pull() {
-	exec("cd " + curfolder + " && git pull", writeout);
+	exec("cd " + configObj.current_project + " && git pull", writeout);
 	var out = fs.readFileSync("out.txt", "utf8");
 	return out;
 }
 
 function add(filename) {
-	exec("cd " + curfolder + " && git add " + filename, writeout);
+	exec("cd " + configObj.current_project + " && git add " + filename, writeout);
 	var out = fs.readFileSync("out.txt", "utf8");
 	return out;
 }
 
 function commit(message) {
-	exec("cd " + curfolder + " && git commit -m \"" + message + "\"");
+	exec("cd " + configObj.current_project + " && git commit -m \"" + message + "\"");
 	var out = fs.readFileSync("out.txt", "utf8");
 	return out;
 }
 
 function newfile(filename) {
-	exec("cd " + curfolder + " && touch " + filename, writeout);
+	exec("cd " + configObj.current_project + " && touch " + filename, writeout);
 	var out = fs.readFileSync("out.txt", "utf8");
 	setcurfile(filename);
 	return out;
 }
 
 function push () {
-	exec("cd " + curfolder + " && git push origin master", writeout);
+	exec("cd " + configObj.current_project + " && git push origin master", writeout);
 	var out = fs.readFileSync("out.txt", "utf8");
 	return out;
 }
 
 function compile() {
-	exec("javac " + curfolder + "/*.java", writeout);
+	exec("javac " + configObj.current_project + "/*.java", writeout);
 	var out = fs.readFileSync("out.txt", "utf8");
 	return out;
 }
 
 function run(prog, args) {
-	exec("java " + curfolder + "/" + prog + args, writeout);
+	exec("java " + configObj.current_project + "/" + prog + args, writeout);
 	var out = fs.readFileSync("out.txt", "utf8");
 	return out;
 }
@@ -92,10 +91,6 @@ function listproj(user) {
 	var obj = JSON.parse(out);
 
 	return obj;
-}
-
-function setcurfolder(filename) {
-	curfolder = filename;
 }
 
 function setcurfile(filename) {
@@ -353,7 +348,6 @@ function runServer(portNumber)
 					case "openproject":
 						response.type = "Project-Open-Response";
 						configObj.current_project = params;
-						setcurfolder(params);
 						var files = getProjectFiles();
 						if(files != null)
 							response.contents = {"Opened": true, "Files": files};
