@@ -17,7 +17,7 @@ function Connection()
         if(contents.Accepted){
             alert("Connected");
             nickname = document.getElementById('nickname').value;
-            document.location.href = "index.html";
+            document.location.href = "IDEMain.html";
         }
         else{
             alert("Could not connect because"+ contents.Reason);
@@ -34,17 +34,9 @@ function Update()
         "contents": "updatefile "+document.getElementById('filename')+" "+document.getElementById('code').value
     };
     sock.send(JSON.stringify(message));
-
-
-}
-
-
-function Receive()
-{
     sock.onmessage = function(response){
         var res = JSON.parse(response.data);
         var message = res.contents;
-        if(message)
         document.getElementById('code').value = message;
     }
 
