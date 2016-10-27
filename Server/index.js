@@ -126,6 +126,7 @@ function runServer(portNumber)
 	console.log("Running the IDE server on port " + portNumber + "...");
 	var server = new WebSocketServer({port: portNumber});
 	var connectionList = []; 
+	var connind = -1;
 	server.on('connection', function connection(ws)
 	{
 		console.log('New connection attempted!');
@@ -141,6 +142,21 @@ function runServer(portNumber)
 				var command = contents.split(' ')[0].toLowerCase();
 				var spaceIndex = contents.indexOf(' ');
 				var params = contents.substring(spaceIndex + 1, contents.length - command.length);
+
+				var found = false;
+				connectionList.forEach(function(conn)
+				{
+					if(conn.connection == ws)
+					{
+						found = true;
+						connind = connectionList.indexOf(conn);
+					}
+				});	
+				if(!found)
+				{
+					console.log("User not found");
+				}					
+
 				switch(command)
 				{
 					case "connect":
@@ -162,58 +178,20 @@ function runServer(portNumber)
 						ws.send(JSON.stringify(response));
 						break;
 					case "setusername":
-						var found = false;
-						connectionList.forEach(function(conn)
-						{
-							if(conn.connection == ws)
-							{
-								found = true;
-								connectionList[connectionList.indexOf(conn)].user = params;
-							}
-						});	
-						if(!found)
-						{
-							console.log("User not found");
-						}					
+						connectionList[connind].user = params;
 						break;
 					case "setpassword":
-						var found = false;
-						connectionList.forEach(function(conn)
-						{
-							if(conn.connection == ws)
-							{
-								found = true;
-								connectionList[connectionList.indexOf(conn)].pass = params;
-							}
-						});	
-						if(!found)
-						{
-							console.log("User not found");
-						}					
+						connectionList[connind].pass = params;
 						break;
 					case "testcredentials":
-						var found = false;
 						var user, pass;
 						var valid = false;
-						connectionList.forEach(function(conn)
-						{
-							if(conn.connection == ws)
-							{
-								found = true;
-								user = connectionList[connectionList.indexOf(conn)].user;
-								pass = connectionList[connectionList.indexOf(conn)].pass;
-							}
-						});	
-						if(!found)
-						{
-							console.log("User not found");
-						}					
-						else {
-							valid = github.testlogin(user, pass);
-							connectionList[connectionList.indexOf(conn)].valid = valid;
-							response.type = "Valid-Credentials-Status";
-							response.contents = {"Valid": valid};
-						}
+						user = connectionList[connind].user;
+						pass = connectionList[connind].pass;
+						valid = github.testlogin(user, pass);
+						connectionList[connectionList.indexOf(conn)].valid = valid;
+						response.type = "Valid-Credentials-Status";
+						response.contents = {"Valid": valid};
 						break;
 					case "compile":
 						console.log("Received command to compile!");
@@ -235,20 +213,8 @@ function runServer(portNumber)
 						ws.send(JSON.stringify(response));
 						break;
 					case "git_newproject":
-						var found = false;
-						connectionList.forEach(function(conn)
-						{
-							if(conn.connection == ws)
-							{
-								found = true;
-								if (connectionList[connectionList.indexOf(conn)].valid)
-									github.createproj(cconnectionList[connectionList.indexOf(conn)].user, connectionList[connectionList.indexOf(conn)].pass, configObj.current_project);
-							}
-						});	
-						if(!found)
-						{
-							console.log("User not found");
-						}					
+						if (connectionList[connind].valid)
+							github.createproj(connectionList[connind].user, connectionList[connind].pass, configObj.current_project);
 						break;
 					case "newfile":
 						response.type = "File-Created-Status";
@@ -263,7 +229,8 @@ function runServer(portNumber)
 						ws.send(JSON.stringify(response));
 						break;
 					case "git_add":
-						github.add(params);
+						if (connectionList[connind].valid)
+							github.add(params);
 						break;
 					case "newdir":
 						response.type = "Directory-Created-Status";
@@ -277,18 +244,6 @@ function runServer(portNumber)
 						}
 						ws.send(JSON.stringify(response));
 						break;
-					case "git_clone":
-						github.clone(params);
-						break;
-					case "git_commit":
-						github.commit(params);
-						break;
-					case "git_pull":
-						github.pull(params);
-						break;
-					case "git_push":
-						github.push();
-						break;
 					case "openproject":
 						response.type = "Project-Open-Response";
 						configObj.current_project = params;
@@ -300,11 +255,27 @@ function runServer(portNumber)
 							response.contents = {"Opened": false};
 						ws.send(JSON.stringify(response));
 						break;
+					case "git_clone":
+						if (connectionList[connind].valid)
+							github.clone(params);
+						break;
+					case "git_pull":
+						if (connectionList[connind].valid)
+							github.pull(params);
+						break;
 					case "updatefile":
 						response.type = "File-Update-Response";
 						fileToUpdate = params.split(' ')[0];
 						newText = params.split(' ')[1];
 						console.log("Received a command to update the file '" + fileToUpdate + "'");
+					case "git_commit":
+						if (connectionList[connind].valid)
+							github.commit(params);
+						break;
+					case "git_push":
+						if (connectionList[connind].valid)
+							github.push();
+						break;
 					default:
 						response.type = "Error";
 						response.contents = "Unrecognized command '" + command  + "'!";
