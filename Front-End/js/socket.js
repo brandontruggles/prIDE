@@ -38,7 +38,7 @@ function Update()
 {
     var message = {
         "nickname": nickname,
-        "contents": "updatefile "+document.getElementById('filename')+" "+document.getElementById('code').value
+        "contents": "updatefile "+document.getElementById('currfile')+" "+document.getElementById('codespace1').value
     };
     sock.send(JSON.stringify(message));
     sock.onmessage = function(response){
@@ -49,7 +49,7 @@ function Update()
 
 }
 
-function compile()//hold on for alec
+function compile()//works
 {
     var message = {
         "nickname": nickname,
@@ -103,7 +103,7 @@ function newfile()//works
       if(contents.Created){
         alert("new file created");
         var fileList = document.getElementById('openproj');
-        fileList.innerHTML += '<li><a href="#">'+name+'</a></li>';
+        fileList.innerHTML += '<li><a href="#" id="currfile">'+name+'</a></li>';
 
 
       }
@@ -177,7 +177,7 @@ function run()
 {
   var message = {
     "nickname": nickname,
-    "contents": "run "
+    "contents": "run"
   }
   sock.send(JSON.stringify(message));
 
