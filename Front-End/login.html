@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="CSS/IDEStyle.css">
-	<script src="js/socket.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/IDEStyle.css">
 	<!--<script>
 	$(document).ready(function(){
 		$("#submitButton").click(function(){
@@ -21,7 +19,7 @@
  <!-- <form action="" method="post"> -->
 	<br><input type="text" placeholder="IP Address" name="ip">
 	<br><input type="text" placeholder="Port Number" name="port" id="port">
-	<br><input type="text" placeholder="Display name" name="displayName">
+	<br><input type="text" placeholder="Display name" name="displayName" id="nickname">
 	<br><input type="submit" name="submitButton" id="submitButton" onclick="Connection()">
 <!--</form>-->
 <div id="pageContent">
@@ -29,4 +27,6 @@
 </div>
 
 </body>
+<script src="js/socket.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </html>
