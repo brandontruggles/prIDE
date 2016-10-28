@@ -38,9 +38,14 @@ function Connection()//works
             }
             break;
           case "Compile-Running-Status":
-            var res = JSON.parse(response.data);
+            if(contents.output[0] == null)
+              document.getElementById('consoleWindow').innerHTML += 'Successfully Compiled\n';
+            else {
+              document.getElementById('consoleWindow').innerHTML += contents.output[0];
+            }
             break;
           case "Code-Running-Status":
+            document.getElementById('consoleWindow').innerHTML += contents.output;
             break;//needs code
           case "Message-Broadcast":
             document.getElementById('consoleWindow').innerHTML += contents+"\n";
@@ -62,17 +67,18 @@ function Connection()//works
             var numOfFiles = 0;
             if(contents.Created){
               alert("new file created");
-              currfile = name+'.java';
+              currfile = name;
 
           var textareas = document.getElementById("textareas");
           textareas.innerHTML += "<div id=\"class"+ntabs+"\" class=\"tabcontent\">\n\
       <ul id='openproj'>\n\
       <li>Solution Explorer</li>\n\
+      <li>"+currfile+"</li>\
       </ul>\n\
       \n\
       \n\
       <textarea rows=\"10\" cols=\"25\" id=\"codespace\" onkeydown=\"Update()\">\n\
-      public class "+currfile+"\n\
+      public class "+currfile.replace(".java", "")+"\n\
       {\n\
         public static void main(String[] args)\n\
         {\n\
@@ -188,7 +194,7 @@ function newproject()//works
 function newfile()//works
 {
 	ntabs++;
-    var name = prompt("name file");
+    name = prompt("name file");
     var message = {
         "nickname": nickname,
         "contents": "newfile "+name
