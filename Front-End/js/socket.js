@@ -156,6 +156,7 @@ function Update()
 
 function compile()//hold on for alec
 {
+	Update();
     var message = {
         "nickname": nickname,
         "contents": "compile"
