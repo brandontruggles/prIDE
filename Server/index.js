@@ -85,9 +85,8 @@ function compile() {
 
 function run(prog, args) {
 	prog = prog.replace(".java","");
-	execFileSync("java " + configObj.current_project + "/" + prog + args, writeout);
-	var out = fs.readFileSync("stdout.txt", "utf8");
-	return out;
+	var str = execFileSync("java", ["-cp", configObj.current_project, prog]).toString();
+	return str;
 }
 
 function listproj(user) {
@@ -323,7 +322,9 @@ function runServer(portNumber)
 					case "run":
 						response.type = "Code-Running-Status";		
 						console.log("Running code...");
-						response.contents = {"output": run(configObj.current_project + "/" + configObj.current_file, "")};
+						var str = run(configObj.current_file, "some args");
+						console.log(str);
+						response.contents = {"output": str};
 						ws.send(JSON.stringify(response));
 						break;
 					case "message":
