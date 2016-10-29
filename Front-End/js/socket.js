@@ -8,6 +8,8 @@ var textareas = [];
 var editor;
 var cursors = [];
 var curtab;
+var projects = {};
+var tabs = [];
 
 function Connection()//works
 {
@@ -72,11 +74,9 @@ function Connection()//works
 				if(contents.Created){
 					alert("new project created");
 					var fileList = document.getElementById('openproj');
-					//fileList.innerHTML += '<li><a href="#">'+name+'/</a></li>';
-					fileList.innerHTML += '<option value="'+name+'">'+name+'</option>';
+					fileList.innerHTML += '<option value="'+name+'" onclick="togglecollapse(\''+name+'\')">>'+name+'</option>';
+					projects[name] = {"collapsed": false, "filelist": []};
 					currproject = name;
-
-
 				}
 				else{
 					alert(contents.Reason);
@@ -88,39 +88,15 @@ function Connection()//works
 					alert("new file created");
 					currfile = name;
 
-/*
-					textareas = textareas.concat(["<div id=\"class"+ntabs+"\" class=\"tabcontent\">\n\
-											<ul id='openproj'>\n\
-											<li>Solution Explorer</li>\n\
-											<li>"+currfile+"</li>\
-											</ul>\n\
-											\n\
-											\n\
-											<textarea rows=\"10\" cols=\"25\" id=\"codespace\" onkeydown=\"Update()\">\n\
-											public class "+currfile.replace(".java", "")+"\n\
-											{\n\
-												public static void main(String[] args)\n\
-												{\n\
-													//Your Code Here\n\
-												}\n\
-											}</textarea>\n\
-					<textarea placeholder=\"Console\" id=\"consoleWindow\" rows=\"20\" cols=\"25\"></textarea>\n\
-						</div>\n\
-						"]);
-						*/
-					textareas = textareas.concat(["public class "+currfile.replace(".java", "")+"\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t//Your Code Here\n\t}\n}\n"]);
 					cursors = cursors.concat([0]);
 					var fileList = document.getElementById('openproj');
-					//if(num)
-					//var tab1 = document.getElementById('tab1');
-					//fileList.innerHTML += '<li><a href="#">'+name+'</a></li>';
-					fileList.innerHTML += '<option value="'+name+'">'+name+'</option>';
+					fileList.innerHTML += '<option value="'+name+'" onclick="gototab('+ntabs+')"" id="option'+ntabs+'">'+name+'</option>';
 
 					var tabList = document.getElementById('tabs');
-					//var class4 = document.getElementById('class4');
-					//class4String = '
-					//tab1.innerHTML = name;
-					tabList.innerHTML += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+ntabs+'" onclick="gototab(\''+name+'\', '+ntabs+')">'+name+'</a></li>';
+					tabList.innerHTML += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+ntabs+'" onclick="gototab('+ntabs+')">'+name+'</a></li>';
+					projects[currproject].filelist += [currfile];
+					tabs = tabs.concat([{"projname": currproject, "filename": currfile}]);
+					textareas = textareas.concat(["public class "+currfile.replace(".java", "")+"\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t//Your Code Here\n\t}\n}\n"]);
 					curtab = ntabs;
 					ntabs++;
 				}
@@ -163,11 +139,11 @@ function Connection()//works
 	}//onmessage
 }
 
-function gototab(name, num)
+function gototab(num)
 {
-	var cursor = cursors[curtab];
+	currproject = tabs[num].projname;
+	currfile = tabs[num].filename;
 	editor.setValue(textareas[num]);
-	editor.selection.setCursor(cursor);
 	curtab = num;
 	document.getElementById("editor2").focus();
 }
@@ -177,6 +153,31 @@ function tabforward() {
 		gototab('', 0);
 	else
 		gototab('', curtab + 1);
+}
+
+function togglecollapse(proj) {
+	var hidden = projects[proj].hidden;
+	if (hidden == "true")
+		hidden = "false";
+	else hidden = "true";
+	var option;
+	for (var i = 0; i < ntabs; i++) {
+		option = document.getElementById('option'+i);
+		if (tabs[i].projname == proj)
+			if (hidden == "true")
+				option.setAttribute("hidden", hidden);
+			else
+				option.removeAttribute("hidden");
+	}
+	projects[proj].hidden = hidden;
+}
+
+function setproj(name) {
+	currproject = name;
+}
+
+function setfile(name) {
+	currfile = name;
 }
 
 function Update()
