@@ -3,7 +3,13 @@
 <head>
 
 	<link rel="stylesheet" type="text/css" href="css/IDEMainStyle.css">
-
+	<style type="text/css" media="screen">
+	#editor2 {
+		position: relative;
+		height: 300px;
+		width: 1000px;
+	}
+	</style>
 </head>
 <title> prIDE </title>
 <meta charset="utf-8">
@@ -41,32 +47,34 @@
   <!-- <li><a href="javascript:void(0)" class="tablinks" id="tab1" onclick="openTab(event, 'class1')">Test 1</a></li> -->
 </ul>
 
+<div style="display: inline-block;">
 
-<div id="textareas">
-<div id="class1" class="tabcontent">
+<!--
 <ul id='openproj'>
-	<li>Solution Explorer</li>
+	<li>Project Explorer</li>
 </ul>
+-->
+<select id='openproj' name="file" multiple>
+</select>
 
-
-<!--<textarea rows="10" cols="25" id="codespace">
-public class Test 1
-{
-	public static void main(String[] args)
-	{
-		//Your Code Here
-	}
-}</textarea>
-	<textarea placeholder="Console" id="consoleWindow" rows="20" cols="25"></textarea>
---> </div>
+<div id="editor2" style="display: inline-block;">
 </div>
+
+<textarea placeholder="Console" id="consoleWindow" rows="20" cols="25"></textarea>
+
+</div>
+
 
 <!--<button onclick="openConsole(event)" class="consolebtn" id="console">Console </button> -->
 <textarea placeholder="Commands and chat here" id="commandArea" rows="3" cols="20"></textarea>
 <button onclick = "message()" class="submitbtn" id="submit">Submit </button>
 
 </body>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="js/IDEScript.js"></script>
 <script src="js/socket.js"></script>
+<script src="/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+
 </html>
+

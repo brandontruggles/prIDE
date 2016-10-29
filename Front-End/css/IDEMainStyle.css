@@ -1,4 +1,8 @@
 /* Dropdown Button */
+body {
+	background-color: gray;
+}
+
 .dropbtn {
 	background-color: #f1f1f1;
     padding: 16px;
