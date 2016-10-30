@@ -13,7 +13,7 @@ var tabs = [];
 
 function Connection()//works
 {
-    editor = ace.edit("editor2");
+    editor = ace.edit("codespace");
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/java");
 	editor.setKeyboardHandler("ace/keyboard/vim");
@@ -145,7 +145,7 @@ function gototab(num)
 	currfile = tabs[num].filename;
 	editor.setValue(textareas[num]);
 	curtab = num;
-	document.getElementById("editor2").focus();
+	document.getElementById("codespace").focus();
 }
 
 function tabforward() {
@@ -287,14 +287,20 @@ function newfile()//works
 
 function message()
 {//for chat
+	var chatbox = document.getElementById('commandArea');
 	var message = {
 		"nickname": nickname,
-		"contents": "message "+document.getElementById('commandArea').value
+		"contents": "message "+chatbox.value
 	}
+	chatbox.value = '';
 	sock.send(JSON.stringify(message));
 
 }
 
+function chatkeydown(e)
+{
+	if (event.keyCode == 13) message();
+}
 
 
 function newdir()//works

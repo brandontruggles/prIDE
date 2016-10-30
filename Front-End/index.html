@@ -4,7 +4,7 @@
 
 	<link rel="stylesheet" type="text/css" href="css/IDEMainStyle.css">
 	<style type="text/css" media="screen">
-	#editor2 {
+	#codespace {
 		position: relative;
 		height: 300px;
 		width: 1000px;
@@ -57,7 +57,7 @@
 <select id='openproj' name="file" multiple>
 </select>
 
-<div id="editor2" style="display: inline-block;">
+<div id="codespace" style="display: inline-block;">
 </div>
 
 <textarea placeholder="Console" id="consoleWindow" rows="20" cols="25"></textarea>
@@ -66,7 +66,7 @@
 
 
 <!--<button onclick="openConsole(event)" class="consolebtn" id="console">Console </button> -->
-<textarea placeholder="Commands and chat here" id="commandArea" rows="3" cols="20"></textarea>
+<input type="text" placeholder="Commands and chat here" id="commandArea" width="20" onkeydown="chatkeydown(this)"/>
 <button onclick = "message()" class="submitbtn" id="submit">Submit </button>
 
 </body>
