@@ -1,54 +1,37 @@
-/* Dropdown Button */
+
 body {
-	background-color: gray;
+	background-color: #524f52;
 }
 
-.dropbtn {
-	background-color: #f1f1f1;
+.dropbtn, .compilebtn, .runbtn, .newbtn, .saveasbtn, .openbtn, .filebtn {
     padding: 16px;
     font-size: 16px;
     border: none;
     cursor: pointer;
 }
 
+.dropbtn {
+	background-color: #f1f1f1;
+}
+
 .compilebtn {
 	background-color: #4da6ff;
-	padding: 16px;
-	font-size: 16px;
-	border: none;
-	cursor: pointer;
 }
 
 .runbtn {
 	background-color: #33cc00;
-	padding:16px;
-	font-size: 16px;
-	border: none;
-	cursor: pointer;
 }
 
 .newbtn{
 	background-color: #ff3300;
-	padding: 16px;
-	font-size: 16px;
-	border: none;
-	cursor: pointer;
 }
 
 .saveasbtn{
 	background-color: #ff6600;
-	padding: 16px;
-	font-size: 16px;
-	border: none;
-	cursor: pointer;
 }
 
 .openbtn {
 	background-color: #cc00ff;
-	padding: 16px;
-	font-size: 16px;
-	border: none;
-	cursor: pointer;
 }
 
 .filebtn {
@@ -115,33 +98,49 @@ body {
 
 #consoleWindow
 {
-	 display: hide;
-	 resize: none;
+	background-color: #292429;
+	margin-left: 20px;
+	float: right;
+	color: white;
+	display: hide;
+	resize: none;
 }
 
 #chatWindow
 {
-	 display: hide;
-	 resize: none;
-	 
+	background-color: #272822;
+	display: hide;
+	resize: none;
 }
 
 #codespace
 {
     display: inline-block;
-    width: 1025px; /*normally 1025px */
+	float: center;
+	/*
+    width: 1025px;
 	height: 500px;
+	*/
 	margin-top:10px;
+	margin-left:10px;
+	margin-right:10px;
 	resize: none;
 }
 
 #commandArea
 {
+	/*background-color: #292429;*/
+	background-color: #272822;
+	clear: right;
+	float: right;
+	font-weight: bold;
+	color: white;
 	display: inline-block;
+	/*
 	width: 1025px;
 	height: 50px;
 	margin-top:7px;
-	margin-left: 238px;
+	*/
 	resize: none;
 }
 
@@ -156,12 +155,16 @@ body {
 }
 #openproj
 {
-		display:inline-block;
-		vertical-align: top;
-		min-width: 179px;
+	background-color: #292429;
+	/*background-color: #abaa98;*/
+	float:left;
+	color: white;
+	display:inline-block;
+	vertical-align: top;
+	min-width: 179px;
 }
-p
-{
+
+p {
 		/*display:inline-block;*/
 		vertical-align: top;
 		min-width: 179px;

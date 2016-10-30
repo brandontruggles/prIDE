@@ -7,7 +7,7 @@
 	#codespace {
 		position: relative;
 		height: 300px;
-		width: 1000px;
+		width: 100%;
 	}
 	</style>
 </head>
@@ -31,7 +31,7 @@
  <button class="filebtn" id="file">Push </button>
  <button class="runbtn" id="run" onclick="run()">Run </button>
  <button class="compilebtn" id="compile" onclick="compile()">Compile </button>
- <button class="openbtn" onclick="openproject()">Open Project </button>
+ <button class="openbtn" id-"open" onclick="openproject()">Open Project </button>
  <a href="https://glaad.nationbuilder.com/donate" id="donatelink">Donate to GLAAD! </a>
   <!--  <button onclick="showEditDropdown()" class="dropbtn">Edit</button>
   <div id="editDropdown" class="dropdown-content">
@@ -47,27 +47,29 @@
   <!-- <li><a href="javascript:void(0)" class="tablinks" id="tab1" onclick="openTab(event, 'class1')">Test 1</a></li> -->
 </ul>
 
-<div style="display: inline-block;">
+<!--<div style="display: inline-block;">-->
 
-<!--
-<ul id='openproj'>
-	<li>Project Explorer</li>
-</ul>
--->
-<select id='openproj' name="file" multiple>
+<div style="display: flex;">
+<select id='openproj' name="file" size="22" multiple style="flex: 1;">
 </select>
 
-<div id="codespace" style="display: inline-block;">
+<div style="margin: auto; flex: 4;">
+<div id="codespace">
+</div>
 </div>
 
-<textarea placeholder="Console" id="consoleWindow" rows="20" cols="25"></textarea>
+<div style="flex: 1; margin-left: 20px;">
+<textarea placeholder="Console" id="consoleWindow" rows="20" cols="25" style="width: 100%;"></textarea>
+<input type="text" placeholder="Commands and chat here" id="commandArea" onkeydown="chatkeydown(this)" style="width: 100%" />
+</div>
 
 </div>
 
 
 <!--<button onclick="openConsole(event)" class="consolebtn" id="console">Console </button> -->
-<input type="text" placeholder="Commands and chat here" id="commandArea" width="20" onkeydown="chatkeydown(this)"/>
-<button onclick = "message()" class="submitbtn" id="submit">Submit </button>
+<!--
+<button onclick="message()" class="submitbtn" id="submit">Submit </button>
+-->
 
 </body>
 
