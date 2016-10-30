@@ -1,9 +1,11 @@
 
 var sys = require('sys');
 var execFileSync = require('child_process').execFileSync;
+var spawn = require('child_process').spawn;
 var read = require('read');
 var fs = require('fs');
 var curfile = "";
+var child;
 
 var options = {
 	prompt: 'enter pass: ',
@@ -80,7 +82,17 @@ function compile() {
 	for (var i = 0; i < files.length; i++)
 		if (files[i].substr(files[i].length - 5) == ".java")
 			flies.push(configObj.current_project + "/" + files[i]);
-	return execFileSync("javac", flies);
+	try {
+		/*
+		child = spawn("javac", flies);
+		child.stdout.on('data', function (data) { ws.send(JSON.stringify({type: "Console", contents: data.toString()}))});
+		child.stderr.on('data', function (data) { ws.send(JSON.stringify({type: "Console", contents: data.toString()}))});
+		*/
+		var ret = execFileSync("javac", flies, {stdio: ['pipe', 'pipe', 'ignore']}).toString();
+		return ret;
+	} catch (error) {
+		return error.message;
+	}
 }
 
 function run(prog, args) {

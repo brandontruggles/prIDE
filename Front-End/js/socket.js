@@ -44,6 +44,10 @@ function Connection()//works
 		var res = JSON.parse(response.data);
 		var contents = res.contents;
 		switch(res.type){
+			case "Console":
+				console.log(contents);
+				document.getElementById('consoleWindow').innerHTML += contents;
+				break;
 			case "Connection-Accept":
 				if(contents.Accepted){
 					//nickname = document.getElementById('nickname').value;
@@ -61,7 +65,7 @@ function Connection()//works
 				if(contents.output[0] == null)
 					document.getElementById('consoleWindow').innerHTML += 'Successfully Compiled\n';
 				else {
-					document.getElementById('consoleWindow').innerHTML += contents.output[0];
+					document.getElementById('consoleWindow').innerHTML += contents.output;
 				}
 				break;
 			case "Code-Running-Status":
@@ -87,6 +91,7 @@ function Connection()//works
 				if(contents.Created){
 					alert("new file created");
 					currfile = name;
+					projects[currproject].filelist += [currfile];
 
 					cursors = cursors.concat([0]);
 					var fileList = document.getElementById('openproj');
@@ -94,10 +99,10 @@ function Connection()//works
 
 					var tabList = document.getElementById('tabs');
 					tabList.innerHTML += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+ntabs+'" onclick="gototab('+ntabs+')">'+name+'</a></li>';
-					projects[currproject].filelist += [currfile];
 					tabs = tabs.concat([{"projname": currproject, "filename": currfile}]);
 					textareas = textareas.concat(["public class "+currfile.replace(".java", "")+"\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t//Your Code Here\n\t}\n}\n"]);
 					curtab = ntabs;
+					gototab(curtab);
 					ntabs++;
 				}
 				else{
@@ -170,6 +175,29 @@ function togglecollapse(proj) {
 				option.removeAttribute("hidden");
 	}
 	projects[proj].hidden = hidden;
+}
+
+function updateFileExplorer() {
+	var fileList = document.getElementById('openproj');
+	fileList.innerHTML = '';
+	for (var i = 0; i < projects.length; i++) {
+		fileList.innerHTML += '<option value="'+projects[i].name+'" onclick="togglecollapse(\''+projects[i].name+'\')">>'+projects[i].name+'</option>';
+		for (var j = 0; j < projects[i].filelist.length; j++)
+			fileList.innerHTML += '<option value="'+projects[i].filelist[j].name+'" onclick="gototab('+j+')"" id="option'+j+'">'+projects[i].filelist[j].name+'</option>';
+	}
+}
+
+function updateTabs() {
+	var tabList = document.getElementById('tabs');
+	tabList.innerHTML = '';
+	for (var i = 0; i < ntabs; i++) {
+		tabList.innerHTML += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+ntabs+'" onclick="gototab('+ntabs+')">'+name+'</a></li>';
+	}
+	tabs = tabs.concat([{"projname": currproject, "filename": currfile}]);
+	textareas = textareas.concat(["public class "+currfile.replace(".java", "")+"\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t//Your Code Here\n\t}\n}\n"]);
+	curtab = ntabs;
+	gototab(curtab);
+	ntabs++;
 }
 
 function setproj(name) {
