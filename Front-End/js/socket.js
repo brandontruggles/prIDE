@@ -4,12 +4,11 @@ var ntabs = 0;
 var currfile;
 var currproject;
 var name;
-var textareas = [];
 var editor;
-var cursors = [];
 var curtab;
 var projects = {};
 var tabs = [];
+var updateflag = true;
 
 function Connection()//works
 {
@@ -17,6 +16,7 @@ function Connection()//works
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/java");
 	editor.setKeyboardHandler("ace/keyboard/vim");
+	editor.on("change", Update);
 	/*
 	editor.commands.addCommand({
 		name: 'tabforward',
@@ -93,16 +93,19 @@ function Connection()//works
 					currfile = name;
 					projects[currproject].filelist += [currfile];
 
-					cursors = cursors.concat([0]);
 					var fileList = document.getElementById('openproj');
 					fileList.innerHTML += '<option value="'+name+'" onclick="gototab('+ntabs+')"" id="option'+ntabs+'">'+name+'</option>';
 
 					var tabList = document.getElementById('tabs');
 					tabList.innerHTML += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+ntabs+'" onclick="gototab('+ntabs+')">'+name+'</a></li>';
-					tabs = tabs.concat([{"projname": currproject, "filename": currfile}]);
-					textareas = textareas.concat(["public class "+currfile.replace(".java", "")+"\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t//Your Code Here\n\t}\n}\n"]);
-					curtab = ntabs;
-					gototab(curtab);
+					tabs = tabs.concat([{
+						"projname": currproject,
+						"filename":	currfile,
+						"body": "public class "+currfile.replace(".java", "")+"\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t//Your Code Here\n\t}\n}\n",
+						"cursor": {"row": 4, "column": 2}
+					}]);
+					if (ntabs == 0) curtab = ntabs;
+					gototab(ntabs);
 					ntabs++;
 				}
 				else{
@@ -146,18 +149,25 @@ function Connection()//works
 
 function gototab(num)
 {
+	var oldtab = curtab;
+	var cursor = editor.getCursorPosition();
+	curtab = num;
 	currproject = tabs[num].projname;
 	currfile = tabs[num].filename;
-	editor.setValue(textareas[num]);
-	curtab = num;
-	document.getElementById("codespace").focus();
+	updateflag = false;
+	editor.setValue(tabs[num].body);
+	updateflag = true;
+	editor.moveCursorToPosition(tabs[num].cursor);
+	editor.clearSelection();
+	editor.focus();
+	tabs[oldtab].cursor = cursor;
 }
 
 function tabforward() {
 	if (curtab + 1 == ntabs)
-		gototab('', 0);
+		gototab(0);
 	else
-		gototab('', curtab + 1);
+		gototab(curtab + 1);
 }
 
 function togglecollapse(proj) {
@@ -189,15 +199,11 @@ function updateFileExplorer() {
 
 function updateTabs() {
 	var tabList = document.getElementById('tabs');
-	tabList.innerHTML = '';
+	var str = ''
 	for (var i = 0; i < ntabs; i++) {
-		tabList.innerHTML += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+ntabs+'" onclick="gototab('+ntabs+')">'+name+'</a></li>';
+		str += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+i+'" onclick="gototab('+i+')">'+name+'</a></li>';
 	}
-	tabs = tabs.concat([{"projname": currproject, "filename": currfile}]);
-	textareas = textareas.concat(["public class "+currfile.replace(".java", "")+"\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t//Your Code Here\n\t}\n}\n"]);
-	curtab = ntabs;
-	gototab(curtab);
-	ntabs++;
+	tabList.innerHTML = str;
 }
 
 function setproj(name) {
@@ -210,10 +216,12 @@ function setfile(name) {
 
 function Update()
 {
-	cursors[curtab] = editor.selection.getCursor();
+	if (! updateflag) return;
+	tabs[curtab].body = editor.getValue();
+	tabs[curtab].cursor = editor.getCursorPosition();
 	var message = {
 		"nickname": nickname,
-		"contents": "updatefile "+currfile+" "+editor.getValue()
+		"contents": "updatefile "+tabs[curtab].filename+" "+tabs[curtab].body
 	};
 	sock.send(JSON.stringify(message));
 	/*sock.onmessage = function(response){
