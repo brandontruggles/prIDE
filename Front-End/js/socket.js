@@ -96,14 +96,17 @@ function Connection()//works
 					var fileList = document.getElementById('openproj');
 					fileList.innerHTML += '<option value="'+name+'" onclick="gototab('+ntabs+')"" id="option'+ntabs+'">'+name+'</option>';
 
+					/*
 					var tabList = document.getElementById('tabs');
 					tabList.innerHTML += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+ntabs+'" onclick="gototab('+ntabs+')">'+name+'</a></li>';
+					*/
 					tabs = tabs.concat([{
 						"projname": currproject,
 						"filename":	currfile,
-						"body": "public class "+currfile.replace(".java", "")+"\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t//Your Code Here\n\t}\n}\n",
+						"body": "public class "+currfile.replace(".java", "")+"\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// we vim up in this bitch\n\t}\n}\n",
 						"cursor": {"row": 4, "column": 2}
 					}]);
+					updateTabs();
 					if (ntabs == 0) curtab = ntabs;
 					gototab(ntabs);
 					ntabs++;
@@ -189,19 +192,21 @@ function togglecollapse(proj) {
 
 function updateFileExplorer() {
 	var fileList = document.getElementById('openproj');
-	fileList.innerHTML = '';
+	var str = '';
 	for (var i = 0; i < projects.length; i++) {
-		fileList.innerHTML += '<option value="'+projects[i].name+'" onclick="togglecollapse(\''+projects[i].name+'\')">>'+projects[i].name+'</option>';
-		for (var j = 0; j < projects[i].filelist.length; j++)
-			fileList.innerHTML += '<option value="'+projects[i].filelist[j].name+'" onclick="gototab('+j+')"" id="option'+j+'">'+projects[i].filelist[j].name+'</option>';
+		str += '<option value="'+projects[i].name+'" onclick="togglecollapse(\''+projects[i].name+'\')">>'+projects[i].name+'</option>';
+		for (var j = 0; j < projects[i].filelist.length; j++) {
+			str += '<option value="'+projects[i].filelist[j].name+'" onclick="gototab('+j+')"" id="option'+j+'">'+projects[i].filelist[j].name+'</option>';
+		}
 	}
+	fileList.innerHTML = str;
 }
 
 function updateTabs() {
 	var tabList = document.getElementById('tabs');
 	var str = ''
-	for (var i = 0; i < ntabs; i++) {
-		str += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+i+'" onclick="gototab('+i+')">'+name+'</a></li>';
+	for (var i = 0; i < tabs.length; i++) {
+		str += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+i+'" onclick="gototab('+i+')">'+tabs[i].filename+'</a></li>';
 	}
 	tabList.innerHTML = str;
 }
@@ -324,13 +329,25 @@ function newfile()//works
 function message()
 {//for chat
 	var chatbox = document.getElementById('commandArea');
-	var message = {
+	var message;
+	if (chatbox.value.startsWith("/"))
+		message = {
+			"nickname": nickname,
+			"contents": chatbox.value.substr(1)
+		}
+	else
+		message = {
+			"nickname": nickname,
+			"contents": "message "+chatbox.value
+		}
+	sock.send(JSON.stringify(message));
+
+	message = {
 		"nickname": nickname,
 		"contents": "message "+chatbox.value
 	}
 	chatbox.value = '';
 	sock.send(JSON.stringify(message));
-
 }
 
 function chatkeydown(e)

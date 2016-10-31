@@ -21,8 +21,7 @@ function writeout(error, stdout, stderr) {
 }
 
 function testlogin(user, pass) {
-	execFileSync("curl -u " + user + ":" + pass + " https://api.com", writeout);
-	out = fs.readFileSync("stdout.txt", "utf8");
+	var out = execFileSync("curl", ["-u", user + ":" + pass, "https://api.github.com"]);
 
 	var obj = JSON.parse(out);
 	if (obj.message)
@@ -31,47 +30,42 @@ function testlogin(user, pass) {
 }
 
 function createproj(user, pass, name) {
-	execFileSync("curl -i -u " + user + ":" + pass + " -d \'{\"name\":\"" + name + "\"}\' -X POST https://api.com/user/repos", writeout);
-	var out = fs.readFileSync("stdout.txt", "utf8");
+	var out = execFileSync("curl", ["-i", "-u", user + ":" + pass, "-d", "\'{\"name\":\"" + name + "\"}\'", "-X", "POST", "https://api.github.com/user/repos"]);
+
 	var obj = JSON.parse(out);
-	return obj;
+	return out;
 }
 
 function clone(url) {
-	execFileSync("git clone " + url, writeout);
-	var out = fs.readFileSync("stdout.txt", "utf8");
+	var out = execFileSync("git", ["clone", url], {"cwd": "workspace"}).toString();
+	configObj.current_project = out.substr(out.lastIndexOf("/" + 1));
 	return out;
 }
 
 function pull() {
-	execFileSync("cd " + "workspace/" + configObj.current_project + " && git pull", writeout);
-	var out = fs.readFileSync("stdout.txt", "utf8");
-	return out;
+	var out = execFileSync("git", ["pull"], {"cwd": "workspace/" + configObj.current_project});
+	return out.toString();
 }
 
 function add(filename) {
-	execFileSync("cd " + "workspace/" + configObj.current_project + " && git add " + filename, writeout);
-	var out = fs.readFileSync("stdout.txt", "utf8");
-	return out;
+	var out = execFileSync("git", ["add", filename], {"cwd": "workspace/" + configObj.current_project});
+	return out.toString();
 }
 
 function commit(message) {
-	execFileSync("cd " + "workspace/" + configObj.current_project + " && git commit -m \"" + message + "\"");
-	var out = fs.readFileSync("stdout.txt", "utf8");
-	return out;
+	var out = execFileSync("git", ["commit", "-m", '"' + message + '"'], {"cwd": "workspace/" + configObj.current_project});
+	return out.toString();
 }
 
 function newfile(filename) {
-	execFileSync("cd " + "workspace/" + configObj.current_project + " && touch " + filename, writeout);
-	var out = fs.readFileSync("stdout.txt", "utf8");
+	var out = execFileSync("touch", [filename], {"cwd": "workspace/" + configObj.current_project});
 	setcurfile(filename);
-	return out;
+	return out.toString();
 }
 
 function push () {
-	execFileSync("cd " + "workspace/" + configObj.current_project + " && git push origin master", writeout);
-	var out = fs.readFileSync("stdout.txt", "utf8");
-	return out;
+	var out = execFileSync("git", ["push", "origin", "master"], {"cwd": "workspace/" + configObj.current_project});
+	return out.toString();
 }
 
 function compile() {
@@ -88,7 +82,7 @@ function compile() {
 		child.stdout.on('data', function (data) { ws.send(JSON.stringify({type: "Console", contents: data.toString()}))});
 		child.stderr.on('data', function (data) { ws.send(JSON.stringify({type: "Console", contents: data.toString()}))});
 		*/
-		var ret = execFileSync("javac", flies, {stdio: ['pipe', 'pipe', 'ignore']}).toString();
+		var ret = execFileSync("javac", flies, {stdio: ['pipe', 'pipe', 'pipe']}).toString();
 		return ret;
 	} catch (error) {
 		return error.message;
@@ -103,7 +97,7 @@ function run(prog, args) {
 
 function listproj(user) {
 
-	execFileSync("curl https://api.com/users/" + user + "/repos", writeout);
+	execFileSync("curl https://api.github.com/users/" + user + "/repos", writeout);
 	out = fs.readFileSync("stdout.txt", "utf8");
 	var obj = JSON.parse(out);
 
@@ -404,12 +398,14 @@ function runServer(portNumber)
 						response.type = "File-Open-Response";
 						break;
 					case "git_clone":
-						if (connectionList[connind].valid)
-							clone(params);
+						clone(params);
+						//if (connectionList[connind].valid)
+						//	clone(params);
 						break;
 					case "git_pull":
-						if (connectionList[connind].valid)
-							pull(params);
+						pull(params);
+						//if (connectionList[connind].valid)
+						//	pull(params);
 						break;
 					case "updatefile":
 						response.type = "File-Update-Response";
@@ -418,13 +414,18 @@ function runServer(portNumber)
 						newText = params.substring(spaceIndex + 1);
 						updateFile(fileToUpdate, newText);					
 						console.log("Received a command to update the file '" + fileToUpdate + "'");
+					case "git_add":
+						add(params);
+						break;
 					case "git_commit":
-						if (connectionList[connind].valid)
-							commit(params);
+						commit(params);
+						//if (connectionList[connind].valid)
+						//	commit(params);
 						break;
 					case "git_push":
-						if (connectionList[connind].valid)
-							push();
+						push(params);
+						//if (connectionList[connind].valid)
+						//	push();
 						break;
 					default:
 						response.type = "Error";
