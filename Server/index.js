@@ -44,44 +44,44 @@ function clone(url) {
 }
 
 function pull() {
-	execFileSync("cd " + configObj.current_project + " && git pull", writeout);
+	execFileSync("cd " + "workspace/" + configObj.current_project + " && git pull", writeout);
 	var out = fs.readFileSync("stdout.txt", "utf8");
 	return out;
 }
 
 function add(filename) {
-	execFileSync("cd " + configObj.current_project + " && git add " + filename, writeout);
+	execFileSync("cd " + "workspace/" + configObj.current_project + " && git add " + filename, writeout);
 	var out = fs.readFileSync("stdout.txt", "utf8");
 	return out;
 }
 
 function commit(message) {
-	execFileSync("cd " + configObj.current_project + " && git commit -m \"" + message + "\"");
+	execFileSync("cd " + "workspace/" + configObj.current_project + " && git commit -m \"" + message + "\"");
 	var out = fs.readFileSync("stdout.txt", "utf8");
 	return out;
 }
 
 function newfile(filename) {
-	execFileSync("cd " + configObj.current_project + " && touch " + filename, writeout);
+	execFileSync("cd " + "workspace/" + configObj.current_project + " && touch " + filename, writeout);
 	var out = fs.readFileSync("stdout.txt", "utf8");
 	setcurfile(filename);
 	return out;
 }
 
 function push () {
-	execFileSync("cd " + configObj.current_project + " && git push origin master", writeout);
+	execFileSync("cd " + "workspace/" + configObj.current_project + " && git push origin master", writeout);
 	var out = fs.readFileSync("stdout.txt", "utf8");
 	return out;
 }
 
 function compile() {
-	//console.log("javac " + configObj.current_project + "/p.java");
-	//execFileSync("\'javac " + configObj.current_project + "/p.java\'");
+	//console.log("javac " + "workspace/" + configObj.current_project + "/p.java");
+	//execFileSync("\'javac " + "workspace/" + configObj.current_project + "/p.java\'");
 	var files = getProjectFiles();
 	var flies = [];
 	for (var i = 0; i < files.length; i++)
 		if (files[i].substr(files[i].length - 5) == ".java")
-			flies.push(configObj.current_project + "/" + files[i]);
+			flies.push("workspace/" + configObj.current_project + "/" + files[i]);
 	try {
 		/*
 		child = spawn("javac", flies);
@@ -97,7 +97,7 @@ function compile() {
 
 function run(prog, args) {
 	prog = prog.replace(".java","");
-	var str = execFileSync("java", ["-cp", configObj.current_project, prog]).toString();
+	var str = execFileSync("java", ["-cp", "workspace/" + configObj.current_project, prog]).toString();
 	return str;
 }
 
@@ -173,9 +173,9 @@ function writeConfig()
 
 function createFile(fileName)
 {
-	if(!fs.existsSync(configObj.current_project + "/" + fileName))
+	if(!fs.existsSync("workspace/" + configObj.current_project + "/" + fileName))
 	{
-		fs.writeFileSync(configObj.current_project + "/" + fileName, "");
+		fs.writeFileSync("workspace/" + configObj.current_project + "/" + fileName, "");
 		configObj.current_file = fileName;	
 	}	
 	else
@@ -188,9 +188,9 @@ function createFile(fileName)
 
 function updateFile(fileName, newText)
 {
-	if(fs.existsSync(configObj.current_project + "/" + fileName))
+	if(fs.existsSync("workspace/" + configObj.current_project + "/" + fileName))
 	{
-		fs.writeFileSync(configObj.current_project + "/" + fileName, newText);	
+		fs.writeFileSync("workspace/" + configObj.current_project + "/" + fileName, newText);	
 	}
 	else
 	{
@@ -202,9 +202,9 @@ function updateFile(fileName, newText)
 
 function createDirectory(dirName)
 {
-	if(!fs.existsSync(configObj.current_project + "/" + dirName))
+	if(!fs.existsSync("workspace/" + configObj.current_project + "/" + dirName))
 	{
-		fs.mkdirSync(configObj.current_project + "/" + dirName);
+		fs.mkdirSync("workspace/" + configObj.current_project + "/" + dirName);
 		configObj.current_directory = dirName;	
 	}
 	else
@@ -236,7 +236,7 @@ function getProjectFiles()
 	var files = null;
 	try
 	{
-		files = fs.readdirSync(configObj.current_project);
+		files = fs.readdirSync("workspace/" + configObj.current_project);
 	}
 	catch(err)
 	{
@@ -347,7 +347,7 @@ function runServer(portNumber)
 						break;
 					case "newproject":
 						response.type = "Project-Created-Status";
-						if(!createProject(params))
+						if(!createProject("workspace/" + params))
 						{
 							response.contents = {"Created": false, "Reason": "Failed to create a new project with the name '" + params + "'! That project name is already taken."};
 						}
@@ -360,7 +360,7 @@ function runServer(portNumber)
 						break;
 					case "git_newproject":
 						if (connectionList[connind].valid)
-							createproj(connectionList[connind].user, connectionList[connind].pass, configObj.current_project);
+							createproj(connectionList[connind].user, connectionList[connind].pass, "workspace/" + configObj.current_project);
 						break;
 					case "newfile":
 						response.type = "File-Created-Status";
