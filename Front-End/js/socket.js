@@ -185,7 +185,8 @@ function tabforward() {
 function opennewtab(proj, file) {
 	var message = {
 		"nickname": nickname,
-		"contents": "readfile " + proj + " " + file
+		"dir": proj,
+		"contents": "readfile " + file
 	}
 	sock.send(JSON.stringify(message));
 	return;
@@ -199,6 +200,38 @@ function opennewtab(proj, file) {
 	updateTabs();
 	updateFileExplorer(); // now it switches to tab instead of opening a new one
 	gototab(tabs.length - 1);
+}
+
+function closetab(index) {
+	tabs = tabs.slice(0, index).concat(tabs.slice(index + 1));
+	updateTabs();
+	updateFileExplorer();
+}
+
+function movetab(src, dst) {
+	var src = tabs[src];
+	tabs = tabs.slice(0, src).concat(tabs.slice(src + 1));
+	tabs = tabs.slice(0, dst).concat([tabs[src]]).concat(tabs.slice(dst + 1));
+	updateTabs();
+	updateFileExplorer();
+}
+
+function deletefile(proj, file) {
+	var message = {
+		"nickname": nickname,
+		"dir": currproject,
+		"contents": "deletefile " + proj + " " + file
+	}
+	sock.send(JSON.stringify(message));
+}
+
+function deleteproj(proj) {
+	var message = {
+		"nickname": nickname,
+		"dir": currproject,
+		"contents": "deleteproj " + proj
+	}
+	sock.send(JSON.stringify(message));
 }
 
 function togglecollapse(proj) {
@@ -269,6 +302,7 @@ function Update()
 	tabs[curtab].cursor = editor.getCursorPosition();
 	var message = {
 		"nickname": nickname,
+		"dir": currproject,
 		"contents": "updatefile "+tabs[curtab].filename+" "+tabs[curtab].body
 	};
 	sock.send(JSON.stringify(message));
@@ -280,6 +314,7 @@ function compile()//hold on for alec
 	Update();
 	var message = {
 		"nickname": nickname,
+		"dir": currproject,
 		"contents": "compile"
 	}
 	sock.send(JSON.stringify(message));
@@ -294,6 +329,7 @@ function newproject()//works
 		"nickname": nickname,
 		"contents": "newproject "+name
 	}
+	currproject = name;
 	sock.send(JSON.stringify(message));
 }
 
@@ -302,6 +338,7 @@ function newfile()//works
 	name = prompt("name file");
 	var message = {
 		"nickname": nickname,
+		"dir": currproject,
 		"contents": "newfile "+name
 	}
 	sock.send(JSON.stringify(message));
@@ -310,6 +347,7 @@ function newfile()//works
 function getfilecontents(params) {
 	var message = {
 		"nickname": nickname,
+		"dir": currproject,
 		"contents": "readfile " + params
 	}
 	sock.send(JSON.stringify(message));
@@ -322,17 +360,20 @@ function message()
 	if (chatbox.value.startsWith("/"))
 		message = {
 			"nickname": nickname,
+			"dir": currproject,
 			"contents": chatbox.value.substr(1)
 		}
 	else
 		message = {
 			"nickname": nickname,
+			"dir": currproject,
 			"contents": "message "+chatbox.value
 		}
 	sock.send(JSON.stringify(message));
 
 	message = {
 		"nickname": nickname,
+		"dir": currproject,
 		"contents": "message "+chatbox.value
 	}
 	chatbox.value = '';
@@ -350,6 +391,7 @@ function newdir()//works
 	var name = prompt("name new directory");
 	var message = {
 		"nickname": nickname,
+		"dir": currproject,
 		"contents": "newdir "+ name
 	}
 	sock.send(JSON.stringify(message));
@@ -369,6 +411,7 @@ function run()
 {
 	var message = {
 		"nickname": nickname,
+		"dir": currproject,
 		"contents": "run "
 	}
 	sock.send(JSON.stringify(message));

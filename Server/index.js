@@ -1,5 +1,5 @@
 
-var sys = require('sys');
+//var sys = require('sys');
 var execFileSync = require('child_process').execFileSync;
 var spawn = require('child_process').spawn;
 var read = require('read');
@@ -13,15 +13,15 @@ var options = {
 	replace: '*'
 };
 
-function puts(error, stdout, stderr) { sys.puts(stdout) }
+//function puts(error, stdout, stderr) { sys.puts(stdout) }
 function writeout(error, stdout, stderr) {
 //	fs.writeFileSync("error.txt", error);
 	fs.writeFileSync("stdout.txt", stdout);
 	fs.writeFileSync("stderr.txt", stderr);
 }
 
-function git(params) {
-	execFileSync("git", params.split(), {"cwd": "workspace/" + configObj.current_project});
+function git(params, dir) {
+	execFileSync("git", params.split(), {"cwd": "workspace/" + dir});
 }
 
 function testlogin(user, pass) {
@@ -42,44 +42,44 @@ function createproj(user, pass, name) {
 
 function clone(url) {
 	var out = execFileSync("git", ["clone", url], {"cwd": "workspace"}).toString();
-	configObj.current_project = out.substr(out.lastIndexOf("/" + 1));
+	//configObj.current_project = out.substr(out.lastIndexOf("/" + 1));
 	return out;
 }
 
-function pull() {
-	var out = execFileSync("git", ["pull"], {"cwd": "workspace/" + configObj.current_project});
+function pull(dir) {
+	var out = execFileSync("git", ["pull"], {"cwd": "workspace/" + dir});
 	return out.toString();
 }
 
-function add(filename) {
-	var out = execFileSync("git", ["add", filename], {"cwd": "workspace/" + configObj.current_project});
+function add(filename, dir) {
+	var out = execFileSync("git", ["add", filename], {"cwd": "workspace/" + dir});
 	return out.toString();
 }
 
-function commit(message) {
-	var out = execFileSync("git", ["commit", "-m", '"' + message + '"'], {"cwd": "workspace/" + configObj.current_project});
+function commit(message, dir) {
+	var out = execFileSync("git", ["commit", "-m", '"' + message + '"'], {"cwd": "workspace/" + dir});
 	return out.toString();
 }
 
-function newfile(filename) {
-	var out = execFileSync("touch", [filename], {"cwd": "workspace/" + configObj.current_project});
-	setcurfile(filename);
+function newfile(filename, dir) {
+	var out = execFileSync("touch", [filename], {"cwd": "workspace/" + dir});
+	//setcurfile(filename);
 	return out.toString();
 }
 
-function push () {
-	var out = execFileSync("git", ["push", "origin", "master"], {"cwd": "workspace/" + configObj.current_project});
+function push (dir) {
+	var out = execFileSync("git", ["push", "origin", "master"], {"cwd": "workspace/" + dir});
 	return out.toString();
 }
 
-function compile() {
+function compile(dir) {
 	//console.log("javac " + "workspace/" + configObj.current_project + "/p.java");
 	//execFileSync("\'javac " + "workspace/" + configObj.current_project + "/p.java\'");
-	var files = getProjectFiles();
+	var files = getProjectFiles(dir);
 	var flies = [];
 	for (var i = 0; i < files.length; i++)
 		if (files[i].substr(files[i].length - 5) == ".java")
-			flies.push("workspace/" + configObj.current_project + "/" + files[i]);
+			flies.push("workspace/" + dir + "/" + files[i]);
 	try {
 		/*
 		child = spawn("javac", flies);
@@ -93,9 +93,9 @@ function compile() {
 	}
 }
 
-function run(prog, args) {
+function run(prog, args, dir) {
 	prog = prog.replace(".java","");
-	var str = execFileSync("java", ["-cp", "workspace/" + configObj.current_project, prog]).toString();
+	var str = execFileSync("java", ["-cp", "workspace/" + dir, prog]).toString();
 	return str;
 }
 
@@ -169,11 +169,11 @@ function writeConfig()
 	}
 }
 
-function createFile(fileName)
+function createFile(fileName, dir)
 {
-	if(!fs.existsSync("workspace/" + configObj.current_project + "/" + fileName))
+	if(!fs.existsSync("workspace/" + dir + "/" + fileName))
 	{
-		fs.writeFileSync("workspace/" + configObj.current_project + "/" + fileName, "");
+		fs.writeFileSync("workspace/" + dir + "/" + fileName, "");
 		configObj.current_file = fileName;	
 	}	
 	else
@@ -184,11 +184,11 @@ function createFile(fileName)
 	return true;
 }
 
-function updateFile(fileName, newText)
+function updateFile(fileName, newText, dir)
 {
-	if(fs.existsSync("workspace/" + configObj.current_project + "/" + fileName))
+	if(fs.existsSync("workspace/" + dir + "/" + fileName))
 	{
-		fs.writeFileSync("workspace/" + configObj.current_project + "/" + fileName, newText);	
+		fs.writeFileSync("workspace/" + dir + "/" + fileName, newText);	
 	}
 	else
 	{
@@ -198,11 +198,11 @@ function updateFile(fileName, newText)
 	return true;
 }
 
-function createDirectory(dirName)
+function createDirectory(dirName, dir)
 {
-	if(!fs.existsSync("workspace/" + configObj.current_project + "/" + dirName))
+	if(!fs.existsSync("workspace/" + dir + "/" + dirName))
 	{
-		fs.mkdirSync("workspace/" + configObj.current_project + "/" + dirName);
+		fs.mkdirSync("workspace/" + dir + "/" + dirName);
 		configObj.current_directory = dirName;	
 	}
 	else
@@ -229,12 +229,12 @@ function createProject(projectName)
 	return true;
 }
 
-function getProjectFiles()
+function getProjectFiles(dir)
 {
 	var files = null;
 	try
 	{
-		files = fs.readdirSync("workspace/" + configObj.current_project);
+		files = fs.readdirSync("workspace/" + dir);
 	}
 	catch(err)
 	{
@@ -269,6 +269,7 @@ function runServer(portNumber)
 				var json_message = JSON.parse(message);
 				var nickname = json_message.nickname;
 				var contents = json_message.contents;
+				var dir = json_message.dir;
 				var command = contents.split(' ')[0].toLowerCase();
 				var spaceIndex = contents.indexOf(' ');
 				var params = contents.substring(spaceIndex + 1);
@@ -308,7 +309,7 @@ function runServer(portNumber)
 						ws.send(JSON.stringify(response));
 						break;
 					case "git":
-						git(params);
+						git(params, dir);
 						break;
 					case "setusername":
 						connectionList[connind].user = params;
@@ -329,13 +330,13 @@ function runServer(portNumber)
 					case "compile":
 						response.type = "Compile-Running-Status";
 						console.log("Received command to compile!");
-						response.contents = {"output": compile()};
+						response.contents = {"output": compile(dir)};
 						ws.send(JSON.stringify(response));
 						break;
 					case "run":
 						response.type = "Code-Running-Status";		
 						console.log("Running code...");
-						var str = run(configObj.current_file, "some args");
+						var str = run(configObj.current_file, "some args", dir);
 						console.log(str);
 						response.contents = {"output": str};
 						ws.send(JSON.stringify(response));
@@ -354,18 +355,18 @@ function runServer(portNumber)
 						}
 						else
 						{
-							configObj.current_project = params;
+							//configObj.current_project = params;
 							response.contents = {"Created": true};
 						}
 						ws.send(JSON.stringify(response));
 						break;
 					case "git_newproject":
 						if (connectionList[connind].valid)
-							createproj(connectionList[connind].user, connectionList[connind].pass, "workspace/" + configObj.current_project);
+							createproj(connectionList[connind].user, connectionList[connind].pass, "workspace/" + dir);
 						break;
 					case "newfile":
 						response.type = "File-Created-Status";
-						if(!createFile(params))
+						if(!createFile(params, dir))
 						{
 							response.contents = {"Created": false, "Reason": "Failed to create a new file with the name '" + params + "'! That file already exists in the current project."};
 						}
@@ -377,11 +378,11 @@ function runServer(portNumber)
 						break;
 					case "git_add":
 						if (connectionList[connind].valid)
-							add(params);
+							add(params, dir);
 						break;
 					case "newdir":
 						response.type = "Directory-Created-Status";
-						if(!createFile(params))
+						if(!createFile(params, dir))
 						{
 							response.contents = {"Created": false, "Reason": "Failed to create a new directory with the name '" + params + "'! That file already exists in the current project."};
 						}
@@ -393,8 +394,8 @@ function runServer(portNumber)
 						break;
 					case "openproject":
 						response.type = "Project-Open-Response";
-						configObj.current_project = params;
-						var files = getProjectFiles();
+						//configObj.current_project = params;
+						var files = getProjectFiles(dir);
 						if(files != null)
 							response.contents = {"Opened": true, "Files": files};
 						else
@@ -405,12 +406,12 @@ function runServer(portNumber)
 						response.type = "File-Open-Response";
 						break;
 					case "git_clone":
-						clone(params);
+						clone(params, dir);
 						//if (connectionList[connind].valid)
 						//	clone(params);
 						break;
 					case "git_pull":
-						pull(params);
+						pull(params, dir);
 						//if (connectionList[connind].valid)
 						//	pull(params);
 						break;
@@ -419,26 +420,25 @@ function runServer(portNumber)
 						fileToUpdate = params.split(' ')[0];
 						var spaceIndex = params.indexOf(' ');
 						newText = params.substring(spaceIndex + 1);
-						updateFile(fileToUpdate, newText);					
+						updateFile(fileToUpdate, newText, dir);
 						console.log("Received a command to update the file '" + fileToUpdate + "'");
 						break;
 					case "readfile":
 						response.type = "Read-File";
-						var split = params.split(' ');
-						var str = fs.readFileSync("workspace/" + split[0] + "/" + split[1]).toString();
-						response.contents = {"body": str, "proj": split[0], "file": split[1]};
+						var str = fs.readFileSync("workspace/" + dir + "/" + params).toString();
+						response.contents = {"body": str, "proj": dir, "file": params};
 						ws.send(JSON.stringify(response));
 						break;
 					case "git_add":
-						add(params);
+						add(params, dir);
 						break;
 					case "git_commit":
-						commit(params);
+						commit(params, dir);
 						//if (connectionList[connind].valid)
 						//	commit(params);
 						break;
 					case "git_push":
-						push(params);
+						push(params, dir);
 						//if (connectionList[connind].valid)
 						//	push();
 						break;
