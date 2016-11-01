@@ -6,9 +6,10 @@ var currproject;
 var name;
 var editor;
 var curtab;
-var projects = {};
+var projects = {"ppp": {"hidden": false, "filelist": ["a.txt", "b.txt"]}};
 var tabs = [];
 var updateflag = true;
+var str = '';
 
 function Connection()//works
 {
@@ -60,6 +61,7 @@ function Connection()//works
 					sock.close();
 					sock = new WebSocket("ws://45.55.218.73:"+port);
 				}
+				updateFileExplorer(); // pre-load some files
 				break;
 			case "Compile-Running-Status":
 				if(contents.output[0] == null)
@@ -77,9 +79,8 @@ function Connection()//works
 			case "Project-Created-Status":
 				if(contents.Created){
 					alert("new project created");
-					var fileList = document.getElementById('openproj');
-					fileList.innerHTML += '<option value="'+name+'" onclick="togglecollapse(\''+name+'\')">>'+name+'</option>';
-					projects[name] = {"collapsed": false, "filelist": []};
+					projects[name] = {"hidden": false, "filelist": []};
+					updateFileExplorer();
 					currproject = name;
 				}
 				else{
@@ -91,22 +92,18 @@ function Connection()//works
 				if(contents.Created){
 					alert("new file created");
 					currfile = name;
-					projects[currproject].filelist += [currfile];
+					projects[currproject].filelist = projects[currproject].filelist.concat([currfile]);
 
-					var fileList = document.getElementById('openproj');
-					fileList.innerHTML += '<option value="'+name+'" onclick="gototab('+ntabs+')"" id="option'+ntabs+'">'+name+'</option>';
-
-					/*
-					var tabList = document.getElementById('tabs');
-					tabList.innerHTML += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+ntabs+'" onclick="gototab('+ntabs+')">'+name+'</a></li>';
-					*/
 					tabs = tabs.concat([{
 						"projname": currproject,
 						"filename":	currfile,
 						"body": "public class "+currfile.replace(".java", "")+"\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// we vim up in this bitch\n\t}\n}\n",
 						"cursor": {"row": 4, "column": 2}
 					}]);
+
 					updateTabs();
+					updateFileExplorer();
+
 					if (ntabs == 0) curtab = ntabs;
 					gototab(ntabs);
 					ntabs++;
@@ -142,6 +139,18 @@ function Connection()//works
 			case "File-Update-Response":
 				document.getElementById('codespace').value = message;
 				break;
+			case "Read-File":
+				/* vvv kinda jank to do this here vvv */
+				tabs = tabs.concat([{
+						"projname": contents.proj,
+						"filename":	contents.file,
+						"body": contents.body,
+						"cursor": {"row": 0, "column": 0}
+						}]);
+				updateTabs();
+				updateFileExplorer(); // now it switches to tab instead of opening a new one
+				gototab(tabs.length - 1);
+				break;
 
 			default:
 				alert("dam son");
@@ -167,36 +176,70 @@ function gototab(num)
 }
 
 function tabforward() {
-	if (curtab + 1 == ntabs)
+	if (curtab + 1 == tabs.length)
 		gototab(0);
 	else
 		gototab(curtab + 1);
 }
 
+function opennewtab(proj, file) {
+	var message = {
+		"nickname": nickname,
+		"contents": "readfile " + proj + " " + file
+	}
+	sock.send(JSON.stringify(message));
+	return;
+	getfilecontents("workspace/" + proj + "/" + file);
+	tabs = tabs.concat([{
+			"projname": proj,
+			"filename":	file,
+			"body": str,
+			"cursor": {"row": 0, "column": 0}
+			}]);
+	updateTabs();
+	updateFileExplorer(); // now it switches to tab instead of opening a new one
+	gototab(tabs.length - 1);
+}
+
 function togglecollapse(proj) {
+	projects[proj].hidden = !projects[proj].hidden;
+	updateFileExplorer();
+	/*
 	var hidden = projects[proj].hidden;
-	if (hidden == "true")
-		hidden = "false";
-	else hidden = "true";
+	if (hidden == true)
+		hidden = false;
+	else hidden = true;
 	var option;
 	for (var i = 0; i < ntabs; i++) {
 		option = document.getElementById('option'+i);
 		if (tabs[i].projname == proj)
-			if (hidden == "true")
+			if (hidden == true)
 				option.setAttribute("hidden", hidden);
 			else
-				option.removeAttribute("hidden");
+				option.removeAttribute(hidden);
 	}
 	projects[proj].hidden = hidden;
+	*/
 }
 
 function updateFileExplorer() {
 	var fileList = document.getElementById('openproj');
 	var str = '';
-	for (var i = 0; i < projects.length; i++) {
-		str += '<option value="'+projects[i].name+'" onclick="togglecollapse(\''+projects[i].name+'\')">>'+projects[i].name+'</option>';
-		for (var j = 0; j < projects[i].filelist.length; j++) {
-			str += '<option value="'+projects[i].filelist[j].name+'" onclick="gototab('+j+')"" id="option'+j+'">'+projects[i].filelist[j].name+'</option>';
+	for (var key in projects) {
+		if (!projects.hasOwnProperty(key)) continue;
+		str += '<option value="'+key+'" onclick="togglecollapse(\''+key+'\')"> > '+key+'</option>';
+		if (projects[key].hidden) continue;
+		for (var j = 0; j < projects[key].filelist.length; j++) {
+			var t = -1;
+			for (var k = 0; k < tabs.length; k++)
+				if (tabs[k].projname == key && tabs[k].filename == projects[key].filelist[j]) {
+					t = k;
+					break;
+				}
+			if (t == -1)
+				str += '<option value="'+projects[key].filelist[j]+'" onclick="opennewtab(\''+key+'\', \''+projects[key].filelist[j]+'\')">'+projects[key].filelist[j]+'</option>';
+			else
+				str += '<option value="'+projects[key].filelist[j]+'" onclick="gototab('+t+')">'+projects[key].filelist[j]+'</option>';
 		}
 	}
 	fileList.innerHTML = str;
@@ -229,11 +272,6 @@ function Update()
 		"contents": "updatefile "+tabs[curtab].filename+" "+tabs[curtab].body
 	};
 	sock.send(JSON.stringify(message));
-	/*sock.onmessage = function(response){
-	  var res = JSON.parse(response.data);
-	  var message = res.contents;
-	  document.getElementById('code').value = message;
-	  }*/
 
 }
 
@@ -257,22 +295,6 @@ function newproject()//works
 		"contents": "newproject "+name
 	}
 	sock.send(JSON.stringify(message));
-
-	/*sock.onmessage = function(response){
-	  var res = JSON.parse(response.data);
-	  var contents = res.contents;
-	  if(contents.Created){
-	  alert("new project created");
-	  var fileList = document.getElementById('openproj');
-	  fileList.innerHTML += '<li><a href="#">'+name+'/</a></li>';
-	  currproject = name;
-
-
-	  }
-	  else{
-	  alert(contents.Reason);
-	  }
-	  }*/
 }
 
 function newfile()//works
@@ -283,47 +305,14 @@ function newfile()//works
 		"contents": "newfile "+name
 	}
 	sock.send(JSON.stringify(message));
-	/*sock.onmessage = function(response){
-	  var res = JSON.parse(response.data);
-	  var contents = res.contents;
-	  var numOfFiles = 0;
-	  if(contents.Created){
-	  alert("new file created");
-	  currfile = name;
+}
 
-	  var textareas = document.getElementById("textareas");
-	  textareas.innerHTML += "<div id=\"class"+ntabs+"\" class=\"tabcontent\">\n\
-	  <ul id='openproj'>\n\
-	  <li>Solution Explorer</li>\n\
-	  </ul>\n\
-	  \n\
-	  \n\
-	  <textarea rows=\"10\" cols=\"25\" id=\"codespace\" onkeydown=\"Update()\">\n\
-	  public class Test "+ntabs+"\n\
-	  {\n\
-	  public static void main(String[] args)\n\
-	  {\n\
-	//Your Code Here\n\
-	}\n\
-	}</textarea>\n\
-	<textarea placeholder=\"Console\" id=\"consoleWindow\" rows=\"20\" cols=\"25\"></textarea>\n\
-	</div>\n\
-	";
-	var fileList = document.getElementById('openproj');
-	//if(num)
-	//var tab1 = document.getElementById('tab1');
-	fileList.innerHTML += '<li><a href="#">'+name+'</a></li>';
-
-	var tabList = document.getElementById('tabs');
-	//var class4 = document.getElementById('class4');
-	//class4String = '
-	//tab1.innerHTML = name;
-	tabList.innerHTML += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+ntabs+'" onclick="openTab(event, \'class'+ntabs+'\')">'+name+'</a></li>';
+function getfilecontents(params) {
+	var message = {
+		"nickname": nickname,
+		"contents": "readfile " + params
 	}
-	else{
-	alert(contents.Reason);
-	}
-	}*/
+	sock.send(JSON.stringify(message));
 }
 
 function message()
@@ -364,18 +353,6 @@ function newdir()//works
 		"contents": "newdir "+ name
 	}
 	sock.send(JSON.stringify(message));
-	/*sock.onmessage = function(response){
-	  var res = JSON.parse(response.data);
-	  var contents = res.contents;
-	  if(contents.Created){
-	  alert("directory created");
-	  var fileList = document.getElementById('openproj');
-	  fileList.innerHTML += '<li><a href="#">'+name+'/</a></li>';
-	  }
-	  else{
-	  alert(contents.Reason);
-	  }
-	  }*/
 }
 
 function openproject()//works
@@ -385,23 +362,6 @@ function openproject()//works
 		"contents": "openproject"
 	}
 	sock.send(JSON.stringify(message));
-	/*sock.onmessage = function(response){
-	  var res = JSON.parse(response.data);
-	  var contents = res.contents;
-	  if(contents.Opened){
-	  var fileList = document.getElementById('openproj');
-	  fileList.innerHTML = '';//empty out file explorer
-	  for(var i = 0; i < contents.Files.length; i++){
-	  fileList.innerHTML += '<li><a href="#">'+contents.Files[i]+'</a></li>';
-	  }
-
-
-	  }
-	  else{
-	  alert("no projects make one");
-	  }
-
-	  }*/
 
 }
 

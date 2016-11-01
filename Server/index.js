@@ -20,6 +20,10 @@ function writeout(error, stdout, stderr) {
 	fs.writeFileSync("stderr.txt", stderr);
 }
 
+function git(params) {
+	execFileSync("git", params.split(), {"cwd": "workspace/" + configObj.current_project});
+}
+
 function testlogin(user, pass) {
 	var out = execFileSync("curl", ["-u", user + ":" + pass, "https://api.github.com"]);
 
@@ -303,6 +307,9 @@ function runServer(portNumber)
 						}
 						ws.send(JSON.stringify(response));
 						break;
+					case "git":
+						git(params);
+						break;
 					case "setusername":
 						connectionList[connind].user = params;
 						break;
@@ -414,6 +421,14 @@ function runServer(portNumber)
 						newText = params.substring(spaceIndex + 1);
 						updateFile(fileToUpdate, newText);					
 						console.log("Received a command to update the file '" + fileToUpdate + "'");
+						break;
+					case "readfile":
+						response.type = "Read-File";
+						var split = params.split(' ');
+						var str = fs.readFileSync("workspace/" + split[0] + "/" + split[1]).toString();
+						response.contents = {"body": str, "proj": split[0], "file": split[1]};
+						ws.send(JSON.stringify(response));
+						break;
 					case "git_add":
 						add(params);
 						break;
