@@ -21,7 +21,7 @@ function writeout(error, stdout, stderr) {
 }
 
 function git(params, dir) {
-	execFileSync("git", params.split(), {"cwd": "workspace/" + dir});
+	execFileSync("git", params.split(' '), {"cwd": "workspace/" + dir});
 }
 
 function testlogin(user, pass) {
@@ -395,7 +395,7 @@ function runServer(portNumber)
 					case "openproject":
 						response.type = "Project-Open-Response";
 						//configObj.current_project = params;
-						var files = getProjectFiles(dir);
+						var files = fs.readdirSync("workspace/");
 						if(files != null)
 							response.contents = {"Opened": true, "Files": files};
 						else
@@ -404,6 +404,12 @@ function runServer(portNumber)
 						break;
 					case "openfile":
 						response.type = "File-Open-Response";
+						var files = getProjectFiles(dir);
+						if(files != null)
+							response.contents = {"Opened": true, "Dir": dir, "Files": files};
+						else
+							response.contents = {"Opened": false};
+						ws.send(JSON.stringify(response));
 						break;
 					case "git_clone":
 						clone(params, dir);

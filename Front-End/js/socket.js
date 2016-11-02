@@ -18,6 +18,7 @@ function Connection()//works
     editor.getSession().setMode("ace/mode/java");
 	editor.setKeyboardHandler("ace/keyboard/vim");
 	editor.on("change", Update);
+	editor.$blockScrolling = Infinity;
 	/*
 	editor.commands.addCommand({
 		name: 'tabforward',
@@ -94,12 +95,21 @@ function Connection()//works
 					currfile = name;
 					projects[currproject].filelist = projects[currproject].filelist.concat([currfile]);
 
-					tabs = tabs.concat([{
-						"projname": currproject,
-						"filename":	currfile,
-						"body": "public class "+currfile.replace(".java", "")+"\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// we vim up in this bitch\n\t}\n}\n",
-						"cursor": {"row": 4, "column": 2}
-					}]);
+					if (currfile.endsWith(".java"))
+							tabs = tabs.concat([{
+								"projname": currproject,
+								"filename":	currfile,
+								"body": "public class "+currfile.substr(0,currfile.length-5)+"\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// we vim up in this bitch\n\t}\n}\n",
+								"cursor": {"row": 4, "column": 2}
+								}]);
+					else
+							tabs = tabs.concat([{
+								"projname": currproject,
+								"filename":	currfile,
+								"body": "",
+								"cursor": {"row": 0, "column": 0}
+								}]);
+
 
 					updateTabs();
 					updateFileExplorer();
@@ -124,16 +134,24 @@ function Connection()//works
 				break;
 			case "Project-Open-Response":
 				if(contents.Opened){
-					var fileList = document.getElementById('openproj');
-					fileList.innerHTML = '';//empty out file explorer
+					var str = '';
 					for(var i = 0; i < contents.Files.length; i++){
-						fileList.innerHTML += '<li><a href="#">'+contents.Files[i]+'</a></li>';
+						str += contents.Files[i] + "\n";
 					}
-
-
+					var dir = prompt(str);
+					getfiles(dir);
 				}
 				else{
 					alert("no projects make one");
+				}
+				break;
+			case "File-Open-Response":
+				if(contents.Opened){
+					projects[contents.Dir] = {"hidden": false, "filelist": contents.Files};
+					updateFileExplorer();
+				}
+				else{
+					//alert("no projects make one");
 				}
 				break;
 			case "File-Update-Response":
@@ -172,7 +190,8 @@ function gototab(num)
 	editor.moveCursorToPosition(tabs[num].cursor);
 	editor.clearSelection();
 	editor.focus();
-	tabs[oldtab].cursor = cursor;
+	if (tabs[oldtab])
+		tabs[oldtab].cursor = cursor;
 }
 
 function tabforward() {
@@ -235,6 +254,7 @@ function deleteproj(proj) {
 }
 
 function togglecollapse(proj) {
+	currproject = proj;
 	projects[proj].hidden = !projects[proj].hidden;
 	updateFileExplorer();
 	/*
@@ -402,6 +422,17 @@ function openproject()//works
 	var message = {
 		"nickname": nickname,
 		"contents": "openproject"
+	}
+	sock.send(JSON.stringify(message));
+
+}
+
+function getfiles(dir)
+{
+	var message = {
+		"nickname": nickname,
+		"dir": dir,
+		"contents": "openfile"
 	}
 	sock.send(JSON.stringify(message));
 
