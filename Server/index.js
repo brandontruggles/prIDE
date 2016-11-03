@@ -174,11 +174,25 @@ function createFile(fileName, dir)
 	if(!fs.existsSync("workspace/" + dir + "/" + fileName))
 	{
 		fs.writeFileSync("workspace/" + dir + "/" + fileName, "");
-		configObj.current_file = fileName;	
+		//configObj.current_file = fileName;	
 	}	
 	else
 	{
 		console.log("Failed to create a file with the name '" + fileName + "' within the current project because a file with that name already exists!");
+		return false;
+	}
+	return true;
+}
+
+function deleteFile(fileName)
+{
+	if(fs.existsSync("workspace/" + fileName))
+	{
+		fs.unlinkSync("workspace/" + fileName);
+	}	
+	else
+	{
+		console.log("Failed to delete a file with the name '" + fileName + "' within the current project because a file with that name does not exist!");
 		return false;
 	}
 	return true;
@@ -269,6 +283,7 @@ function runServer(portNumber)
 				var json_message = JSON.parse(message);
 				var nickname = json_message.nickname;
 				var contents = json_message.contents;
+				var file = json_message.file;
 				var dir = json_message.dir;
 				var command = contents.split(' ')[0].toLowerCase();
 				var spaceIndex = contents.indexOf(' ');
@@ -336,7 +351,7 @@ function runServer(portNumber)
 					case "run":
 						response.type = "Code-Running-Status";		
 						console.log("Running code...");
-						var str = run(configObj.current_file, "some args", dir);
+						var str = run(file, "some args", dir);
 						console.log(str);
 						response.contents = {"output": str};
 						ws.send(JSON.stringify(response));
@@ -373,6 +388,21 @@ function runServer(portNumber)
 						else
 						{
 							response.contents = {"Created": true};
+						}
+						ws.send(JSON.stringify(response));
+						break;
+					case "deletefile":
+						response.type = "File-Deleted-Status";
+						if(!deleteFile(params))
+						{
+							response.contents = {"Deleted": false, "Reason": "Failed to remove file '" + params + "'"};
+						}
+						else
+						{
+							var split = params.split('/');
+							console.log(split[0]);
+							console.log(split[1]);
+							response.contents = {"Deleted": true, "proj": split[0], "file": split[1]};
 						}
 						ws.send(JSON.stringify(response));
 						break;

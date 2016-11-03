@@ -6,10 +6,9 @@ var currproject;
 var name;
 var editor;
 var curtab;
-var projects = {"ppp": {"hidden": false, "filelist": ["a.txt", "b.txt"]}};
+var projects = {};
 var tabs = [];
 var updateflag = true;
-var str = '';
 
 function Connection()//works
 {
@@ -19,6 +18,14 @@ function Connection()//works
 	editor.setKeyboardHandler("ace/keyboard/vim");
 	editor.on("change", Update);
 	editor.$blockScrolling = Infinity;
+	editor.commands.addCommand({ // adding commands doesn't work
+		name:	'testcommand',
+		bindkey:	{
+			sender:	'editor|cli',
+			win:	'Ctrl-Alt-h'
+		},
+		exec:	function(editor) {alert("ctrl");console.log("ctrl");}
+	});
 	/*
 	editor.commands.addCommand({
 		name: 'tabforward',
@@ -82,7 +89,7 @@ function Connection()//works
 					alert("new project created");
 					projects[name] = {"hidden": false, "filelist": []};
 					updateFileExplorer();
-					currproject = name;
+					setproj(name);
 				}
 				else{
 					alert(contents.Reason);
@@ -122,9 +129,22 @@ function Connection()//works
 					alert(contents.Reason);
 				}
 				break;
+			case "File-Deleted-Status":
+				if (contents.Deleted) {
+					var proj = contents.proj;
+					var file = contents.file;
+					var list = projects[proj].filelist;
+					//projects[proj].filelist.splice(projects[proj].filelist.indexOf(file), 1);
+					list.splice(list.indexOf(file), 1);
+					updateFileExplorer();
+				}
+				else {
+					alert(contents.Reason);
+				}
+				break;
 			case "Directory-Created-Status":
 				if(contents.Created){
-					alert("directory created");
+					lert("directory created");
 					var fileList = document.getElementById('openproj');
 					fileList.innerHTML += '<li><a href="#">'+name+'/</a></li>';
 				}
@@ -140,6 +160,7 @@ function Connection()//works
 					}
 					var dir = prompt(str);
 					getfiles(dir);
+					setproj(dir);
 				}
 				else{
 					alert("no projects make one");
@@ -182,7 +203,7 @@ function gototab(num)
 	var oldtab = curtab;
 	var cursor = editor.getCursorPosition();
 	curtab = num;
-	currproject = tabs[num].projname;
+	setproj(tabs[num].projname);
 	currfile = tabs[num].filename;
 	updateflag = false;
 	editor.setValue(tabs[num].body);
@@ -192,6 +213,8 @@ function gototab(num)
 	editor.focus();
 	if (tabs[oldtab])
 		tabs[oldtab].cursor = cursor;
+
+	updateTabs(); //for bg color
 }
 
 function tabforward() {
@@ -209,6 +232,7 @@ function opennewtab(proj, file) {
 	}
 	sock.send(JSON.stringify(message));
 	return;
+	/*
 	getfilecontents("workspace/" + proj + "/" + file);
 	tabs = tabs.concat([{
 			"projname": proj,
@@ -219,10 +243,22 @@ function opennewtab(proj, file) {
 	updateTabs();
 	updateFileExplorer(); // now it switches to tab instead of opening a new one
 	gototab(tabs.length - 1);
+	*/
 }
 
 function closetab(index) {
-	tabs = tabs.slice(0, index).concat(tabs.slice(index + 1));
+	tabs.splice(index, 1);
+	if (curtab == index) {
+		if (curtab != 0)
+			curtab --;
+		setproj(tabs[curtab].projname);
+		currfile = tabs[curtab].filename;
+		updateflag = false;
+		editor.setValue(tabs[curtab].body);
+		updateflag = true;
+		editor.moveCursorToPosition(tabs[curtab].cursor);
+		editor.clearSelection();
+	}
 	updateTabs();
 	updateFileExplorer();
 }
@@ -235,11 +271,11 @@ function movetab(src, dst) {
 	updateFileExplorer();
 }
 
-function deletefile(proj, file) {
+function deletefile(file) {
 	var message = {
 		"nickname": nickname,
 		"dir": currproject,
-		"contents": "deletefile " + proj + " " + file
+		"contents": "deletefile " + file
 	}
 	sock.send(JSON.stringify(message));
 }
@@ -254,7 +290,7 @@ function deleteproj(proj) {
 }
 
 function togglecollapse(proj) {
-	currproject = proj;
+	setproj(proj);
 	projects[proj].hidden = !projects[proj].hidden;
 	updateFileExplorer();
 	/*
@@ -280,7 +316,11 @@ function updateFileExplorer() {
 	var str = '';
 	for (var key in projects) {
 		if (!projects.hasOwnProperty(key)) continue;
-		str += '<option value="'+key+'" onclick="togglecollapse(\''+key+'\')"> > '+key+'</option>';
+		if (projects[key].hidden) {
+			str += '<option value="'+key+'" onclick="togglecollapse(\''+key+'\')">+ '+key+'</option>';
+			continue;
+		}
+		str += '<option value="'+key+'" onclick="togglecollapse(\''+key+'\')">- '+key+'</option>';
 		if (projects[key].hidden) continue;
 		for (var j = 0; j < projects[key].filelist.length; j++) {
 			var t = -1;
@@ -302,13 +342,18 @@ function updateTabs() {
 	var tabList = document.getElementById('tabs');
 	var str = ''
 	for (var i = 0; i < tabs.length; i++) {
-		str += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+i+'" onclick="gototab('+i+')">'+tabs[i].filename+'</a></li>';
+		if (i != curtab)
+			str += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+i+'" onclick="gototab('+i+')">'+tabs[i].filename+'</a></li>';
+		else
+			str += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+i+'" onclick="gototab('+i+')" style="background-color: gray;">'+tabs[i].filename+'</a></li>';
 	}
 	tabList.innerHTML = str;
 }
 
 function setproj(name) {
 	currproject = name;
+	var curdir = document.getElementById('curdir');
+	curdir.innerHTML = currproject;
 }
 
 function setfile(name) {
@@ -349,7 +394,7 @@ function newproject()//works
 		"nickname": nickname,
 		"contents": "newproject "+name
 	}
-	currproject = name;
+	setproj(name);
 	sock.send(JSON.stringify(message));
 }
 
@@ -377,6 +422,9 @@ function message()
 {//for chat
 	var chatbox = document.getElementById('commandArea');
 	var message;
+	if (chatbox.value.startsWith("/closetab"))
+		closetab(parseInt(chatbox.value.split(' ')[1]));
+	else
 	if (chatbox.value.startsWith("/"))
 		message = {
 			"nickname": nickname,
@@ -442,6 +490,7 @@ function run()
 {
 	var message = {
 		"nickname": nickname,
+		"file": currfile,
 		"dir": currproject,
 		"contents": "run "
 	}
