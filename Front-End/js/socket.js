@@ -144,7 +144,7 @@ function Connection()//works
 				break;
 			case "Directory-Created-Status":
 				if(contents.Created){
-					lert("directory created");
+					alert("directory created");
 					var fileList = document.getElementById('openproj');
 					fileList.innerHTML += '<li><a href="#">'+name+'/</a></li>';
 				}
@@ -232,23 +232,11 @@ function opennewtab(proj, file) {
 	}
 	sock.send(JSON.stringify(message));
 	return;
-	/*
-	getfilecontents("workspace/" + proj + "/" + file);
-	tabs = tabs.concat([{
-			"projname": proj,
-			"filename":	file,
-			"body": str,
-			"cursor": {"row": 0, "column": 0}
-			}]);
-	updateTabs();
-	updateFileExplorer(); // now it switches to tab instead of opening a new one
-	gototab(tabs.length - 1);
-	*/
 }
 
 function closetab(index) {
 	tabs.splice(index, 1);
-	if (curtab == index) {
+	if (curtab >= index) {
 		if (curtab != 0)
 			curtab --;
 		setproj(tabs[curtab].projname);
@@ -264,9 +252,14 @@ function closetab(index) {
 }
 
 function movetab(src, dst) {
-	var src = tabs[src];
-	tabs = tabs.slice(0, src).concat(tabs.slice(src + 1));
-	tabs = tabs.slice(0, dst).concat([tabs[src]]).concat(tabs.slice(dst + 1));
+	if (src > dst) {
+		tabs.splice(dst, 0, tabs[src]);
+		tabs.splice(src+1, 1);
+	}
+	else {
+		tabs.splice(dst+1, 0, tabs[src]);
+		tabs.splice(src, 1);
+	}
 	updateTabs();
 	updateFileExplorer();
 }
@@ -293,22 +286,6 @@ function togglecollapse(proj) {
 	setproj(proj);
 	projects[proj].hidden = !projects[proj].hidden;
 	updateFileExplorer();
-	/*
-	var hidden = projects[proj].hidden;
-	if (hidden == true)
-		hidden = false;
-	else hidden = true;
-	var option;
-	for (var i = 0; i < ntabs; i++) {
-		option = document.getElementById('option'+i);
-		if (tabs[i].projname == proj)
-			if (hidden == true)
-				option.setAttribute("hidden", hidden);
-			else
-				option.removeAttribute(hidden);
-	}
-	projects[proj].hidden = hidden;
-	*/
 }
 
 function updateFileExplorer() {
@@ -321,7 +298,6 @@ function updateFileExplorer() {
 			continue;
 		}
 		str += '<option value="'+key+'" onclick="togglecollapse(\''+key+'\')">- '+key+'</option>';
-		if (projects[key].hidden) continue;
 		for (var j = 0; j < projects[key].filelist.length; j++) {
 			var t = -1;
 			for (var k = 0; k < tabs.length; k++)
@@ -371,7 +347,6 @@ function Update()
 		"contents": "updatefile "+tabs[curtab].filename+" "+tabs[curtab].body
 	};
 	sock.send(JSON.stringify(message));
-
 }
 
 function compile()//hold on for alec
@@ -383,7 +358,6 @@ function compile()//hold on for alec
 		"contents": "compile"
 	}
 	sock.send(JSON.stringify(message));
-
 }
 
 
@@ -422,10 +396,17 @@ function message()
 {//for chat
 	var chatbox = document.getElementById('commandArea');
 	var message;
-	if (chatbox.value.startsWith("/closetab"))
+	if (chatbox.value.startsWith("/closetab")) {
 		closetab(parseInt(chatbox.value.split(' ')[1]));
-	else
-	if (chatbox.value.startsWith("/"))
+		chatbox.value = '';
+		return;
+	}
+	else if (chatbox.value.startsWith("/movetab")) {
+		movetab(parseInt(chatbox.value.split(' ')[1]), parseInt(chatbox.value.split(' ')[2]));
+		chatbox.value = '';
+		return;
+	}
+	else if (chatbox.value.startsWith("/"))
 		message = {
 			"nickname": nickname,
 			"dir": currproject,
@@ -437,13 +418,7 @@ function message()
 			"dir": currproject,
 			"contents": "message "+chatbox.value
 		}
-	sock.send(JSON.stringify(message));
 
-	message = {
-		"nickname": nickname,
-		"dir": currproject,
-		"contents": "message "+chatbox.value
-	}
 	chatbox.value = '';
 	sock.send(JSON.stringify(message));
 }
@@ -492,7 +467,7 @@ function run()
 		"nickname": nickname,
 		"file": currfile,
 		"dir": currproject,
-		"contents": "run "
+		"contents": "run"
 	}
 	sock.send(JSON.stringify(message));
 
