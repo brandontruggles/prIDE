@@ -292,7 +292,7 @@ function applyRTUpdate(queueObj)
 	var lineNumber = updateObj.line_num;	
 	var startIndex = updateObj.start_idx;
 	var changes = updateObj.changes;
-	var fileContents = fs.readFileSync(filePath).toString();
+	var fileContents = fs.readFileSync("workspace/" + filePath).toString();
 	var lines = fileContents.split('\n');
 	for(var i = 0; i < changes.length; i++)
 	{
@@ -340,7 +340,7 @@ function pollUpdateQueues()
 				var filePath = updateQueues[i].path;
 				try
 				{
-					var fileContents = fs.readFileSync(filePath).toString();
+					var fileContents = fs.readFileSync("workspace/" + filePath).toString();
 					var response = {"type": "Real-Time-Update-Response", "contents":{"path":filePath, "file_contents":fileContents}};
 					//Needs to be limited to only people with the file open later on
 					broadcastResponse(connectionList, response);
