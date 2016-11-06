@@ -311,7 +311,7 @@ function applyRTUpdate(queueObj)
 		}
 		else
 		{
-			lines[lineNumber] = lines[lineNumber - 1].substring(0, startIndex) + changes.charAt(i) + lines[lineNumber - 1].substring(startIndex + 1, lines[lineNumber - 1].length);		
+			lines[lineNumber - 1] = lines[lineNumber - 1].substring(0, startIndex) + changes.charAt(i) + lines[lineNumber - 1].substring(startIndex + 1, lines[lineNumber - 1].length);		
 		}
 	}
 	var newContents = lines.join();
