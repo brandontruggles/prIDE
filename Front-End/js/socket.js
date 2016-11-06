@@ -57,8 +57,7 @@ function Connection()//works
 		var res = JSON.parse(response.data);
 		var contents = res.contents;
 		switch(res.type){
-      case "Real-Time-Update_Response":
-        alert(contents.file_contents);
+      case "Real-Time-Update-Response":
         tabs[curtab].body = contents.file_contents;
         break;
 
