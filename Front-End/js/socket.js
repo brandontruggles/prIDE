@@ -8,6 +8,7 @@ var curtab;
 var projects = {};
 var tabs = [];
 var updateflag = true;
+var vim = false;
 
 //real time update
 var currow = -1;
@@ -354,6 +355,13 @@ function setfile(name) {
 
 function changes(event){
   var key = event.keyCode || event.charCode;
+  if(!vim){
+    if(key == 73)
+      vim = true;
+    else {
+      return;
+    }
+  }
   var cursor = editor.selection.getCursor();
   if(currindex == -1){
     currow = cursor.row+1;
