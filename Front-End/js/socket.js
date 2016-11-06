@@ -58,6 +58,7 @@ function Connection()//works
 		var contents = res.contents;
 		switch(res.type){
       case "Real-Time-Update-Response":
+        alert(contents.file_contents);
         tabs[curtab].body = contents.file_contents;
         break;
 
