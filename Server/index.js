@@ -286,6 +286,7 @@ function processRTUpdate(filePath, lineNumber, startIndex, changes)
 
 function applyRTUpdate(queueObj)
 {
+	console.log(queueObj);
 	queueObj.locked = true;
 	var filePath = queueObj.path;
 	var updateObj = queueObj.queue.pop(); //dequeue
