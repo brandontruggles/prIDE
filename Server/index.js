@@ -346,12 +346,12 @@ function pollUpdateQueues(connectionList)
 					var fileContents = fs.readFileSync("workspace/" + filePath).toString();
 					var response = {"type": "Real-Time-Update-Response", "contents":{"path":filePath, "file_contents":fileContents}};
 					//Needs to be limited to only people with the file open later on
-					broadcastResponse(connectionList, response);
 				}
 				catch(err)
 				{
 					console.log("Failed to read from the file for updating! " + err); 
 				}
+				broadcastResponse(connectionList, response);
 			}
 		}
 	}
