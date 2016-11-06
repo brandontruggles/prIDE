@@ -336,11 +336,11 @@ function pollUpdateQueues(connectionList)
 	{
 		if(!updateQueues[i].locked && updateQueues[i].queue.length > 0)
 		{	
-			console.log("initial if");
 			var applied = applyRTUpdate(updateQueues[i]);
 			if(applied)
 			{
 				var filePath = updateQueues[i].path;
+				console.log("THIS IS THE FILE PATH"+filePath);
 				try
 				{
 					var fileContents = fs.readFileSync("workspace/" + filePath).toString();
