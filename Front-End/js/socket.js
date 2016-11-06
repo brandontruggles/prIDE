@@ -58,7 +58,6 @@ function Connection()//works
 		var contents = res.contents;
 		switch(res.type){
       case "Real-Time-Update_Response":
-        if(contents.path == currproject+"/"+currfile)
           tabs[curtab].body = contents.file_contents;
         break;
 
