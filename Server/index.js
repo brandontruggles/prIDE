@@ -330,7 +330,7 @@ function applyRTUpdate(queueObj)
 	return true;
 }
 
-function pollUpdateQueues()
+function pollUpdateQueues(connectionList)
 {
 	for(var i = 0; i < updateQueues.length; i++)
 	{
@@ -370,7 +370,7 @@ function runServer(portNumber)
 	var server = new WebSocketServer({port: portNumber});
 	var connectionList = [];
 	var connind = -1;
-	setInterval(pollUpdateQueues, 50);
+	setInterval(function(){pollUpdateQueues(connectionList)}, 50);
 	server.on('connection', function connection(ws)
 	{
 		console.log('New connection attempted!');
