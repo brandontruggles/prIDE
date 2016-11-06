@@ -9,6 +9,11 @@ var projects = {};
 var tabs = [];
 var updateflag = true;
 
+//real time update
+var currow = -1;
+var currindex = -1;
+var change = "";
+
 function Connection()//works
 {
     editor = ace.edit("codespace");
@@ -52,6 +57,10 @@ function Connection()//works
 		var res = JSON.parse(response.data);
 		var contents = res.contents;
 		switch(res.type){
+      case "Real-Time-Update_Response":
+        document.getElementById('codespace').value = message;
+        break;
+
 			case "Console":
 				console.log(contents);
 				document.getElementById('consoleWindow').innerHTML += contents;
@@ -341,18 +350,42 @@ function setfile(name) {
 	currfile = name;
 }
 
-function rtUpdate(e) {
+
+function changes(event){
+  var key = event.keyCode || event.charCode;
+  var cursor = editor.selection.getCursor();
+  if(currindex == -1){
+    currow = cursor.row+1;
+    currindex = cursor.column;
+  }
+
+  if(key == 8)
+    change+="#b"
+  else if (key == 13)
+    change+="/n"
+  else {
+    change+=String.fromCharCode(key);
+  }
+}
+setInterval(function rtUpdate() {
 	if (! updateflag) return;
 
+  if (change == "" || change == null)
+    return;
+  //alert("Current line number: "+currow+" Initial index #: "+currindex);
 	var message = {
 		"nickname": nickname,
-		"file": currproject + "/" + currfile,
-		"change": e,
-		"contents": "rtupdate"
+    "dir": currproject,
+    "file": currfile,
+		"contents": "rtupdate "+currow+ " "+currindex+" "+change
 	}
 
+  sock.send(JSON.stringify(message));
+  currow = -1;
+  currindex = -1;
+  change = "";
 	//e.start (row, column), e.end, a.action (insert / remove), e.lines []
-}
+}, 10000);
 function Update()
 {
 	if (! updateflag) return;
