@@ -21,22 +21,7 @@ function Connection()//works
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/java");
 	editor.setKeyboardHandler("ace/keyboard/vim");
-	editor.on("change", function(event){
-    var key = event.keyCode || event.charCode;
-    var cursor = editor.selection.getCursor();
-    if(currindex == -1){
-      currow = cursor.row+1;
-      currindex = cursor.column;
-    }
-
-    if(key == 8)
-      change+="#b"
-    else if (key == 13)
-      change+="/n"
-    else {
-      change+=String.fromCharCode(key);
-    }
-  });
+	//editor.on("change", changes);
 	editor.$blockScrolling = Infinity;
 	editor.commands.addCommand({ // adding commands doesn't work
 		name:	'testcommand',
@@ -368,6 +353,22 @@ function setfile(name) {
 }
 
 
+function changes(event){
+  var key = event.keyCode || event.charCode;
+  var cursor = editor.selection.getCursor();
+  if(currindex == -1){
+    currow = cursor.row+1;
+    currindex = cursor.column;
+  }
+
+  if(key == 8)
+    change+="#b"
+  else if (key == 13)
+    change+="/n"
+  else {
+    change+=String.fromCharCode(key);
+  }
+}
 setInterval(function rtUpdate() {
 	if (! updateflag) return;
 
