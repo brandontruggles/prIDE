@@ -103,7 +103,7 @@ function run(prog, args, dir) {
 function listproj(user) {
 
 	execFileSync("curl https://api.github.com/users/" + user + "/repos", writeout);
-	out = fs.readFileSync("stdout.txt", "utf8");
+	out = fs.readFileSync("stdout.txt", "utf8").toString();
 	var obj = JSON.parse(out);
 
 	return obj;
@@ -150,7 +150,7 @@ function readConfig()
 {
 	try
 	{
-		configObj = JSON.parse(fs.readFileSync("server.conf"));
+		configObj = JSON.parse(fs.readFileSync("server.conf").toString());
 	}
 	catch(err)
 	{
@@ -270,7 +270,7 @@ function findQueueObj(filePath) //Replace later with binary search
 
 function processRTUpdate(filePath, lineNumber, startIndex, changes)
 {
-	var str = fs.readFileSync("workspace/" + filePath);
+	var str = fs.readFileSync("workspace/" + filePath).toString();
 	var updateObj = {"line_num": lineNumber, "start_idx": startIndex, "changes": changes};
 	var queueObj = findQueueObj(filePath);	
 	if(queueObj == null)
@@ -292,7 +292,7 @@ function applyRTUpdate(queueObj)
 	var lineNumber = updateObj.line_num;	
 	var startIndex = updateObj.start_idx;
 	var changes = updateObj.changes;
-	var fileContents = fs.readFileSync(filePath);
+	var fileContents = fs.readFileSync(filePath).toString();
 	var lines = fileContents.split('\n');
 	for(var i = 0; i < changes.length; i++)
 	{
@@ -340,7 +340,7 @@ function pollUpdateQueues()
 				var filePath = updateQueues[i].path;
 				try
 				{
-					var fileContents = fs.readFileSync(filePath);
+					var fileContents = fs.readFileSync(filePath).toString();
 					var response = {"type": "Real-Time-Update-Response", "contents":{"path":filePath, "file_contents":fileContents}};
 					//Needs to be limited to only people with the file open later on
 					broadcastResponse(connectionList, response);
@@ -573,7 +573,7 @@ function runServer(portNumber)
 						break;
 					case "readfile":
 						response.type = "Read-File";
-						var str = fs.readFileSync("workspace/" + dir + "/" + params);
+						var str = fs.readFileSync("workspace/" + dir + "/" + params).toString();
 						response.contents = {"body": str, "proj": dir, "file": params};
 						ws.send(JSON.stringify(response));
 						break;
