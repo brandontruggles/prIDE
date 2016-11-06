@@ -386,7 +386,7 @@ setInterval(function rtUpdate() {
   currindex = -1;
   change = "";
 	//e.start (row, column), e.end, a.action (insert / remove), e.lines []
-}, 10000);
+}, 1000);
 function Update()
 {
 	if (! updateflag) return;

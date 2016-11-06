@@ -334,6 +334,7 @@ function pollUpdateQueues()
 {
 	for(var i = 0; i < updateQueues.length; i++)
 	{
+		console.log("index: " + i);
 		if(!updateQueues[i].locked && updateQueues[i].length > 0)
 		{	
 			var applied = applyRTUpdate(updateQueues[i]);
