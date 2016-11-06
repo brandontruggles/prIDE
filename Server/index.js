@@ -361,7 +361,8 @@ function broadcastResponse(connectionList, responseString)
 {
 	connectionList.forEach(function(conn)
 	{
-		conn.connection.send(responseString);
+		if(conn.readyState != CLOSED)
+			conn.connection.send(responseString);
 	});
 }
 
@@ -371,6 +372,7 @@ function runServer(portNumber)
 	var server = new WebSocketServer({port: portNumber});
 	var connectionList = [];
 	var connind = -1;
+	setInterval(function(){pollUpdateQueues(connectionList)}, 50);
 	server.on('connection', function connection(ws)
 	{
 		console.log('New connection attempted!');
@@ -631,5 +633,3 @@ if(!configExists())
 readConfig();
 
 runServer(configObj.port);
-
-setInterval(function(){pollUpdateQueues(connectionList)}, 50);
