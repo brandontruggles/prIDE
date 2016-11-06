@@ -21,7 +21,7 @@ function Connection()//works
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/java");
 	editor.setKeyboardHandler("ace/keyboard/vim");
-	editor.on("change", Update);
+	editor.on("change", changes(event));
 	editor.$blockScrolling = Infinity;
 	editor.commands.addCommand({ // adding commands doesn't work
 		name:	'testcommand',
