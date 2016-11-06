@@ -336,8 +336,10 @@ function pollUpdateQueues(connectionList)
 	{
 		if(!updateQueues[i].locked && updateQueues[i].queue.length > 0)
 		{	
+			console.log("initial if");
 			var applied = applyRTUpdate(updateQueues[i]);
 			if(applied)
+				console.log("applied if");
 			{
 				var filePath = updateQueues[i].path;
 				try
