@@ -317,7 +317,7 @@ function applyRTUpdate(queueObj)
 	var newContents = lines.join();
 	try
 	{
-		fs.writeFileSync(filePath, newContents);
+		fs.writeFileSync("workspace/" + filePath, newContents);
 	}
 	catch(err)
 	{
