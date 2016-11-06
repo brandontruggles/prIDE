@@ -294,7 +294,7 @@ function applyRTUpdate(queueObj)
 	var changes = updateObj.changes;
 	var fileContents = fs.readFileSync(filePath);
 	var lines = fileContents.split('\n');
-	for(var i = 0; i < changes.length(); i++)
+	for(var i = 0; i < changes.length; i++)
 	{
 		if(changes.charAt(i) == '#')
 		{
@@ -310,7 +310,7 @@ function applyRTUpdate(queueObj)
 		}
 		else
 		{
-			lines[lineNumber] = lines[lineNumber].substring(0, startIndex) + changes.charAt(i) + lines[lineNumber].substring(startIndex + 1, lines[lineNumber].length());		
+			lines[lineNumber] = lines[lineNumber].substring(0, startIndex) + changes.charAt(i) + lines[lineNumber].substring(startIndex + 1, lines[lineNumber].length);		
 		}
 	}
 	var newContents = lines.join();
@@ -554,7 +554,7 @@ function runServer(portNumber)
 						var lineNumber = parseInt(splitParams[0]);
 						var startIndex = parseInt(splitParams[1]);
 						var changes = "";
-						for(var i = 2; i < splitParams.length(); i++)
+						for(var i = 2; i < splitParams.length; i++)
 						{
 							if(i == 2)
 								changes += splitParams[i];
