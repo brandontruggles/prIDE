@@ -1,6 +1,5 @@
 var sock;
 var nickname;
-var ntabs = 0;
 var currfile;
 var currproject;
 var name;
@@ -121,9 +120,8 @@ function Connection()//works
 					updateTabs();
 					updateFileExplorer();
 
-					if (ntabs == 0) curtab = ntabs;
-					gototab(ntabs);
-					ntabs++;
+					if (tabs.length == 1) curtab = 0;
+					gototab(0);
 				}
 				else{
 					alert(contents.Reason);
@@ -235,6 +233,7 @@ function opennewtab(proj, file) {
 }
 
 function closetab(index) {
+	if (tabs.length == 1) return; // temporary to prevent errors
 	tabs.splice(index, 1);
 	if (curtab >= index) {
 		if (curtab != 0)
@@ -260,6 +259,12 @@ function movetab(src, dst) {
 		tabs.splice(dst+1, 0, tabs[src]);
 		tabs.splice(src, 1);
 	}
+	if (src < curtab && curtab <= dst)
+		curtab --;
+	else if (src > curtab && curtab >= dst)
+		curtab ++;
+	else if (src == curtab)
+		curtab = dst;
 	updateTabs();
 	updateFileExplorer();
 }
@@ -336,6 +341,18 @@ function setfile(name) {
 	currfile = name;
 }
 
+function rtUpdate(e) {
+	if (! updateflag) return;
+
+	var message = {
+		"nickname": nickname,
+		"file": currproject + "/" + currfile,
+		"change": e,
+		"contents": "rtupdate"
+	}
+
+	//e.start (row, column), e.end, a.action (insert / remove), e.lines []
+}
 function Update()
 {
 	if (! updateflag) return;

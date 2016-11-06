@@ -451,6 +451,10 @@ function runServer(portNumber)
 						//if (connectionList[connind].valid)
 						//	pull(params);
 						break;
+					case "rtupdate":
+						//
+
+						break;
 					case "updatefile":
 						response.type = "File-Update-Response";
 						fileToUpdate = params.split(' ')[0];
