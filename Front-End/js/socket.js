@@ -388,7 +388,7 @@ setInterval(function rtUpdate() {
   change = "";
 	//e.start (row, column), e.end, a.action (insert / remove), e.lines []
 }, 1000);
-function Update()
+/*function Update()
 {
 	if (! updateflag) return;
 	tabs[curtab].body = editor.getValue();
@@ -399,11 +399,11 @@ function Update()
 		"contents": "updatefile "+tabs[curtab].filename+" "+tabs[curtab].body
 	};
 	sock.send(JSON.stringify(message));
-}
+}*/
 
 function compile()//hold on for alec
 {
-	Update();
+	//Update();
 	var message = {
 		"nickname": nickname,
 		"dir": currproject,
