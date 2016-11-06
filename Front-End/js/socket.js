@@ -59,7 +59,7 @@ function Connection()//works
 		switch(res.type){
       case "Real-Time-Update_Response":
         if(contents.path == currproject+"/"+currfile)
-        document.getElementById('codespace').value = contents.file_contents;
+          tabs[curtab].body = contents.file_contents;
         break;
 
 			case "Console":
