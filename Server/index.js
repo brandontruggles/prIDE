@@ -324,7 +324,8 @@ function applyRTUpdate(queueObj)
 		queueObj.locked = false;
 		return false;
 	}
-	queueObj.locked = false;			
+	queueObj.locked = false;	
+	console.log("Successfully wrote the following line to the file '" + filePath + "': " + newContents);		
 	return true;
 }
 
