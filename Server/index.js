@@ -6,6 +6,7 @@ var read = require('read');
 var fs = require('fs');
 var curfile = "";
 var child;
+var updateQueues = [];
 
 var options = {
 	prompt: 'enter pass: ',
@@ -257,6 +258,102 @@ function getProjectFiles(dir)
 	return files;
 }
 
+function findQueueObj(filePath) //Replace later with binary search
+{
+	for(var i = 0; i < updateQueues.length; i++)
+	{
+		if(updateQueues[i].path == filePath)
+			return updateQueues[i];
+	}
+	return null;
+}
+
+function processRTUpdate(filePath, lineNumber, startIndex, changes)
+{
+	var str = fs.readFileSync("workspace/" + filePath);
+	var updateObj = {"line_num": lineNumber, "start_idx": startIndex, "changes": changes};
+	var queueObj = findQueueObj(filePath);	
+	if(queueObj == null)
+	{
+		queueObj = {"path": filePath, "queue": [updateObj], "locked": false};
+		updateQueues.unshift(queueObj); //enqueue
+	}	
+	else
+	{
+		queueObj.queue.unshift(updateObj);
+	}
+}
+
+function applyRTUpdate(queueObj)
+{
+	queueObj.locked = true;
+	var filePath = queueObj.path;
+	var updateObj = queueObj.queue.pop(); //dequeue
+	var lineNumber = updateObj.line_num;	
+	var startIndex = updateObj.start_idx;
+	var changes = updateObj.changes;
+	var fileContents = fs.readFileSync(filePath);
+	var lines = fileContents.split('\n');
+	for(var i = 0; i < changes.length(); i++)
+	{
+		if(changes.charAt(i) == '#')
+		{
+			switch(changes.charAt(i + 1))
+			{
+				case '#':						
+					break;
+				case 'b':
+					break;
+				default:
+					break;
+			}
+		}
+		else
+		{
+			lines[lineNumber] = lines[lineNumber].substring(0, startIndex) + changes.charAt(i) + lines[lineNumber].substring(startIndex + 1, lines[lineNumber].length());		
+		}
+	}
+	var newContents = lines.join();
+	try
+	{
+		fs.writeFileSync(filePath, newContents);
+	}
+	catch(err)
+	{
+		console.log("Failed to write updates to file! " + err);
+		queueObj.locked = false;
+		return false;
+	}
+	queueObj.locked = false;			
+	return true;
+}
+
+function pollUpdateQueues()
+{
+	for(var i = 0; i < updateQueues.length; i++)
+	{
+		if(!updateQueues[i].locked)
+		{	
+			var applied = applyRTUpdate(updateQueues[i]);
+			if(applied)
+			{
+				var filePath = updateQueues[i].path;
+				try
+				{
+					var fileContents = fs.readFileSync(filePath);
+					var response = {"type": "Real-Time-Update-Response", "contents":{"path":filePath, "file_contents":fileContents}};
+					//Needs to be limited to only people with the file open later on
+					broadcastResponse(connectionList, response);
+				}
+				catch(err)
+				{
+					console.log("Failed to read from the file for updating! " + err); 
+				}
+			}
+		}
+	}
+}
+
 function broadcastResponse(connectionList, responseString)
 {
 	connectionList.forEach(function(conn)
@@ -271,6 +368,7 @@ function runServer(portNumber)
 	var server = new WebSocketServer({port: portNumber});
 	var connectionList = [];
 	var connind = -1;
+	setInterval(pollUpdateQueues, 50);
 	server.on('connection', function connection(ws)
 	{
 		console.log('New connection attempted!');
@@ -452,20 +550,30 @@ function runServer(portNumber)
 						//	pull(params);
 						break;
 					case "rtupdate":
-						//
-
+						var splitParams = params.split(' ');
+						var lineNumber = parseInt(splitParams[0]);
+						var startIndex = parseInt(splitParams[1]);
+						var changes = "";
+						for(var i = 2; i < splitParams.length(); i++)
+						{
+							if(i == 2)
+								changes += splitParams[i];
+							else
+								changes += ' ' + splitParams[i];
+						}
+						processRTUpdate(dir + "/" + file, lineNumber, startIndex, changes);
 						break;
 					case "updatefile":
 						response.type = "File-Update-Response";
-						fileToUpdate = params.split(' ')[0];
+						var fileToUpdate = params.split(' ')[0];
 						var spaceIndex = params.indexOf(' ');
-						newText = params.substring(spaceIndex + 1);
+						var newText = params.substring(spaceIndex + 1);
 						updateFile(fileToUpdate, newText, dir);
 						console.log("Received a command to update the file '" + fileToUpdate + "'");
 						break;
 					case "readfile":
 						response.type = "Read-File";
-						var str = fs.readFileSync("workspace/" + dir + "/" + params).toString();
+						var str = fs.readFileSync("workspace/" + dir + "/" + params);
 						response.contents = {"body": str, "proj": dir, "file": params};
 						ws.send(JSON.stringify(response));
 						break;
