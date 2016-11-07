@@ -58,11 +58,6 @@ function Connection()//works
 		var res = JSON.parse(response.data);
 		var contents = res.contents;
 		switch(res.type){
-      case "Real-Time-Update-Response":
-        alert(contents.file_contents);
-        tabs[curtab].body = contents.file_contents;
-        break;
-
 			case "Console":
 				console.log(contents);
 				document.getElementById('consoleWindow').innerHTML += contents;
@@ -393,7 +388,8 @@ setInterval(function Update()
 	var message = {
 		"nickname": nickname,
 		"dir": currproject,
-		"contents": "updatefile "+tabs[curtab].filename+" "+tabs[curtab].body
+    "file": tabs[curtab].filename,
+		"contents": "updatefile "++currow+ " "+currindex+" "+change
 	};
 	sock.send(JSON.stringify(message));
   currow = -1;
