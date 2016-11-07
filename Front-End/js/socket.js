@@ -357,6 +357,7 @@ function ch(event){
         currow = cursor.row;
         currindex = cursor.column;
       }
+    }
       if(key == 8){
         alert("gets here");
         change+="#b";
@@ -365,7 +366,7 @@ function ch(event){
         change+="\n";
       else
         return;
-    }
+
   }
 }
 
