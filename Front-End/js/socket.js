@@ -115,7 +115,7 @@ function Connection()//works
 								"cursor": {"row": 4, "column": 2}
               }]);
               change = "\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// we vim up in this bitch\n\t}\n}\n";
-              currow = 0;
+              currow = 1;
               currindex = 0;
               Update();
           }
