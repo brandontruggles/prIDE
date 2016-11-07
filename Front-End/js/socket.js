@@ -351,14 +351,6 @@ function setfile(name) {
 function ch(event){
   var key = event.keyCode || event.charCode;
   alert("gets here");
-  if(key == 8){
-    change+="#b";
-  }
-  else if (key == 13)
-    change+="\n";
-  else {
-    return;
-  }
 }
 
 function changes(event){
@@ -368,7 +360,12 @@ function changes(event){
     currow = cursor.row+1;
     currindex = cursor.column;
   }
-
+  if(key == 8){
+    change+="#b";
+  }
+  else if (key == 13)
+    change+="\n";
+  else
     change+=String.fromCharCode(key);
 }
 
