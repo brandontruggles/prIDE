@@ -182,7 +182,8 @@ function Connection()//works
 				break;
 			case "File-Update-Response":
 				editor.setValue(contents.file_contents);
-        editor.moveCursorToPosition({row: currow+1, column: currindex+change.length});
+        console.log(currow);
+        editor.moveCursorToPosition({row:(currow+1), column:(currindex+change.length)});
     		editor.clearSelection();
         currow = -1;
         currindex = -1;
@@ -359,13 +360,11 @@ function ch(event){
     currow = cursor.row+1;
     currindex = cursor.column;
     if(key == 8){
-      alert("gets here");
       change+="#b";
     }
     else if (key == 13)
       change+="\n";
     else{
-      alert("kill me");
       return;
     }
 
