@@ -185,7 +185,7 @@ function Connection()//works
 				}
 				break;
 			case "File-Update-Response":
-
+        alert(contents.file_contents);
 				document.getElementById('codespace').value = contents.file_contents;
 				break;
 			case "Read-File":
