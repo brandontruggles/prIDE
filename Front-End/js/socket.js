@@ -354,7 +354,7 @@ function ch(event){
   if(vim){
 
         //currow = cursor.row+1;
-      //  currindex = cursor.column;
+        currindex = cursor.column;
     if(key == 8){
       alert("gets here");
       change+="#b";
