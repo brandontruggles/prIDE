@@ -288,7 +288,7 @@ function insertChange(change, lines, lineNumber, startIndex)
 {
 		if(lineNumber <= lines.length)
 		{
-			lines[lineNumber - 1] = lines[lineNumber - 1].substring(0, startIndex) + change + lines[lineNumber - 1].substring(startIndex + 1);		
+			lines[lineNumber - 1] = lines[lineNumber - 1].substring(0, startIndex + 1) + change + lines[lineNumber - 1].substring(startIndex + 1);		
 		}
 		else
 		{
@@ -296,7 +296,7 @@ function insertChange(change, lines, lineNumber, startIndex)
 			{
 				lines.push('');
 			}
-			lines[lineNumber - 1] = lines[lineNumber - 1].substring(0, startIndex) + change + lines[lineNumber - 1].substring(startIndex + 1);		
+			lines[lineNumber - 1] = lines[lineNumber - 1].substring(0, startIndex + 1) + change + lines[lineNumber - 1].substring(startIndex + 1);		
 		}
 }
 
@@ -341,7 +341,7 @@ function applyRTUpdate(queueObj)
 		}
 		else if(changes.charAt(i) == '\n')
 		{
-			lines.splice(lineNumber, 0, '');
+			lines.splice(lineNumber - 1, 0, '');
 		}
 		else
 		{
