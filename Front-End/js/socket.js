@@ -107,13 +107,18 @@ function Connection()//works
 					currfile = name;
 					projects[currproject].filelist = projects[currproject].filelist.concat([currfile]);
 
-					if (currfile.endsWith(".java"))
+					if (currfile.endsWith(".java")){
 							tabs = tabs.concat([{
 								"projname": currproject,
 								"filename":	currfile,
 								"body": "public class "+currfile.substr(0,currfile.length-5)+"\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// we vim up in this bitch\n\t}\n}\n",
 								"cursor": {"row": 4, "column": 2}
-								}]);
+              }]);
+              changes = "\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// we vim up in this bitch\n\t}\n}\n";
+              currrow = 0;
+              currindex = 0;
+              Update();
+          }
 					else
 							tabs = tabs.concat([{
 								"projname": currproject,
