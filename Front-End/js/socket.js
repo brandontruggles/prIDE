@@ -21,7 +21,7 @@ function Connection()//works
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/java");
 	  editor.setKeyboardHandler("ace/keyboard/vim");
-	  //editor.on("change", changes );
+	  //editor.on("change", Update);
 	  editor.$blockScrolling = Infinity;
 	editor.commands.addCommand({ // adding commands doesn't work
 		name:	'testcommand',
@@ -354,8 +354,7 @@ function ch(event){
 }
 
 function changes(event){
-  var key = event.keyCode;
-  alert("gets here");
+  var key = event.keyCode || event.charCode;
   alert(key);
   var cursor = editor.selection.getCursor();
   if(currindex == -1){
