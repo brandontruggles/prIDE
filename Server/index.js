@@ -373,7 +373,7 @@ function broadcastResponse(connectionList, responseString)
 {
 	connectionList.forEach(function(conn)
 	{
-		if(conn.readyState != 3)
+		if(conn.readyState != 3 && conn.readyState != 2)
 			conn.connection.send(responseString);
 	});
 }
