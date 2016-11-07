@@ -358,14 +358,16 @@ function ch(event){
         currindex = cursor.column;
       }
     }
-      if(key == 8){
-        alert("gets here");
-        change+="#b";
-      }
-      else if (key == 13)
-        change+="\n";
-      else
-        return;
+    if(key == 8){
+      alert("gets here");
+      change+="#b";
+    }
+    else if (key == 13)
+      change+="\n";
+    else{
+      alert("kill me");
+      return;
+    }
 
   }
 }
