@@ -372,8 +372,8 @@ function changes(event){
   }
   var cursor = editor.selection.getCursor();
   if(currindex == -1){
-    currow = cursor.row+1;
-    currindex = cursor.column;
+    currow = cursor.row;
+    currindex = cursor.column+1;
   }
     change+=String.fromCharCode(key);
 }
