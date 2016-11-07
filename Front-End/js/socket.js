@@ -355,6 +355,8 @@ function setfile(name) {
 
 function ch(event){
   var key = event.keyCode || event.charCode;
+
+  alert("gets in here");
   if(key == 8)
     change+="#b"
   else if (key == 13)
@@ -373,20 +375,7 @@ function changes(event){
 
     change+=String.fromCharCode(key);
 }
-/*setInterval(function rtUpdate() {
-	if (! updateflag) return;
-  //alert("Current line number: "+currow+" Initial index #: "+currindex);
-	var message = {
-		"nickname": nickname,
-    "dir": currproject,
-    "file": currfile,
-		"contents": "rtupdate "+currow+ " "+currindex+" "+change
-	}
 
-  sock.send(JSON.stringify(message));
-
-	//e.start (row, column), e.end, a.action (insert / remove), e.lines []
-}, 1000);*/
 function Update()
 {
 	if (! updateflag) return;
