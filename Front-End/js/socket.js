@@ -350,23 +350,23 @@ function setfile(name) {
 
 function ch(event){
   var key = event.keyCode || event.charCode;
-  alert("gets here");
-}
-
-function changes(event){
-  var key = event.keyCode || event.charCode;
-  alert(key);
-  var cursor = editor.selection.getCursor();
-  if(currindex == -1){
-    currow = cursor.row+1;
-    currindex = cursor.column;
-  }
+  alert("gets to ch");
   if(key == 8){
     change+="#b";
   }
   else if (key == 13)
     change+="\n";
   else
+    alert("it is a letter of some kind");
+}
+
+function changes(event){
+  var key = event.keyCode || event.charCode;
+  var cursor = editor.selection.getCursor();
+  if(currindex == -1){
+    currow = cursor.row+1;
+    currindex = cursor.column;
+  }
     change+=String.fromCharCode(key);
 }
 
