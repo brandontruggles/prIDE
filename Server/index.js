@@ -365,7 +365,7 @@ function pollUpdateQueues(connectionList)
 				{
 					console.log("Failed to read from the file for updating! " + err); 
 				}
-				broadcastResponse(connectionList, response);
+				broadcastResponse(connectionList, JSON.stringify(response));
 			}
 		}
 	}
@@ -375,8 +375,7 @@ function broadcastResponse(connectionList, responseString)
 {
 	connectionList.forEach(function(conn)
 	{
-		if(conn.connection.readyState != 3 && conn.connection.readyState != 2)
-			conn.connection.send(responseString);
+		conn.connection.send(responseString);
 	});
 }
 
