@@ -360,7 +360,7 @@ function ch(event){
 
   if(key == 8 || key == 13){
     if(currindex == -1){
-      currow = cursor.row+1;
+      currow = cursor.row;
       currindex = cursor.column;
   }
   if(key == 8){
@@ -379,7 +379,7 @@ function changes(event){
   var key = event.keyCode || event.charCode;
   var cursor = editor.selection.getCursor();
   if(currindex == -1){
-    currow = cursor.row+1;
+    currow = cursor.row;
     currindex = cursor.column;
   }
   if(String.fromCharCode(key) == "\r")
