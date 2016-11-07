@@ -185,7 +185,8 @@ function Connection()//works
 				}
 				break;
 			case "File-Update-Response":
-				document.getElementById('codespace').value = message;
+
+				document.getElementById('codespace').value = contents.file_contents;
 				break;
 			case "Read-File":
 				/* vvv kinda jank to do this here vvv */
@@ -201,7 +202,6 @@ function Connection()//works
 				break;
 
 			default:
-				alert("dam son");
 				break;
 		}//switch
 	}//onmessage
