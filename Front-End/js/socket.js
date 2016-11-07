@@ -354,7 +354,8 @@ function ch(event){
 }
 
 function changes(event){
-  var key = event.keyCode || event.charCode;
+  var key = event.keyCode;
+  alert(key);
   var cursor = editor.selection.getCursor();
   if(currindex == -1){
     currow = cursor.row+1;
