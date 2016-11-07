@@ -353,7 +353,7 @@ function ch(event){
   var key = event.keyCode || event.charCode;
   if(vim){
 
-        currow = cursor.row+1;
+        //currow = cursor.row+1;
       //  currindex = cursor.column;
     if(key == 8){
       alert("gets here");
