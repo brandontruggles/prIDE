@@ -318,7 +318,7 @@ function applyRTUpdate(queueObj)
 			}
 			else
 			{
-				while(lineNumber > lines.length())
+				while(lineNumber > lines.length)
 				{
 					lines.push('');
 				}
