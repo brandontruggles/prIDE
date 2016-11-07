@@ -365,7 +365,7 @@ function changes(event){
   if(key == 8)
     change+="#b"
   else if (key == 13)
-    change+="/n"
+    change+="\n"
   else {
     change+=String.fromCharCode(key);
   }
