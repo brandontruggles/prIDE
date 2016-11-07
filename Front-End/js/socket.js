@@ -388,7 +388,6 @@ function Update()
 	if (! updateflag) return;
   if (change == "" || change == null)
     return;
-	tabs[curtab].body = editor.getValue();
 	tabs[curtab].cursor = editor.getCursorPosition();
 	var message = {
 		"nickname": nickname,
