@@ -357,7 +357,7 @@ function pollUpdateQueues(connectionList)
 				try
 				{
 					var fileContents = fs.readFileSync("workspace/" + filePath, "utf8").toString();
-					response = {"type": "Real-Time-Update-Response", "contents":{"path":filePath, "file_contents":fileContents}};
+					response = {"type": "File-Update-Response", "contents":{"path":filePath, "file_contents":fileContents}};
 					console.log("Successfully read from the file for updating!");
 					//Needs to be limited to only people with the file open later on
 				}
