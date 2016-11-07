@@ -174,7 +174,7 @@ function createFile(fileName, dir)
 {
 	if(!fs.existsSync("workspace/" + dir + "/" + fileName))
 	{
-		fs.writeFileSync("workspace/" + dir + "/" + fileName +  "public class " + fileName.replace(".java", "") + "\r{\r\tpublic static void main(String [] args)\r\t{\r\t\tSystem.out.println(\"Hello World!\");\r\t}\n}");
+		fs.writeFileSync("workspace/" + dir + "/" + fileName,"public class " + fileName.replace(".java", "") + "\n{\n\tpublic static void main(String [] args)\n\t{\\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}");
 		//configObj.current_file = fileName;	
 	}	
 	else
