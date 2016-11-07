@@ -111,7 +111,7 @@ function Connection()//works
 							tabs = tabs.concat([{
 								"projname": currproject,
 								"filename":	currfile,
-								"body": "public class "+currfile.substr(0,currfile.length-5)+"\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// Edit this class as you please\n\t}\n}\n",
+								"body": "public class "+currfile.substr(0,currfile.length-5)+"\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}\n",
 								"cursor": {"row": 4, "column": 2}
               }]);
           }
@@ -351,7 +351,6 @@ function setfile(name) {
 function ch(event){
   var key = event.keyCode || event.charCode;
 
-  alert("gets in here");
   if(key == 8)
     change+="#b"
   else if (key == 13)
@@ -360,6 +359,7 @@ function ch(event){
     return;
   }
 }
+
 function changes(event){
   var key = event.keyCode || event.charCode;
   var cursor = editor.selection.getCursor();
