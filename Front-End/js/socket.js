@@ -351,10 +351,11 @@ function setfile(name) {
 function ch(event){
   var key = event.keyCode || event.charCode;
 
-  if(key == 8)
-    change+="#b"
+  if(key == 8){
+    change+="#b";
+  }
   else if (key == 13)
-    change+="\n"
+    change+="\n";
   else {
     return;
   }
