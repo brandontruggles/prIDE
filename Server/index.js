@@ -295,7 +295,7 @@ function applyRTUpdate(queueObj)
 	var changes = updateObj.changes;
 	var fileContents = fs.readFileSync("workspace/" + filePath, "utf8").toString();
 	var lines = fileContents.split('\n');
-	console.log(lines);
+	
 	for(var i = 0; i < changes.length; i++)
 	{
 		if(changes.charAt(i) == '#')
@@ -312,7 +312,18 @@ function applyRTUpdate(queueObj)
 		}
 		else
 		{
-			lines[lineNumber - 1] = lines[lineNumber - 1].substring(0, startIndex) + changes.charAt(i) + lines[lineNumber - 1].substring(startIndex + 1, lines[lineNumber - 1].length);		
+			if(lineNumber <= lines.length)
+			{
+				lines[lineNumber - 1] = lines[lineNumber - 1].substring(0, startIndex) + changes.charAt(i) + lines[lineNumber - 1].substring(startIndex + 1, lines[lineNumber - 1].length);		
+			}
+			else
+			{
+				while(lineNumber > lines.length())
+				{
+					lines.push('');
+				}
+				lines[lineNumber - 1] = lines[lineNumber - 1].substring(0, startIndex) + changes.charAt(i) + lines[lineNumber - 1].substring(startIndex + 1, lines[lineNumber - 1].length);		
+			}
 		}
 	}
 	var newContents = lines.join();
