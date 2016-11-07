@@ -288,7 +288,7 @@ function insertChange(change, lines, lineNumber, startIndex)
 {
 		if(lineNumber <= lines.length)
 		{
-			lines[lineNumber - 1] = lines[lineNumber - 1].substring(0, startIndex + 1) + change + lines[lineNumber - 1].substring(startIndex + 1);		
+			lines[lineNumber - 2] = lines[lineNumber - 2].substring(0, startIndex + 1) + change + lines[lineNumber - 2].substring(startIndex + 1);		
 		}
 		else
 		{
@@ -296,7 +296,7 @@ function insertChange(change, lines, lineNumber, startIndex)
 			{
 				lines.push('');
 			}
-			lines[lineNumber - 1] = lines[lineNumber - 1].substring(0, startIndex + 1) + change + lines[lineNumber - 1].substring(startIndex + 1);		
+			lines[lineNumber - 2] = lines[lineNumber - 2].substring(0, startIndex + 1) + change + lines[lineNumber - 2].substring(startIndex + 1);		
 		}
 }
 
@@ -305,7 +305,7 @@ function performBackspace(lines, lineNumber, startIndex)
 	console.log("lines.length: " + lines.length + " lineNumber: " + lineNumber + " startIndex: " + startIndex);
 	if(!(startIndex == 0  && lineNumber == 1))
 	{
-		lines[lineNumber - 1] = lines[lineNumber - 1].substring(0, startIndex) + lines[lineNumber - 1].substring(startIndex + 1);
+		lines[lineNumber - 2] = lines[lineNumber - 2].substring(0, startIndex) + lines[lineNumber - 2].substring(startIndex + 1);
 	}
 }
 
