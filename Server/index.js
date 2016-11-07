@@ -354,11 +354,11 @@ function pollUpdateQueues(connectionList)
 			{
 				var filePath = updateQueues[i].path;
 				var response = "";
-				console.log("THIS IS THE FILE PATH"+filePath);
 				try
 				{
 					var fileContents = fs.readFileSync("workspace/" + filePath, "utf8").toString();
 					response = {"type": "Real-Time-Update-Response", "contents":{"path":filePath, "file_contents":fileContents}};
+					console.log("Successfully read from the file for updating!");
 					//Needs to be limited to only people with the file open later on
 				}
 				catch(err)
@@ -375,7 +375,7 @@ function broadcastResponse(connectionList, responseString)
 {
 	connectionList.forEach(function(conn)
 	{
-		if(conn.readyState != 3 && conn.readyState != 2)
+		if(conn.connection.readyState != 3 && conn.connection.readyState != 2)
 			conn.connection.send(responseString);
 	});
 }
