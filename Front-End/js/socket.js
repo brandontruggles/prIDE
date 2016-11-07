@@ -373,7 +373,7 @@ function changes(event){
   var cursor = editor.selection.getCursor();
   if(currindex == -1){
     currow = cursor.row;
-    currindex = cursor.column+1;
+    currindex = cursor.column;
   }
     change+=String.fromCharCode(key);
 }
