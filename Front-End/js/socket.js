@@ -182,11 +182,8 @@ function Connection()//works
 				break;
 			case "File-Update-Response":
 				editor.setValue(contents.file_contents);
-        editor.moveCursorToPosition({row: currow, column: currindex+change.length-1});
+        //editor.moveCursorToPosition({row: currow, column: currindex+change.length});
     		editor.clearSelection();
-        currow = -1;
-        currindex = -1;
-        change = "";
 				break;
 			case "Read-File":
 				/* vvv kinda jank to do this here vvv */
@@ -393,6 +390,9 @@ function Update()
 		"contents": "updatefile "+currow+ " "+currindex+" "+change
 	};
 	sock.send(JSON.stringify(message));
+  currow = -1;
+  currindex = -1;
+  change = "";
 }
 setInterval(Update, 50);
 
