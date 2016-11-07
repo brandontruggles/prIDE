@@ -351,7 +351,9 @@ function setfile(name) {
 
 function ch(event){
   var key = event.keyCode || event.charCode;
+  alert(key);
   if(vim){
+
         currow = cursor.row+1;
         currindex = cursor.column;
 
