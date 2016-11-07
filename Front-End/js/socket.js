@@ -367,7 +367,7 @@ function ch(event){
     change+="#b";
   }
   else if (key == 13)
-    change+="\r\n";
+    change+="\n";
   else{
     return;
   }
