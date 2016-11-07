@@ -115,7 +115,7 @@ function Connection()//works
 								"cursor": {"row": 4, "column": 2}
               }]);
               changes = "\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// we vim up in this bitch\n\t}\n}\n";
-              currrow = 0;
+              currow = 0;
               currindex = 0;
               Update();
           }
@@ -401,7 +401,7 @@ function Update()
   currindex = -1;
   change = "";
 }
-setInterval(Update(), 1000);
+setInterval(Update, 1000);
 
 function compile()//hold on for alec
 {
