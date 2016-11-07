@@ -318,7 +318,7 @@ function applyRTUpdate(queueObj)
 	var startIndex = updateObj.start_idx;
 	var changes = updateObj.changes;
 	var fileContents = fs.readFileSync("workspace/" + filePath, "utf8").toString();
-	var lines = fileContents.split('\r');
+	var lines = fileContents.split('\n');
 	
 	for(var i = 0; i < changes.length; i++)
 	{
@@ -338,16 +338,12 @@ function applyRTUpdate(queueObj)
 			}
 			i++;
 		}
-		else if(changes.charAt(i) == '\n')
-		{
-			insertChange('\r', lines, lineNumber, startIndex);
-		}
 		else
 		{
 			insertChange(changes.charAt(i), lines, lineNumber, startIndex);
 		}
 	}
-	var newContents = lines.join();
+	var newContents = lines.join('\n');
 	var successful = false;
 	try
 	{
