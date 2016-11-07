@@ -554,7 +554,7 @@ function runServer(portNumber)
 						//if (connectionList[connind].valid)
 						//	pull(params);
 						break;
-					case "rtupdate":
+					case "updatefile":
 						var splitParams = params.split(' ');
 						var lineNumber = parseInt(splitParams[0]);
 						var startIndex = parseInt(splitParams[1]);
@@ -567,14 +567,6 @@ function runServer(portNumber)
 								changes += ' ' + splitParams[i];
 						}
 						processRTUpdate(dir + "/" + file, lineNumber, startIndex, changes);
-						break;
-					case "updatefile":
-						response.type = "File-Update-Response";
-						var fileToUpdate = params.split(' ')[0];
-						var spaceIndex = params.indexOf(' ');
-						var newText = params.substring(spaceIndex + 1);
-						updateFile(fileToUpdate, newText, dir);
-						console.log("Received a command to update the file '" + fileToUpdate + "'");
 						break;
 					case "readfile":
 						response.type = "Read-File";
