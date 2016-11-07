@@ -20,9 +20,9 @@ function Connection()//works
     editor = ace.edit("codespace");
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/java");
-	editor.setKeyboardHandler("ace/keyboard/vim");
-	//editor.on("change", changes);
-	editor.$blockScrolling = Infinity;
+	  editor.setKeyboardHandler("ace/keyboard/vim");
+	  //editor.on("change", Update);
+	  edi1tor.$blockScrolling = Infinity;
 	editor.commands.addCommand({ // adding commands doesn't work
 		name:	'testcommand',
 		bindkey:	{
@@ -369,11 +369,8 @@ function changes(event){
     change+=String.fromCharCode(key);
   }
 }
-setInterval(function rtUpdate() {
+/*setInterval(function rtUpdate() {
 	if (! updateflag) return;
-
-  if (change == "" || change == null)
-    return;
   //alert("Current line number: "+currow+" Initial index #: "+currindex);
 	var message = {
 		"nickname": nickname,
@@ -383,14 +380,14 @@ setInterval(function rtUpdate() {
 	}
 
   sock.send(JSON.stringify(message));
-  currow = -1;
-  currindex = -1;
-  change = "";
+
 	//e.start (row, column), e.end, a.action (insert / remove), e.lines []
-}, 1000);
-/*function Update()
+}, 1000);*/
+setInterval(function Update()
 {
 	if (! updateflag) return;
+  if (change == "" || change == null)
+    return;
 	tabs[curtab].body = editor.getValue();
 	tabs[curtab].cursor = editor.getCursorPosition();
 	var message = {
@@ -399,11 +396,14 @@ setInterval(function rtUpdate() {
 		"contents": "updatefile "+tabs[curtab].filename+" "+tabs[curtab].body
 	};
 	sock.send(JSON.stringify(message));
-}*/
+  currow = -1;
+  currindex = -1;
+  change = "";
+},1000);
 
 function compile()//hold on for alec
 {
-	//Update();
+	Update();
 	var message = {
 		"nickname": nickname,
 		"dir": currproject,
