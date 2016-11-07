@@ -150,7 +150,7 @@ function readConfig()
 {
 	try
 	{
-		configObj = JSON.parse(fs.readFileSync("server.conf").toString());
+		configObj = JSON.parse(fs.readFileSync("server.conf", "utf8").toString());
 	}
 	catch(err)
 	{
@@ -270,7 +270,7 @@ function findQueueObj(filePath) //Replace later with binary search
 
 function processRTUpdate(filePath, lineNumber, startIndex, changes)
 {
-	var str = fs.readFileSync("workspace/" + filePath).toString();
+	var str = fs.readFileSync("workspace/" + filePath, "utf8").toString();
 	var updateObj = {"line_num": lineNumber, "start_idx": startIndex, "changes": changes};
 	var queueObj = findQueueObj(filePath);	
 	if(queueObj == null)
@@ -293,7 +293,7 @@ function applyRTUpdate(queueObj)
 	var lineNumber = updateObj.line_num;	
 	var startIndex = updateObj.start_idx;
 	var changes = updateObj.changes;
-	var fileContents = fs.readFileSync("workspace/" + filePath).toString();
+	var fileContents = fs.readFileSync("workspace/" + filePath, "utf8").toString();
 	var lines = fileContents.split('\n');
 	for(var i = 0; i < changes.length; i++)
 	{
@@ -343,7 +343,7 @@ function pollUpdateQueues(connectionList)
 				console.log("THIS IS THE FILE PATH"+filePath);
 				try
 				{
-					var fileContents = fs.readFileSync("workspace/" + filePath).toString();
+					var fileContents = fs.readFileSync("workspace/" + filePath, "utf8").toString();
 					var response = {"type": "Real-Time-Update-Response", "contents":{"path":filePath, "file_contents":fileContents}};
 					//Needs to be limited to only people with the file open later on
 				}
@@ -577,7 +577,7 @@ function runServer(portNumber)
 						break;
 					case "readfile":
 						response.type = "Read-File";
-						var str = fs.readFileSync("workspace/" + dir + "/" + params).toString();
+						var str = fs.readFileSync("workspace/" + dir + "/" + params, "utf8").toString();
 						response.contents = {"body": str, "proj": dir, "file": params};
 						ws.send(JSON.stringify(response));
 						break;
