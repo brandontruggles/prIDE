@@ -295,6 +295,7 @@ function applyRTUpdate(queueObj)
 	var changes = updateObj.changes;
 	var fileContents = fs.readFileSync("workspace/" + filePath, "utf8").toString();
 	var lines = fileContents.split('\n');
+	console.log(lines);
 	for(var i = 0; i < changes.length; i++)
 	{
 		if(changes.charAt(i) == '#')
