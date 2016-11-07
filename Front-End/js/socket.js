@@ -389,7 +389,7 @@ setInterval(function Update()
 		"nickname": nickname,
 		"dir": currproject,
     "file": tabs[curtab].filename,
-		"contents": "updatefile "++currow+ " "+currindex+" "+change
+		"contents": "updatefile "+currow+ " "+currindex+" "+change
 	};
 	sock.send(JSON.stringify(message));
   currow = -1;
