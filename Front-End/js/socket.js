@@ -181,8 +181,8 @@ function Connection()//works
 				}
 				break;
 			case "File-Update-Response":
-				editor.setValue(contents.file_contents);
         var cursor = editor.getCursorPosition();
+				editor.setValue(contents.file_contents);
         console.log(cursor.row);
         editor.moveCursorToPosition(cursor);
     		editor.clearSelection();
