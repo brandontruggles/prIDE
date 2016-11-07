@@ -8,7 +8,7 @@ var curtab;
 var projects = {};
 var tabs = [];
 var updateflag = true;
-var vim = false;
+
 
 //real time update
 var currow = -1;
@@ -20,7 +20,7 @@ function Connection()//works
     editor = ace.edit("codespace");
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/java");
-	  editor.setKeyboardHandler("ace/keyboard/vim");
+	  //editor.setKeyboardHandler("ace/keyboard/vim");
 	  //editor.on("change", Update);
 	  editor.$blockScrolling = Infinity;
 	editor.commands.addCommand({ // adding commands doesn't work
@@ -181,8 +181,14 @@ function Connection()//works
 				}
 				break;
 			case "File-Update-Response":
+        var cursor = editor.getCursorPosition();
 				editor.setValue(contents.file_contents);
-    				editor.clearSelection();
+        console.log(cursor.row);
+        editor.moveCursorToPosition(cursor);
+    		editor.clearSelection();
+        currow = -1;
+        currindex = -1;
+        change = "";
 				break;
 			case "Read-File":
 				/* vvv kinda jank to do this here vvv */
@@ -350,25 +356,27 @@ function setfile(name) {
 
 function ch(event){
   var key = event.keyCode || event.charCode;
-  if(vim){
-    alert("gets to ch");
-    if(key == 8){
-      change+="#b";
-    }
-    else if (key == 13)
-      change+="\n";
-    else
-      return;
+  var cursor = editor.selection.getCursor();
+
+  if(key == 8 || key == 13){
+    if(currindex == -1){
+      currow = cursor.row+1;
+      currindex = cursor.column;
   }
+  if(key == 8){
+    change+="#b";
+  }
+  else if (key == 13)
+    change+="\n";
+  else{
+    return;
+  }
+  }
+
 }
 
 function changes(event){
   var key = event.keyCode || event.charCode;
-  if(!vim){
-    if(String.fromCharCode(key) == "i")
-      vim = true;
-    return;
-  }
   var cursor = editor.selection.getCursor();
   if(currindex == -1){
     currow = cursor.row+1;
@@ -389,9 +397,6 @@ function Update()
 		"contents": "updatefile "+currow+ " "+currindex+" "+change
 	};
 	sock.send(JSON.stringify(message));
-  currow = -1;
-  currindex = -1;
-  change = "";
 }
 setInterval(Update, 50);
 
