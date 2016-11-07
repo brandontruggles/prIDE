@@ -350,7 +350,7 @@ function setfile(name) {
 
 function ch(event){
   var key = event.keyCode || event.charCode;
-
+  alert("gets here");
   if(key == 8){
     change+="#b";
   }
