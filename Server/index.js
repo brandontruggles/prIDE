@@ -341,7 +341,7 @@ function applyRTUpdate(queueObj)
 		}
 		else if(changes.charAt(i) == '\n')
 		{
-			lines.splice(startIndex, 0, '');
+			lines.splice(startIndex + 1, 0, '');
 		}
 		else
 		{
