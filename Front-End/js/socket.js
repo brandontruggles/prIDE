@@ -186,7 +186,7 @@ function Connection()//works
 				break;
 			case "File-Update-Response":
         alert(contents.file_contents);
-				document.getElementById('codespace').value = contents.file_contents;
+				tabs[curtab].body = contents.file_contents;
 				break;
 			case "Read-File":
 				/* vvv kinda jank to do this here vvv */
