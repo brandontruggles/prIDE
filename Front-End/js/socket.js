@@ -350,18 +350,25 @@ function setfile(name) {
 
 function ch(event){
   var key = event.keyCode || event.charCode;
-  alert("gets to ch");
-  if(key == 8){
-    change+="#b";
+  if(vim){
+    alert("gets to ch");
+    if(key == 8){
+      change+="#b";
+    }
+    else if (key == 13)
+      change+="\n";
+    else
+      return;
   }
-  else if (key == 13)
-    change+="\n";
-  else
-    alert("it is a letter of some kind");
 }
 
 function changes(event){
   var key = event.keyCode || event.charCode;
+  if(!vim){
+    if(String.fromCharCode(key) == "i")
+      vim = true;
+    return;
+  }
   var cursor = editor.selection.getCursor();
   if(currindex == -1){
     currow = cursor.row+1;
