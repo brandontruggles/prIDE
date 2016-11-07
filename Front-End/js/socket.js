@@ -352,9 +352,9 @@ function setfile(name) {
 function ch(event){
   var key = event.keyCode || event.charCode;
   if(vim){
-
-        //currow = cursor.row+1;
-        currindex = cursor.column;
+    var cursor = editor.selection.getCursor();
+    currow = cursor.row+1;
+    currindex = cursor.column;
     if(key == 8){
       alert("gets here");
       change+="#b";
