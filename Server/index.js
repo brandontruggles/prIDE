@@ -353,11 +353,12 @@ function pollUpdateQueues(connectionList)
 			if(applied)
 			{
 				var filePath = updateQueues[i].path;
+				var response = "";
 				console.log("THIS IS THE FILE PATH"+filePath);
 				try
 				{
 					var fileContents = fs.readFileSync("workspace/" + filePath, "utf8").toString();
-					var response = {"type": "Real-Time-Update-Response", "contents":{"path":filePath, "file_contents":fileContents}};
+					response = {"type": "Real-Time-Update-Response", "contents":{"path":filePath, "file_contents":fileContents}};
 					//Needs to be limited to only people with the file open later on
 				}
 				catch(err)
