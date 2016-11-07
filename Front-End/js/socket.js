@@ -355,6 +355,7 @@ function ch(event){
 
 function changes(event){
   var key = event.keyCode;
+  alert("gets here");
   alert(key);
   var cursor = editor.selection.getCursor();
   if(currindex == -1){
