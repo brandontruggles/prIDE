@@ -391,7 +391,7 @@ function Update()
 	var message = {
 		"nickname": nickname,
 		"dir": currproject,
-    "file": tabs[curtab].filename,
+    "file": currfile,
 		"contents": "updatefile "+currow+ " "+currindex+" "+change
 	};
 	sock.send(JSON.stringify(message));
