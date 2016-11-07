@@ -186,6 +186,8 @@ function Connection()//works
 				break;
 			case "File-Update-Response":
 				editor.setValue(contents.file_contents);
+        editor.moveCursorToPosition(tabs[curtab].cursor);
+    		editor.clearSelection();
 				break;
 			case "Read-File":
 				/* vvv kinda jank to do this here vvv */
