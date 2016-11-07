@@ -327,19 +327,20 @@ function applyRTUpdate(queueObj)
 		}
 	}
 	var newContents = lines.join();
+	var successful = false;
 	try
 	{
 		fs.writeFileSync("workspace/" + filePath, newContents);
+		console.log("Successfully wrote the following line to the file '" + filePath + "': " + newContents);
+		successful = true;
 	}
 	catch(err)
 	{
 		console.log("Failed to write updates to file! " + err);
 		queueObj.locked = false;
-		return false;
 	}
-	queueObj.locked = false;	
-	console.log("Successfully wrote the following line to the file '" + filePath + "': " + newContents);		
-	return true;
+	queueObj.locked = false;			
+	return successful;
 }
 
 function pollUpdateQueues(connectionList)
