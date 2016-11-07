@@ -182,7 +182,7 @@ function Connection()//works
 				break;
 			case "File-Update-Response":
 				editor.setValue(contents.file_contents);
-        editor.moveCursorToPosition({row: currow, column: currindex+change.length});
+        editor.moveCursorToPosition({row: currow, column: currindex+change.length-1});
     		editor.clearSelection();
         currow = -1;
         currindex = -1;
