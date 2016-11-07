@@ -182,8 +182,8 @@ function Connection()//works
 				break;
 			case "File-Update-Response":
 				editor.setValue(contents.file_contents);
-        console.log(currow);
         var cursor = editor.getCursorPosition();
+        console.log(cursor.row);
         editor.moveCursorToPosition(cursor);
     		editor.clearSelection();
         currow = -1;
