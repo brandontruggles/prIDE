@@ -284,6 +284,30 @@ function processRTUpdate(filePath, lineNumber, startIndex, changes)
 	}
 }
 
+function insertChange(change, lines, lineNumber, startIndex)
+{
+		if(lineNumber <= lines.length)
+		{
+			lines[lineNumber - 1] = lines[lineNumber - 1].substring(0, startIndex) + change + lines[lineNumber - 1].substring(startIndex + 1, lines[lineNumber - 1].length);		
+		}
+		else
+		{
+			while(lineNumber > lines.length)
+			{
+				lines.push('');
+			}
+			lines[lineNumber - 1] = lines[lineNumber - 1].substring(0, startIndex) + change + lines[lineNumber - 1].substring(startIndex + 1, lines[lineNumber - 1].length);		
+		}
+}
+
+function performBackspace(lines, lineNumber, startIndex)
+{
+	if(!(startIndex == 0  && lineNumber == 1))
+	{
+		lines[lineNumber - 1] = lines[lineNumber - 1].substring(0, startIndex) + lines[lineNumber - 1].substring(startIndex + 1, lines[lineNumber - 1].length - 1);
+	}
+}
+
 function applyRTUpdate(queueObj)
 {
 	console.log(queueObj);
@@ -302,30 +326,21 @@ function applyRTUpdate(queueObj)
 		{
 			switch(changes.charAt(i + 1))
 			{
-				case '#':						
+				case '#':
+					insertChange('#', lines, lineNumber, startIndex);			
 					break;
 				case 'b':
-					lines[lineNumber - 1] = lines[lineNumber - 1].substring(0, startIndex) + lines[lineNumber - 1].substring(startIndex, lines[lineNumber - 1].length - 1);
+					performBackspace(lines, lineNumber, startIndex);
 					break;
 				default:
 					console.log("Received unknown escape sequence character!");
 					break;
 			}
+			i++;
 		}
 		else
 		{
-			if(lineNumber <= lines.length)
-			{
-				lines[lineNumber - 1] = lines[lineNumber - 1].substring(0, startIndex) + changes.charAt(i) + lines[lineNumber - 1].substring(startIndex + 1, lines[lineNumber - 1].length);		
-			}
-			else
-			{
-				while(lineNumber > lines.length)
-				{
-					lines.push('');
-				}
-				lines[lineNumber - 1] = lines[lineNumber - 1].substring(0, startIndex) + changes.charAt(i) + lines[lineNumber - 1].substring(startIndex + 1, lines[lineNumber - 1].length);		
-			}
+			insertChange(changes.charAt(i), lines, lineNumber, startIndex);
 		}
 	}
 	var newContents = lines.join();
