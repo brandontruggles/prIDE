@@ -353,7 +353,16 @@ function setfile(name) {
 	currfile = name;
 }
 
-
+function ch(event){
+  var key = event.keyCode || event.charCode;
+  if(key == 8)
+    change+="#b"
+  else if (key == 13)
+    change+="\n"
+  else {
+    return;
+  }
+}
 function changes(event){
   var key = event.keyCode || event.charCode;
   var cursor = editor.selection.getCursor();
@@ -362,13 +371,7 @@ function changes(event){
     currindex = cursor.column;
   }
 
-  if(key == 8)
-    change+="#b"
-  else if (key == 13)
-    change+="\n"
-  else {
     change+=String.fromCharCode(key);
-  }
 }
 /*setInterval(function rtUpdate() {
 	if (! updateflag) return;

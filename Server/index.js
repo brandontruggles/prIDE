@@ -305,8 +305,10 @@ function applyRTUpdate(queueObj)
 				case '#':						
 					break;
 				case 'b':
+					lines[lineNumber - 1] = lines[lineNumber - 1].substring(0, startIndex) + lines[lineNumber - 1].substring(startIndex, lines[lineNumber - 1].length - 1);
 					break;
 				default:
+					console.log("Received unknown escape sequence character!");
 					break;
 			}
 		}
