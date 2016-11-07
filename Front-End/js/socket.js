@@ -367,7 +367,7 @@ function ch(event){
     change+="#b";
   }
   else if (key == 13)
-    change+="\n";
+    change+="\r\n";
   else{
     return;
   }
@@ -382,7 +382,10 @@ function changes(event){
     currow = cursor.row+1;
     currindex = cursor.column;
   }
-    change+=String.fromCharCode(key);
+  if(String.fromCharCode(key) == "\r")
+    return;
+
+  change+=String.fromCharCode(key);
 }
 
 function Update()
