@@ -353,10 +353,12 @@ function ch(event){
   var key = event.keyCode || event.charCode;
   if(vim){
     if(key == 8 || key == 13){
+      alert("gets into if");
       if(currindex == -1){
+        alert("sets index");
         currow = cursor.row;
         currindex = cursor.column;
-      } 
+      }
       if(key == 8){
         change+="#b";
       }
