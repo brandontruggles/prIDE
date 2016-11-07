@@ -302,6 +302,7 @@ function insertChange(change, lines, lineNumber, startIndex)
 
 function performBackspace(lines, lineNumber, startIndex)
 {
+	console.log("lines.length: " + lines.length + " lineNumber: " + lineNumber + " startIndex: " + startIndex);
 	if(!(startIndex == 0  && lineNumber == 1))
 	{
 		lines[lineNumber - 1] = lines[lineNumber - 1].substring(0, startIndex) + lines[lineNumber - 1].substring(startIndex + 1);
@@ -337,6 +338,10 @@ function applyRTUpdate(queueObj)
 					break;
 			}
 			i++;
+		}
+		else if(changes.charAt(i) == '\n')
+		{
+			lines.splice(startIndex, 0, '');
 		}
 		else
 		{
