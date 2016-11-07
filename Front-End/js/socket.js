@@ -352,12 +352,12 @@ function setfile(name) {
 function ch(event){
   var key = event.keyCode || event.charCode;
   if(vim){
-    /*if(key == 8 || key == 13){
+    if(key == 8 || key == 13){
       if(currindex == -1){
-        currow = cursor.row;
+        currow = cursor.row+1;
         currindex = cursor.column;
       }
-    }*/
+    }
       if(key == 8){
         alert("gets here");
         change+="#b";
