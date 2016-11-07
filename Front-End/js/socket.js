@@ -114,7 +114,7 @@ function Connection()//works
 								"body": "public class "+currfile.substr(0,currfile.length-5)+"\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// we vim up in this bitch\n\t}\n}\n",
 								"cursor": {"row": 4, "column": 2}
               }]);
-              changes = "\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// we vim up in this bitch\n\t}\n}\n";
+              change = "\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// we vim up in this bitch\n\t}\n}\n";
               currow = 0;
               currindex = 0;
               Update();
