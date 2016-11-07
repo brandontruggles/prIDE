@@ -22,7 +22,7 @@ function Connection()//works
     editor.getSession().setMode("ace/mode/java");
 	  editor.setKeyboardHandler("ace/keyboard/vim");
 	  //editor.on("change", Update);
-	  edi1tor.$blockScrolling = Infinity;
+	  editor.$blockScrolling = Infinity;
 	editor.commands.addCommand({ // adding commands doesn't work
 		name:	'testcommand',
 		bindkey:	{
