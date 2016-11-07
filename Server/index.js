@@ -174,7 +174,7 @@ function createFile(fileName, dir)
 {
 	if(!fs.existsSync("workspace/" + dir + "/" + fileName))
 	{
-		fs.writeFileSync("workspace/" + dir + "/" + fileName, "public class " + fileName.replace(".java", "") + "\r\n{\r\n\tpublic static void main(String [] args)\r\n\t{\r\n\t\tSystem.out.println(\"Hello World!\");\r\n\t}\r\n}");
+		fs.writeFileSync("workspace/" + dir + "/" + fileName +  "public class " + fileName.replace(".java", "") + "\r{\r\tpublic static void main(String [] args)\r\t{\r\t\tSystem.out.println(\"Hello World!\");\r\t}\n}");
 		//configObj.current_file = fileName;	
 	}	
 	else
@@ -318,7 +318,7 @@ function applyRTUpdate(queueObj)
 	var startIndex = updateObj.start_idx;
 	var changes = updateObj.changes;
 	var fileContents = fs.readFileSync("workspace/" + filePath, "utf8").toString();
-	var lines = fileContents.split('\n');
+	var lines = fileContents.split('\r');
 	
 	for(var i = 0; i < changes.length; i++)
 	{
@@ -337,6 +337,10 @@ function applyRTUpdate(queueObj)
 					break;
 			}
 			i++;
+		}
+		else if(changes.charAt(i) == '\n')
+		{
+			insertChange('\r', lines, lineNumber, startIndex);
 		}
 		else
 		{
