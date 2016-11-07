@@ -383,7 +383,7 @@ function changes(event){
 
 	//e.start (row, column), e.end, a.action (insert / remove), e.lines []
 }, 1000);*/
-setInterval(function Update()
+function Update()
 {
 	if (! updateflag) return;
   if (change == "" || change == null)
@@ -400,7 +400,8 @@ setInterval(function Update()
   currow = -1;
   currindex = -1;
   change = "";
-},1000);
+}
+setInterval(Update(), 1000);
 
 function compile()//hold on for alec
 {
