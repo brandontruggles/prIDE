@@ -1,5 +1,4 @@
 
-//var sys = require('sys');
 var execFileSync = require('child_process').execFileSync;
 var spawn = require('child_process').spawn;
 var read = require('read');
@@ -39,9 +38,23 @@ function adjustchange(p2file, nick, change) {
 	return change;
 }
 
+function bufwrite(file, change) {
+	if (change.action == "insert") {
+		//log[file].str = log[file].str.split('').splice(change.indexstart, 0, change.lines.join('\n').split('')).join('');
+		log[file].str = log[file].str.slice(0, change.indexstart) + change.lines.join('\n') + log[file].str.slice(change.indexstart);
+	}
+	else {
+		//log[file].str = log[file].str.split('').splice(change.indexstart, change.indexend - change.indexstart).join('');
+		log[file].str = log[file].str.slice(0, change.indexstart) + log[file].str.slice(change.indexend);
+	}
+
+	console.log(log[file].str);
+	fs.writeFileSync("workspace/" + file, log[file].str); // save to file
+}
+
 function enQ(p2file, change) {
 	if (log[p2file] == null)
-		log[p2file].changes = [change];
+		log[p2file]["changes"] = [change];
 	else
 		log[p2file].changes.push(change);
 }
@@ -558,7 +571,7 @@ function runServer(portNumber)
 										else
 										{
 											response.contents = {"Created": true};
-											/***********/ log[dir + "/" + params].changes = [];
+											/***********/ log[dir + "/" + params] = {"changes": [], "str": "", nickname: 0};
 										}
 										ws.send(JSON.stringify(response));
 										break;
@@ -629,14 +642,17 @@ function runServer(portNumber)
 										response.type = "RTU-Got-Message";
 										ws.send(JSON.stringify(response)); // ack
 
-										if (log[dir + '/' + file] == null)
-											console.log(dir + '/' + file + ' not found');
-										change = adjustchange(dir + "/" + file, nickname, change); // adjust
-										enQ(dir + "/" + file, change); // log
+										var fpath = dir + "/" + file;
+										change = adjustchange(fpath, nickname, change); // adjust
+										enQ(fpath, change); // log
+										bufwrite(fpath, change); // update buffer
+										//fs.writeFile("workspace/" + file, log[fpath].str); // save to file
 
 										var bc = {
 											"type": "RTU-Broadcast",
 											"nickname": nickname,
+											"dir": dir,
+											"file": file,
 											"contents": change
 										};
 										broadcastResponse(connectionList, JSON.stringify(bc)); // send out
@@ -661,10 +677,12 @@ function runServer(portNumber)
 										response.contents = {"body": str, "proj": dir, "file": params};
 										ws.send(JSON.stringify(response));
 										/*******************************/
-										if (log[dir + "/" + params] == null) {
-											log[dir + "/" + params] = {"changes": [{"start": {"row": 0, "column": 0}, "action": "insert", "lines": str.split('\n')}]};
+										var fpath = dir + "/" + params;
+										if (log[fpath] == null) {
+											log[fpath] = {"changes": [{"start": {"row": 0, "column": 0}, "action": "insert", "lines": str.split('\n')}]};
+											log[fpath]["str"] = str;
 										}
-										log[dir + "/" + params][nickname] = log[dir + "/" + params].changes.length;
+										log[fpath][nickname] = log[fpath].changes.length;
 										/*******************************/
 										break;
 									case "git_add":
