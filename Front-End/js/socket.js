@@ -422,8 +422,6 @@ function rtuACK() {
 }
 
 function rtuRCV(dir, file, e) {
-	console.log(dir + ":" + currproject);
-	console.log(file + ":" + currfile);
 	if (dir != currproject || file != currfile)
 		return;
 
