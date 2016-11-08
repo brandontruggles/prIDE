@@ -9,20 +9,16 @@ var projects = {};
 var tabs = [];
 var updateflag = true;
 
-
-//real time update
-var currow = -1;
-var currindex = -1;
-var change = "";
+var localQ = [];
 
 function Connection()//works
 {
-    editor = ace.edit("codespace");
-    editor.setTheme("ace/theme/monokai");
-    editor.getSession().setMode("ace/mode/java");
-	  //editor.setKeyboardHandler("ace/keyboard/vim");
-	  //editor.on("change", Update);
-	  editor.$blockScrolling = Infinity;
+	editor = ace.edit("codespace");
+	editor.setTheme("ace/theme/monokai");
+	editor.getSession().setMode("ace/mode/java");
+	editor.setKeyboardHandler("ace/keyboard/vim");
+	editor.on("change", Update);
+	editor.$blockScrolling = Infinity;
 	editor.commands.addCommand({ // adding commands doesn't work
 		name:	'testcommand',
 		bindkey:	{
@@ -32,13 +28,13 @@ function Connection()//works
 		exec:	function(editor) {alert("ctrl");console.log("ctrl");}
 	});
 	/*
-	editor.commands.addCommand({
-		name: 'tabforward',
-		bindKey: {win: 'Ctrl-Q', mac: 'Command-Q'},
-		exec: tabforward,
-		readonly: true
-	});
-	*/
+	   editor.commands.addCommand({
+	   name: 'tabforward',
+	   bindKey: {win: 'Ctrl-Q', mac: 'Command-Q'},
+	   exec: tabforward,
+	   readonly: true
+	   });
+	   */
 	editor.resize();
 
 	var port = prompt("Enter port");
@@ -76,6 +72,10 @@ function Connection()//works
 				}
 				updateFileExplorer(); // pre-load some files
 				break;
+			case "RTU-Broadcast":
+				if (res.nickname == nickname) break;
+				rtuRCV(contents);
+				break;
 			case "Compile-Running-Status":
 				if(contents.output[0] == null)
 					document.getElementById('consoleWindow').innerHTML += 'Successfully Compiled\n';
@@ -108,20 +108,20 @@ function Connection()//works
 					projects[currproject].filelist = projects[currproject].filelist.concat([currfile]);
 
 					if (currfile.endsWith(".java")){
-							tabs = tabs.concat([{
-								"projname": currproject,
-								"filename":	currfile,
-								"body": "public class "+currfile.substr(0,currfile.length-5)+"\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}\n",
-								"cursor": {"row": 4, "column": 2}
-              }]);
-          }
+						tabs = tabs.concat([{
+							"projname": currproject,
+							"filename":	currfile,
+							"body": "public class "+currfile.substr(0,currfile.length-5)+"\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}\n",
+							"cursor": {"row": 4, "column": 2}
+						}]);
+					}
 					else
-							tabs = tabs.concat([{
-								"projname": currproject,
-								"filename":	currfile,
-								"body": "",
-								"cursor": {"row": 0, "column": 0}
-								}]);
+						tabs = tabs.concat([{
+							"projname": currproject,
+							"filename":	currfile,
+							"body": "",
+							"cursor": {"row": 0, "column": 0}
+						}]);
 
 
 					updateTabs();
@@ -181,23 +181,23 @@ function Connection()//works
 				}
 				break;
 			case "File-Update-Response":
-        var cursor = editor.getCursorPosition();
+				var cursor = editor.getCursorPosition();
 				editor.setValue(contents.file_contents);
-        console.log(cursor.row);
-        editor.moveCursorToPosition(cursor);
-    		editor.clearSelection();
-        currow = -1;
-        currindex = -1;
-        change = "";
+				console.log(cursor.row);
+				editor.moveCursorToPosition(cursor);
+				editor.clearSelection();
+				currow = -1;
+				currindex = -1;
+				change = "";
 				break;
 			case "Read-File":
 				/* vvv kinda jank to do this here vvv */
 				tabs = tabs.concat([{
-						"projname": contents.proj,
-						"filename":	contents.file,
-						"body": contents.body,
-						"cursor": {"row": 0, "column": 0}
-						}]);
+					"projname": contents.proj,
+					"filename":	contents.file,
+					"body": contents.body,
+					"cursor": {"row": 0, "column": 0}
+				}]);
 				updateTabs();
 				updateFileExplorer(); // now it switches to tab instead of opening a new one
 				gototab(tabs.length - 1);
@@ -335,12 +335,12 @@ function updateFileExplorer() {
 function updateTabs() {
 	var tabList = document.getElementById('tabs');
 	var str = ''
-	for (var i = 0; i < tabs.length; i++) {
-		if (i != curtab)
-			str += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+i+'" onclick="gototab('+i+')">'+tabs[i].filename+'</a></li>';
-		else
-			str += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+i+'" onclick="gototab('+i+')" style="background-color: gray;">'+tabs[i].filename+'</a></li>';
-	}
+		for (var i = 0; i < tabs.length; i++) {
+			if (i != curtab)
+				str += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+i+'" onclick="gototab('+i+')">'+tabs[i].filename+'</a></li>';
+			else
+				str += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+i+'" onclick="gototab('+i+')" style="background-color: gray;">'+tabs[i].filename+'</a></li>';
+		}
 	tabList.innerHTML = str;
 }
 
@@ -354,54 +354,95 @@ function setfile(name) {
 	currfile = name;
 }
 
+/*
 function ch(event){
-  var key = event.keyCode || event.charCode;
-  var cursor = editor.selection.getCursor();
+	var key = event.keyCode || event.charCode;
+	var cursor = editor.selection.getCursor();
 
-  if(key == 8 || key == 13){
-    if(currindex == -1){
-      currow = cursor.row+1;
-      currindex = cursor.column;
-  }
-  if(key == 8){
-    change+="#b";
-  }
-  else if (key == 13)
-    change+="\n";
-  else{
-    return;
-  }
-  }
+	if(key == 8 || key == 13){
+		if(currindex == -1){
+			currow = cursor.row+1;
+			currindex = cursor.column;
+		}
+		if(key == 8){
+			change+="#b";
+		}
+		else if (key == 13)
+			change+="\n";
+		else{
+			return;
+		}
+	}
 
 }
 
 function changes(event){
-  var key = event.keyCode || event.charCode;
-  var cursor = editor.selection.getCursor();
-  if(currindex == -1){
-    currow = cursor.row+1;
-    currindex = cursor.column;
-  }
-  if(String.fromCharCode(key) == "\r")
-    return;
+	var key = event.keyCode || event.charCode;
+	var cursor = editor.selection.getCursor();
+	if(currindex == -1){
+		currow = cursor.row+1;
+		currindex = cursor.column;
+	}
+	if(String.fromCharCode(key) == "\r")
+		return;
 
-  change+=String.fromCharCode(key);
+	change+=String.fromCharCode(key);
+}
+*/
+
+function enQ(e) {
+	localQ.push(e);
 }
 
-function Update()
-{
-	if (! updateflag) return;
-  if (change == "" || change == null)
-    return;
+function deQ() {
+	localQ.splice(0, 1);
+}
+
+function rtuACK() {
+	deQ();
+}
+
+function rtuRCV(e) {
 	var message = {
 		"nickname": nickname,
 		"dir": currproject,
-    "file": currfile,
-		"contents": "updatefile "+currow+ " "+currindex+" "+change
+		"file": currfile,
+		"contents": "gotupdate"
+	}
+	sock.send(JSON.stringify(message));
+	// adjust;
+	updateflag = false; // implement edit
+	//editor.moveCursorToPosition(e.start);
+	//editor.clearSelection();
+	//editor.insert(e.lines[0]);
+	if (e.action == "insert")
+		editor.session.insert(e.start, e.lines.join('\n'));
+	else {
+		//editor.session.remove(new Range({"startRow": e.start.row, "startColumn": e.start.column, "endRow": e.end.row, "endColumn": e.end.column}));
+		editor.session.remove({"start": e.start, "end": e.end});
+	}
+	//for (var i = 1; i < e.lines.length; i++)
+	//	editor.insert("\n" + e.lines[i]);
+	updateflag = true;
+}
+
+function Update(e)
+{
+	// e.start (row, column), e.end (^^), a.action ("insert"/"remove"), e.lines ([])
+	if (! updateflag) return;
+
+	enQ(e);
+
+	var message = {
+		"nickname": nickname,
+		"dir": currproject,
+		"file": currfile,
+		"change": e,
+		"contents": "rtu"
 	};
 	sock.send(JSON.stringify(message));
 }
-setInterval(Update, 50);
+//setInterval(Update, 50);
 
 function compile()//hold on for alec
 {
