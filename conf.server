@@ -1,8 +1,0 @@
-{
-	"port": 8080,
-	"max_clients": 8,
-	"projects": [],
-	"current_project": "",
-	"current_file": "",
-	"current_directory": ""
-}
