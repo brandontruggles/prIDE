@@ -9,7 +9,8 @@ var projects = {};
 var tabs = [];
 var updateflag = true;
 
-var localQ = [];
+var ide = new ide();
+var rtu = new rtu([]);
 
 function Connection()//works
 {
@@ -70,11 +71,13 @@ function Connection()//works
 					sock.close();
 					sock = new WebSocket("ws://45.55.218.73:"+port);
 				}
-				updateFileExplorer(); // pre-load some files
+				ide.updateFileExplorer(); // pre-load some files
 				break;
 			case "RTU-Broadcast":
 				if (res.nickname == nickname) break;
-				rtuRCV(res.dir, res.file, contents);
+				if (res.dir != currproject || res.file != currfile) break;
+
+				rtu.rcv(contents);
 				break;
 			case "Compile-Running-Status":
 				if(contents.output[0] == null)
@@ -93,7 +96,7 @@ function Connection()//works
 				if(contents.Created){
 					alert("new project created");
 					projects[name] = {"hidden": false, "filelist": []};
-					updateFileExplorer();
+					ide.updateFileExplorer();
 					setproj(name);
 				}
 				else{
@@ -124,11 +127,11 @@ function Connection()//works
 						}]);
 
 
-					updateTabs();
-					updateFileExplorer();
+					ide.updateTabs();
+					ide.updateFileExplorer();
 
 					if (tabs.length == 1) curtab = 0;
-					gototab(0);
+					ide.gototab(0);
 				}
 				else{
 					alert(contents.Reason);
@@ -141,7 +144,7 @@ function Connection()//works
 					var list = projects[proj].filelist;
 					//projects[proj].filelist.splice(projects[proj].filelist.indexOf(file), 1);
 					list.splice(list.indexOf(file), 1);
-					updateFileExplorer();
+					ide.updateFileExplorer();
 				}
 				else {
 					alert(contents.Reason);
@@ -174,7 +177,7 @@ function Connection()//works
 			case "File-Open-Response":
 				if(contents.Opened){
 					projects[contents.Dir] = {"hidden": false, "filelist": contents.Files};
-					updateFileExplorer();
+					ide.updateFileExplorer();
 				}
 				else{
 					//alert("no projects make one");
@@ -198,88 +201,15 @@ function Connection()//works
 					"body": contents.body,
 					"cursor": {"row": 0, "column": 0}
 				}]);
-				updateTabs();
-				updateFileExplorer(); // now it switches to tab instead of opening a new one
-				gototab(tabs.length - 1);
+				ide.updateTabs();
+				ide.updateFileExplorer(); // now it switches to tab instead of opening a new one
+				ide.gototab(tabs.length - 1);
 				break;
 
 			default:
 				break;
 		}//switch
 	}//onmessage
-}
-
-function gototab(num)
-{
-	var oldtab = curtab;
-	var cursor = editor.getCursorPosition();
-	curtab = num;
-	setproj(tabs[num].projname);
-	currfile = tabs[num].filename;
-	updateflag = false;
-	editor.setValue(tabs[num].body);
-	updateflag = true;
-	editor.moveCursorToPosition(tabs[num].cursor);
-	editor.clearSelection();
-	editor.focus();
-	if (tabs[oldtab])
-		tabs[oldtab].cursor = cursor;
-
-	updateTabs(); //for bg color
-}
-
-function tabforward() {
-	if (curtab + 1 == tabs.length)
-		gototab(0);
-	else
-		gototab(curtab + 1);
-}
-
-function opennewtab(proj, file) {
-	var message = {
-		"nickname": nickname,
-		"dir": proj,
-		"contents": "readfile " + file
-	}
-	sock.send(JSON.stringify(message));
-	return;
-}
-
-function closetab(index) {
-	if (tabs.length == 1) return; // temporary to prevent errors
-	tabs.splice(index, 1);
-	if (curtab >= index) {
-		if (curtab != 0)
-			curtab --;
-		setproj(tabs[curtab].projname);
-		currfile = tabs[curtab].filename;
-		updateflag = false;
-		editor.setValue(tabs[curtab].body);
-		updateflag = true;
-		editor.moveCursorToPosition(tabs[curtab].cursor);
-		editor.clearSelection();
-	}
-	updateTabs();
-	updateFileExplorer();
-}
-
-function movetab(src, dst) {
-	if (src > dst) {
-		tabs.splice(dst, 0, tabs[src]);
-		tabs.splice(src+1, 1);
-	}
-	else {
-		tabs.splice(dst+1, 0, tabs[src]);
-		tabs.splice(src, 1);
-	}
-	if (src < curtab && curtab <= dst)
-		curtab --;
-	else if (src > curtab && curtab >= dst)
-		curtab ++;
-	else if (src == curtab)
-		curtab = dst;
-	updateTabs();
-	updateFileExplorer();
 }
 
 function deletefile(file) {
@@ -300,50 +230,6 @@ function deleteproj(proj) {
 	sock.send(JSON.stringify(message));
 }
 
-function togglecollapse(proj) {
-	setproj(proj);
-	projects[proj].hidden = !projects[proj].hidden;
-	updateFileExplorer();
-}
-
-function updateFileExplorer() {
-	var fileList = document.getElementById('openproj');
-	var str = '';
-	for (var key in projects) {
-		if (!projects.hasOwnProperty(key)) continue;
-		if (projects[key].hidden) {
-			str += '<option value="'+key+'" onclick="togglecollapse(\''+key+'\')">+ '+key+'</option>';
-			continue;
-		}
-		str += '<option value="'+key+'" onclick="togglecollapse(\''+key+'\')">- '+key+'</option>';
-		for (var j = 0; j < projects[key].filelist.length; j++) {
-			var t = -1;
-			for (var k = 0; k < tabs.length; k++)
-				if (tabs[k].projname == key && tabs[k].filename == projects[key].filelist[j]) {
-					t = k;
-					break;
-				}
-			if (t == -1)
-				str += '<option value="'+projects[key].filelist[j]+'" onclick="opennewtab(\''+key+'\', \''+projects[key].filelist[j]+'\')">'+projects[key].filelist[j]+'</option>';
-			else
-				str += '<option value="'+projects[key].filelist[j]+'" onclick="gototab('+t+')">'+projects[key].filelist[j]+'</option>';
-		}
-	}
-	fileList.innerHTML = str;
-}
-
-function updateTabs() {
-	var tabList = document.getElementById('tabs');
-	var str = ''
-		for (var i = 0; i < tabs.length; i++) {
-			if (i != curtab)
-				str += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+i+'" onclick="gototab('+i+')">'+tabs[i].filename+'</a></li>';
-			else
-				str += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+i+'" onclick="gototab('+i+')" style="background-color: gray;">'+tabs[i].filename+'</a></li>';
-		}
-	tabList.innerHTML = str;
-}
-
 function setproj(name) {
 	currproject = name;
 	var curdir = document.getElementById('curdir');
@@ -354,117 +240,7 @@ function setfile(name) {
 	currfile = name;
 }
 
-/*
-function ch(event){
-	var key = event.keyCode || event.charCode;
-	var cursor = editor.selection.getCursor();
-
-	if(key == 8 || key == 13){
-		if(currindex == -1){
-			currow = cursor.row+1;
-			currindex = cursor.column;
-		}
-		if(key == 8){
-			change+="#b";
-		}
-		else if (key == 13)
-			change+="\n";
-		else{
-			return;
-		}
-	}
-
-}
-
-function changes(event){
-	var key = event.keyCode || event.charCode;
-	var cursor = editor.selection.getCursor();
-	if(currindex == -1){
-		currow = cursor.row+1;
-		currindex = cursor.column;
-	}
-	if(String.fromCharCode(key) == "\r")
-		return;
-
-	change+=String.fromCharCode(key);
-}
-*/
-
-function adjustchange(change) {
-	var cur = null;
-	for (var i = 0; i < localQ.length; i++) {
-		cur = localQ[i];
-		if (cur.start.row < change.start.row)
-			if (change.action == "insert")
-				change.start.row += cur.lines.length - 1;
-			else
-				change.start.row -= cur.lines.length - 1;
-		else if (cur.start.row == change.start.row)
-			if (cur.start.column <= change.start.column)
-				if (change.action == "insert")
-					change.start.column += cur.end.column - cur.start.column ;
-				else
-					change.start.column -= cur.end.column - cur.start.column ;
-	}
-	return change;
-}
-
-function enQ(e) {
-	localQ.push(e);
-}
-
-function deQ() {
-	localQ.splice(0, 1);
-}
-
-function rtuACK() {
-	deQ();
-}
-
-function rtuRCV(dir, file, e) {
-	if (dir != currproject || file != currfile)
-		return;
-
-	var message = {
-		"nickname": nickname,
-		"dir": currproject,
-		"file": currfile,
-		"contents": "gotupdate"
-	}
-	sock.send(JSON.stringify(message));
-	
-	//e = adjustchange(e);  // adjust
-
-	updateflag = false; // implement edit
-	if (e.action == "insert")
-		editor.session.insert(e.start, e.lines.join('\n'));
-	else
-		editor.session.remove({"start": e.start, "end": e.end});
-
-	updateflag = true;
-}
-
-function Update(e)
-{
-	// e.start (row, column), e.end (^^), a.action ("insert"/"remove"), e.lines ([])
-	if (! updateflag) return;
-
-	enQ(e);
-
-	e['indexstart'] = editor.session.doc.positionToIndex(e.start);
-	e['indexend'] = editor.session.doc.positionToIndex(e.end);
-	var message = {
-		"nickname": nickname,
-		"dir": currproject,
-		"file": currfile,
-		"change": e,
-		"contents": "rtu"
-	};
-	sock.send(JSON.stringify(message));
-}
-//setInterval(Update, 50);
-
-function compile()//hold on for alec
+function compile()
 {
 	//Update();
 	var message = {
@@ -512,12 +288,12 @@ function message()
 	var chatbox = document.getElementById('commandArea');
 	var message;
 	if (chatbox.value.startsWith("/closetab")) {
-		closetab(parseInt(chatbox.value.split(' ')[1]));
+		ide.closetab(parseInt(chatbox.value.split(' ')[1]));
 		chatbox.value = '';
 		return;
 	}
 	else if (chatbox.value.startsWith("/movetab")) {
-		movetab(parseInt(chatbox.value.split(' ')[1]), parseInt(chatbox.value.split(' ')[2]));
+		ide.movetab(parseInt(chatbox.value.split(' ')[1]), parseInt(chatbox.value.split(' ')[2]));
 		chatbox.value = '';
 		return;
 	}
@@ -587,3 +363,5 @@ function run()
 	sock.send(JSON.stringify(message));
 
 }
+
+function Update(e) { rtu.Update(e); }
