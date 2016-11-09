@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<link rel="stylesheet" type="text/css" href="css/test.css">
+	<style type="text/css" media="screen">
+	#codespace {
+		position: relative;
+		height: 300px;
+		width: 100%;
+	}
+	</style>
+</head>
+<title> prIDE </title>
+<meta charset="utf-8">
+
+<body OnLoad="Connection()">
+
+<!-- Buttons go in here -->
+<!-- Dropdowns go in here -->
+ <div class="dropdown">
+  <button onclick="showNewDropdown()" class="newbtn">New...</button>
+  <div id="newDropdown" class="dropdown-content">
+    <a href="#" onclick="newfile()" id="newfile">New File</a>
+    <a href="#" onclick="newdir()" id="newdir">New Directory</a>
+    <a href="#" onclick="newproject()" id="newproj">New Project</a>
+  </div>
+  </div>
+ <!--<button class="newbtn" id="new">Save </button>-->
+ <button class="btn" id="obtn">Commit</button>
+ <button class="btn" id="ybtn">Push </button>
+ <button class="btn" id="gbtn" onclick="run()">Run </button>
+ <button class="btn" id="bbtn" onclick="compile()">Compile </button>
+ <button class="btn" id-"vbtn" onclick="openproject()">Open Project </button>
+ <a href="https://glaad.nationbuilder.com/donate" id="donatelink">Donate to GLAAD! </a>
+  <!--  <button onclick="showEditDropdown()" class="dropbtn">Edit</button>
+  <div id="editDropdown" class="dropdown-content">
+    <a href="#">Cut</a>
+    <a href="#">Copy</a>
+    <a href="#">Paste</a>
+  </div>
+</div> -->
+<br>
+<br>
+
+<ul class="tab" id="tabs">
+	<li><div class="tablinks">&nbsp;<div></li>
+</ul>
+
+<!--<div style="display: inline-block;">-->
+
+<div style="display: flex;">
+<div style="flex: 1;">
+<select id='openproj' name="file" size="20" multiple style="width: 100%;">
+</select>
+<textarea id="curdir" rows="1" style="background-color: #292429; width: 100%; color: white"></textarea>
+</div>
+
+<div style="margin: auto; flex: 4;">
+<div id="codespace">
+</div>
+</div>
+
+<div style="flex: 1; margin-left: 20px;">
+<textarea placeholder="Console" id="consoleWindow" rows="20" cols="25" style="width: 100%;" readonly></textarea>
+<input type="text" placeholder="Commands and chat here" id="commandArea" onkeydown="chatkeydown(this)" style="width: 100%" />
+</div>
+
+</div>
+
+
+<!--<button onclick="openConsole(event)" class="consolebtn" id="console">Console </button> -->
+<!--
+<button onclick="message()" class="submitbtn" id="submit">Submit </button>
+-->
+
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="js/IDEScript.js"></script>
+<script src="js/ide.js"></script>
+<script src="js/rtu.js"></script>
+<script src="js/socket.js"></script>
+<script src="/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+
+</html>

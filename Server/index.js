@@ -12,7 +12,6 @@ var options = {
 	replace: '*'
 };
 
-//function puts(error, stdout, stderr) { sys.puts(stdout) }
 function writeout(error, stdout, stderr) {
 	//	fs.writeFileSync("error.txt", error);
 	fs.writeFileSync("stdout.txt", stdout);
@@ -41,7 +40,6 @@ function createproj(user, pass, name) {
 
 function clone(url) {
 	var out = execFileSync("git", ["clone", url], {"cwd": "workspace"}).toString();
-	//configObj.current_project = out.substr(out.lastIndexOf("/" + 1));
 	return out;
 }
 
@@ -71,8 +69,6 @@ function push (dir) {
 }
 
 function compile(dir) {
-	//console.log("javac " + "workspace/" + configObj.current_project + "/p.java");
-	//execFileSync("\'javac " + "workspace/" + configObj.current_project + "/p.java\'");
 	var files = getProjectFiles(dir);
 	var flies = [];
 	for (var i = 0; i < files.length; i++)
@@ -166,7 +162,6 @@ function createFile(fileName, dir)
 	if(!fs.existsSync("workspace/" + dir + "/" + fileName))
 	{
 		fs.writeFileSync("workspace/" + dir + "/" + fileName,"public class " + fileName.replace(".java", "") + "\n{\n\tpublic static void main(String [] args)\n\t{\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}");
-		//configObj.current_file = fileName;	
 	}	
 	else
 	{
@@ -363,7 +358,6 @@ function runServer(portNumber)
 										}
 										else
 										{
-											//configObj.current_project = params;
 											response.contents = {"Created": true};
 										}
 										ws.send(JSON.stringify(response));
@@ -418,7 +412,6 @@ function runServer(portNumber)
 										break;
 									case "openproject":
 										response.type = "Project-Open-Response";
-										//configObj.current_project = params;
 										var files = fs.readdirSync("workspace/");
 										if(files != null)
 											response.contents = {"Opened": true, "Files": files};
