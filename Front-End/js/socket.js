@@ -104,23 +104,23 @@ function Connection()//works
 				if(contents.Created){
 					alert("new file created");
 					currfile = name;
-					projects[currproject].filelist = projects[currproject].filelist.concat([currfile]);
+					projects[currproject].filelist.push(currfile);
 
 					if (currfile.endsWith(".java")){
-						tabs = tabs.concat([{
+						tabs.push({
 							"projname": currproject,
 							"filename":	currfile,
 							"body": "public class "+currfile.substr(0,currfile.length-5)+"\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}\n",
 							"cursor": {"row": 4, "column": 2}
-						}]);
+						});
 					}
 					else
-						tabs = tabs.concat([{
+						tabs.push({
 							"projname": currproject,
 							"filename":	currfile,
 							"body": "",
 							"cursor": {"row": 0, "column": 0}
-						}]);
+						});
 
 
 					ide.updateTabs();
@@ -191,12 +191,12 @@ function Connection()//works
 				break;
 			case "Read-File":
 				/* vvv kinda jank to do this here vvv */
-				tabs = tabs.concat([{
+				tabs.push({
 					"projname": contents.proj,
 					"filename":	contents.file,
 					"body": contents.body,
 					"cursor": {"row": 0, "column": 0}
-				}]);
+				});
 				ide.updateTabs();
 				ide.updateFileExplorer(); // now it switches to tab instead of opening a new one
 				ide.gototab(tabs.length - 1);

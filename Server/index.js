@@ -1,62 +1,16 @@
 
+var rtu = require('./rtu.js');
 var execFileSync = require('child_process').execFileSync;
 var spawn = require('child_process').spawn;
 var read = require('read');
 var fs = require('fs');
 var child;
-//var updateQueues = [];
 
 var options = {
 	prompt: 'enter pass: ',
 	silent: true,
 	replace: '*'
 };
-
-var log = {};
-
-function incqstate(p2file, nick) {
-	log[p2file].nick++;
-}
-
-function adjustchange(p2file, nick, change) {
-	var cur = null;
-	for (var i = log[p2file].nick; i < log[p2file].changes.length; i++) {
-		cur = log[p2file].changes[i];
-		if (cur.start.row < change.start.row)
-			if (change.action == "insert")
-				change.start.row += cur.lines.length - 1;
-			else
-				change.start.row -= cur.lines.length - 1;
-		else if (cur.start.row == change.start.row)
-			if (cur.start.column <= change.start.column)
-				if (change.action == "insert")
-					change.start.column += cur.end.column - cur.start.column ;
-				else
-					change.start.column -= cur.end.column - cur.start.column ;
-	}
-	return change;
-}
-
-function bufwrite(file, change) {
-	if (change.action == "insert") {
-		//log[file].str = log[file].str.split('').splice(change.indexstart, 0, change.lines.join('\n').split('')).join('');
-		log[file].str = log[file].str.slice(0, change.indexstart) + change.lines.join('\n') + log[file].str.slice(change.indexstart);
-	}
-	else {
-		//log[file].str = log[file].str.split('').splice(change.indexstart, change.indexend - change.indexstart).join('');
-		log[file].str = log[file].str.slice(0, change.indexstart) + log[file].str.slice(change.indexend);
-	}
-
-	console.log(log[file].str);
-	fs.writeFileSync("workspace/" + file, log[file].str); // save to file
-}
-
-function enQ(p2file, change) {
-	if (log[p2file] == null)
-		log[p2file]["changes"] = [change];
-	else
-		log[p2file].changes.push(change);
-}
 
 //function puts(error, stdout, stderr) { sys.puts(stdout) }
 function writeout(error, stdout, stderr) {
@@ -309,7 +263,6 @@ function runServer(portNumber)
 	var server = new WebSocketServer({port: portNumber});
 	var connectionList = [];
 	var connind = -1;
-	setInterval(function(){pollUpdateQueues(connectionList)}, 50);
 	server.on('connection', function connection(ws)
 			{
 				console.log('New connection attempted!');
@@ -428,7 +381,7 @@ function runServer(portNumber)
 										else
 										{
 											response.contents = {"Created": true};
-											/***********/ log[dir + "/" + params] = {"changes": [], "str": "", nickname: 0};
+											rtu.newfile(dir + "/" + params);
 										}
 										ws.send(JSON.stringify(response));
 										break;
@@ -500,10 +453,10 @@ function runServer(portNumber)
 										ws.send(JSON.stringify(response)); // ack
 
 										var fpath = dir + "/" + file;
-										change = adjustchange(fpath, nickname, change); // adjust
-										enQ(fpath, change); // log
-										bufwrite(fpath, change); // update buffer
-										//fs.writeFile("workspace/" + file, log[fpath].str); // save to file
+										change = rtu.adjustchange(fpath, nickname, change); // adjust
+										rtu.enQ(fpath, change); // log
+										rtu.bufwrite(fpath, change); // update buffer
+										//fs.writeFile("workspace/" + file, logs[fpath].str); // save to file
 
 										var bc = {
 											"type": "RTU-Broadcast",
@@ -514,33 +467,12 @@ function runServer(portNumber)
 										};
 										broadcastResponse(connectionList, JSON.stringify(bc)); // send out
 										break;
-									case "updatefile":
-										var splitParams = params.split(' ');
-										var lineNumber = parseInt(splitParams[0]);
-										var startIndex = parseInt(splitParams[1]);
-										var changes = "";
-										for(var i = 2; i < splitParams.length; i++)
-										{
-											if(i == 2)
-												changes += splitParams[i];
-											else
-												changes += ' ' + splitParams[i];
-										}
-										processRTUpdate(dir + "/" + file, lineNumber, startIndex, changes);
-										break;
 									case "readfile":
 										response.type = "Read-File";
 										var str = fs.readFileSync("workspace/" + dir + "/" + params, "utf8").toString();
 										response.contents = {"body": str, "proj": dir, "file": params};
 										ws.send(JSON.stringify(response));
-										/*******************************/
-										var fpath = dir + "/" + params;
-										if (log[fpath] == null) {
-											log[fpath] = {"changes": [{"start": {"row": 0, "column": 0}, "action": "insert", "lines": str.split('\n')}]};
-											log[fpath]["str"] = str;
-										}
-										log[fpath][nickname] = log[fpath].changes.length;
-										/*******************************/
+										rtu.readfile(nickname, dir + "/" + params, str);
 										break;
 									case "git_add":
 										add(params, dir);
