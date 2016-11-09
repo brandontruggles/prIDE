@@ -2,7 +2,7 @@
 <html>
 <head>
 
-	<link rel="stylesheet" type="text/css" href="css/IDEMainStyle.css">
+	<link rel="stylesheet" type="text/css" href="css/test.css">
 	<style type="text/css" media="screen">
 	#codespace {
 		position: relative;
@@ -19,7 +19,7 @@
 <!-- Buttons go in here -->
 <!-- Dropdowns go in here -->
  <div class="dropdown">
-  <button onclick="showNewDropdown()" class="newbtn">New...</button>
+  <button onclick="showNewDropdown()" class="btn" id="rbtn">New...</button>
   <div id="newDropdown" class="dropdown-content">
     <a href="#" onclick="newfile()" id="newfile">New File</a>
     <a href="#" onclick="newdir()" id="newdir">New Directory</a>
@@ -27,11 +27,11 @@
   </div>
   </div>
  <!--<button class="newbtn" id="new">Save </button>-->
- <button class="saveasbtn" id="saveas">Commit</button>
- <button class="filebtn" id="file">Push </button>
- <button class="runbtn" id="run" onclick="run()">Run </button>
- <button class="compilebtn" id="compile" onclick="compile()">Compile </button>
- <button class="openbtn" id-"open" onclick="openproject()">Open Project </button>
+ <button class="btn" id="obtn">Commit</button>
+ <button class="btn" id="ybtn">Push </button>
+ <button class="btn" id="gbtn" onclick="run()">Run </button>
+ <button class="btn" id="bbtn" onclick="compile()">Compile </button>
+ <button class="btn" id="vbtn" onclick="openproject()">Open Project </button>
  <a href="https://glaad.nationbuilder.com/donate" id="donatelink">Donate to GLAAD! </a>
   <!--  <button onclick="showEditDropdown()" class="dropbtn">Edit</button>
   <div id="editDropdown" class="dropdown-content">

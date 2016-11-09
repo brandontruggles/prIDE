@@ -3,43 +3,43 @@ body {
 	background-color: #524f52;
 }
 
-.dropbtn, .compilebtn, .runbtn, .newbtn, .saveasbtn, .openbtn, .filebtn {
+.btn {
     padding: 16px;
     font-size: 16px;
     border: none;
     cursor: pointer;
 }
 
-.dropbtn {
-	background-color: #f1f1f1;
-}
-
-.compilebtn {
-	background-color: #4da6ff;
-}
-
-.runbtn {
-	background-color: #33cc00;
-}
-
-.newbtn{
+#rbtn{
 	background-color: #ff3300;
 }
 
-.saveasbtn{
+#obtn{
 	background-color: #ff6600;
 }
 
-.openbtn {
-	background-color: #cc00ff;
-}
-
-.filebtn {
+#ybtn {
 	background-color: #ffff00;
 	padding: 16px;
 	font-size: 16px;
 	border: none;
 	cursor: pointer;
+}
+
+#gbtn {
+	background-color: #33cc00;
+}
+
+#bbtn {
+	background-color: #4da6ff;
+}
+
+#vbtn {
+	background-color: #cc00ff;
+}
+
+.dropbtn {
+	background-color: #f1f1f1;
 }
 
 .submitbtn {
@@ -58,12 +58,12 @@ body {
     cursor: pointer;
 	float: right;
 }
-.runbtn:hover, .runbtn:focus {background-color: #269900;}
-.compilebtn:hover, .compilebtn:focus {background-color: #0066cc;}
-.newbtn:hover, .newbtn:focus {background-color: #b32400;}
-.saveasbtn:hover, .saveasbtn:focus {background-color: #cc5200; }
-.openbtn:hover, .openbtn:focus {background-color: #7a0099; }
-.filebtn:hover, .filebtn:focus {background-color: #cccc00; }
+#rbtn:hover, #rbtn:focus {background-color: #b32400;}
+#obtn:hover, #obtn:focus {background-color: #cc5200; }
+#ybtn:hover, #ybtn:focus {background-color: #cccc00; }
+#gbtn:hover, #gbtn:focus {background-color: #269900;}
+#bbtn:hover, #bbtn:focus {background-color: #0066cc;}
+#vbtn:hover, #vbtn:focus {background-color: #7a0099; }
 .dropbtn:hover, .dropbtn:focus {background-color: #ddd;}
 .consolebtn:hover, .consolebtn:focus {background-color: #ddd;}
 .chatbtn:hover, .chatbtn:focus {background-color: #ddd;}
