@@ -4,13 +4,9 @@ var currfile;
 var currproject;
 var name;
 var editor;
-var curtab;
 var projects = {};
 var tabs = [];
 var updateflag = true;
-
-var ide = new ide();
-var rtu = new rtu([]);
 
 function Connection()//works
 {
@@ -130,7 +126,7 @@ function Connection()//works
 					ide.updateTabs();
 					ide.updateFileExplorer();
 
-					if (tabs.length == 1) curtab = 0;
+					if (tabs.length == 1) ide.settab(0);
 					ide.gototab(0);
 				}
 				else{
@@ -250,7 +246,6 @@ function compile()
 	}
 	sock.send(JSON.stringify(message));
 }
-
 
 function newproject()//works
 {

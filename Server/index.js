@@ -3,9 +3,8 @@ var execFileSync = require('child_process').execFileSync;
 var spawn = require('child_process').spawn;
 var read = require('read');
 var fs = require('fs');
-var curfile = "";
 var child;
-var updateQueues = [];
+//var updateQueues = [];
 
 var options = {
 	prompt: 'enter pass: ',
@@ -109,7 +108,6 @@ function commit(message, dir) {
 
 function newfile(filename, dir) {
 	var out = execFileSync("touch", [filename], {"cwd": "workspace/" + dir});
-	//setcurfile(filename);
 	return out.toString();
 }
 
@@ -153,12 +151,6 @@ function listproj(user) {
 
 	return obj;
 }
-
-function setcurfile(filename) {
-	curfile = filename;
-}
-
-
 
 var WebSocketServer = require('ws').Server;
 var fs = require('fs');
@@ -301,141 +293,6 @@ function getProjectFiles(dir)
 		console.log("Failed to read files from the current project directory!");
 	}
 	return files;
-}
-
-function findQueueObj(filePath) //Replace later with binary search
-{
-	for(var i = 0; i < updateQueues.length; i++)
-	{
-		if(updateQueues[i].path == filePath)
-			return updateQueues[i];
-	}
-	return null;
-}
-
-function processRTUpdate(filePath, lineNumber, startIndex, changes)
-{
-	var str = fs.readFileSync("workspace/" + filePath, "utf8").toString();
-	var updateObj = {"line_num": lineNumber, "start_idx": startIndex, "changes": changes};
-	var queueObj = findQueueObj(filePath);	
-	if(queueObj == null)
-	{
-		queueObj = {"path": filePath, "queue": [updateObj], "locked": false};
-		updateQueues.unshift(queueObj); //enqueue
-	}	
-	else
-	{
-		queueObj.queue.unshift(updateObj);
-	}
-}
-
-function insertChange(change, lines, lineNumber, startIndex)
-{
-	if(lineNumber <= lines.length)
-	{
-		lines[lineNumber] = lines[lineNumber].substring(0, startIndex + 1) + change + lines[lineNumber].substring(startIndex + 1);		
-	}
-	else
-	{
-		while(lineNumber > lines.length)
-		{
-			lines.push('');
-		}
-		lines[lineNumber] = lines[lineNumber].substring(0, startIndex + 1) + change + lines[lineNumber].substring(startIndex + 1);		
-	}
-}
-
-function performBackspace(lines, lineNumber, startIndex)
-{
-	console.log("lines.length: " + lines.length + " lineNumber: " + lineNumber + " startIndex: " + startIndex);
-	if(!(startIndex == 0  && lineNumber == 1))
-	{
-		lines[lineNumber] = lines[lineNumber].substring(0, startIndex) + lines[lineNumber].substring(startIndex + 1);
-	}
-}
-
-function applyRTUpdate(queueObj)
-{
-	console.log(queueObj);
-	queueObj.locked = true;
-	var filePath = queueObj.path;
-	var updateObj = queueObj.queue.pop(); //dequeue
-	var lineNumber = updateObj.line_num;	
-	var startIndex = updateObj.start_idx;
-	var changes = updateObj.changes;
-	var fileContents = fs.readFileSync("workspace/" + filePath, "utf8").toString();
-	var lines = fileContents.split('\n');
-
-	for(var i = 0; i < changes.length; i++)
-	{
-		if(changes.charAt(i) == '#')
-		{
-			switch(changes.charAt(i + 1))
-			{
-				case '#':
-					insertChange('#', lines, lineNumber, startIndex);			
-					break;
-				case 'b':
-					performBackspace(lines, lineNumber, startIndex);
-					break;
-				default:
-					console.log("Received unknown escape sequence character!");
-					break;
-			}
-			i++;
-		}
-		else if(changes.charAt(i) == '\n')
-		{
-			lines.splice(lineNumber - 1, 0, '');
-		}
-		else
-		{
-			insertChange(changes.charAt(i), lines, lineNumber, startIndex);
-		}
-	}
-	var newContents = lines.join('\n');
-	var successful = false;
-	try
-	{
-		fs.writeFileSync("workspace/" + filePath, newContents);
-		console.log("Successfully wrote the following line to the file '" + filePath + "': " + newContents);
-		successful = true;
-	}
-	catch(err)
-	{
-		console.log("Failed to write updates to file! " + err);
-		queueObj.locked = false;
-	}
-	queueObj.locked = false;			
-	return successful;
-}
-
-function pollUpdateQueues(connectionList)
-{
-	for(var i = 0; i < updateQueues.length; i++)
-	{
-		if(!updateQueues[i].locked && updateQueues[i].queue.length > 0)
-		{	
-			var applied = applyRTUpdate(updateQueues[i]);
-			if(applied)
-			{
-				var filePath = updateQueues[i].path;
-				var response = "";
-				try
-				{
-					var fileContents = fs.readFileSync("workspace/" + filePath, "utf8").toString();
-					response = {"type": "File-Update-Response", "contents":{"path":filePath, "file_contents":fileContents}};
-					console.log("Successfully read from the file for updating!");
-					//Needs to be limited to only people with the file open later on
-				}
-				catch(err)
-				{
-					console.log("Failed to read from the file for updating! " + err); 
-				}
-				broadcastResponse(connectionList, JSON.stringify(response));
-			}
-		}
-	}
 }
 
 function broadcastResponse(connectionList, responseString)
