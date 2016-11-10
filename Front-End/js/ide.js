@@ -11,6 +11,10 @@ var ide = (function () {
 		gototab : function (num) {
 			var oldtab = curtab;
 			var cursor = editor.getCursorPosition();
+			if (tabs[oldtab]) {
+				tabs[oldtab].body = editor.getValue();
+				tabs[oldtab].cursor = cursor;
+			}
 			curtab = num;
 			setproj(tabs[num].projname);
 			currfile = tabs[num].filename;
@@ -20,8 +24,6 @@ var ide = (function () {
 			editor.moveCursorToPosition(tabs[num].cursor);
 			editor.clearSelection();
 			editor.focus();
-			if (tabs[oldtab])
-				tabs[oldtab].cursor = cursor;
 
 			this.updateTabs(); //for bg color
 		},

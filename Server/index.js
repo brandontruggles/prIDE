@@ -40,21 +40,38 @@ function createproj(user, pass, name) {
 
 function clone(url) {
 	var out = execFileSync("git", ["clone", url], {"cwd": "workspace"}).toString();
+	console.log(out);
 	return out;
 }
 
 function pull(dir) {
 	var out = execFileSync("git", ["pull"], {"cwd": "workspace/" + dir});
+	console.log(out.toString());
 	return out.toString();
 }
 
 function add(filename, dir) {
+	console.log(dir);
+	console.log(filename);
 	var out = execFileSync("git", ["add", filename], {"cwd": "workspace/" + dir});
+	try {
+		;
+	}
+	catch (e) {
+		console.log(e.message);
+		return e.message;
+	}
 	return out.toString();
 }
 
 function commit(message, dir) {
-	var out = execFileSync("git", ["commit", "-m", '"' + message + '"'], {"cwd": "workspace/" + dir});
+	try {
+		var out = execFileSync("git", ["commit", "-am", message], {"cwd": "workspace/" + dir});
+	}
+	catch (e) {
+		console.log(e.message);
+		return e.message;
+	}
 	return out.toString();
 }
 
@@ -394,10 +411,6 @@ function runServer(portNumber)
 										}
 										ws.send(JSON.stringify(response));
 										break;
-									case "git_add":
-										if (connectionList[connind].valid)
-											add(params, dir);
-										break;
 									case "newdir":
 										response.type = "Directory-Created-Status";
 										if(!createFile(params, dir))
@@ -429,7 +442,7 @@ function runServer(portNumber)
 										ws.send(JSON.stringify(response));
 										break;
 									case "git_clone":
-										clone(params, dir);
+										clone(params);
 										//if (connectionList[connind].valid)
 										//	clone(params);
 										break;
@@ -476,7 +489,7 @@ function runServer(portNumber)
 										//	commit(params);
 										break;
 									case "git_push":
-										push(params, dir);
+										push(dir);
 										//if (connectionList[connind].valid)
 										//	push();
 										break;

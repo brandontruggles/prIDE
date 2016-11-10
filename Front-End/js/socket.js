@@ -333,7 +333,6 @@ function openproject()//works
 		"contents": "openproject"
 	}
 	sock.send(JSON.stringify(message));
-
 }
 
 function getfiles(dir)
@@ -344,7 +343,6 @@ function getfiles(dir)
 		"contents": "openfile"
 	}
 	sock.send(JSON.stringify(message));
-
 }
 
 function run()
@@ -356,7 +354,43 @@ function run()
 		"contents": "run"
 	}
 	sock.send(JSON.stringify(message));
+}
 
+function gitpush() {
+	var message = {
+		"nickname": nickname,
+		"dir": currproject,
+		"contents": "git_push"
+	}
+	sock.send(JSON.stringify(message));
+}
+
+function gitcommit() {
+	var msg = prompt("message: ");
+	var message = {
+		"nickname": nickname,
+		"dir": currproject,
+		"contents": "git_commit " + msg
+	}
+	sock.send(JSON.stringify(message));
+}
+
+function gitadd() {
+	var message = {
+		"nickname": nickname,
+		"dir": currproject,
+		"contents": "git_add " + currfile
+	}
+	sock.send(JSON.stringify(message));
+}
+
+function gitclone() {
+	var url = prompt("url: ");
+	var message = {
+		"nickname": nickname,
+		"contents": "git_clone " + url
+	}
+	sock.send(JSON.stringify(message));
 }
 
 function Update(e) { rtu.Update(e); }
