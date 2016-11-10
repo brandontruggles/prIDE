@@ -63,7 +63,7 @@ var rtu = (function (q) {
 			this.enQ(e);
 
 			e['indexstart'] = editor.session.doc.positionToIndex(e.start);
-			e['indexend'] = editor.session.doc.positionToIndex(e.end);
+			e['indexend'] = e.indexstart + e.lines.join('\n').length;
 			var message = {
 				"nickname": nickname,
 				"dir": currproject,

@@ -25,6 +25,12 @@ function Connection()//works
 		exec:	function(editor) {alert("ctrl");console.log("ctrl");}
 	});
 	/*
+	ace.config.loadModule("ace/keyboard/vim", function(m) {
+		var VimApi = require("ace/keyboard/vim").CodeMirror.Vim;
+			VimApi.defineEx("write", "w", function(cm, input) {
+				cm.ace.execCommand("save");
+			});
+	});
 	   editor.commands.addCommand({
 	   name: 'tabforward',
 	   bindKey: {win: 'Ctrl-Q', mac: 'Command-Q'},
