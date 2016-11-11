@@ -21,9 +21,9 @@
 		<div class="dropdown">
 			<button class="btn" id="rbtn" onclick="showNewDropdown('filedd')">File</button>
 			<div id="filedd" class="dropdowncontent">
-				<a href="#" onclick="newfile()">New File</a>
-				<a href="#" onclick="newproject()">New Project</a>
-				<a href="#" onclick="openproject()">Open Project</a>
+				<a href="#" onclick="fn.newfile()">New File</a>
+				<a href="#" onclick="fn.newproject()">New Project</a>
+				<a href="#" onclick="fn.openproject()">Open Project</a>
 			</div>
 		</div>
 		<button class="btn" id="obtn">Edit</button>
@@ -31,20 +31,20 @@
 		<div class="dropdown">
 			<button class="btn" id="gbtn" onclick="showNewDropdown('builddd')">Build</button>
 			<div id="builddd" class="dropdowncontent">
-				<a href="#" onclick="compile()">Compile</a>
-				<a href="#" onclick="run()">Run</a>
+				<a href="#" onclick="fn.compile()">Compile</a>
+				<a href="#" onclick="fn.run()">Run</a>
 			</div>
 		</div>
 		<div class="dropdown">
 			<button class="btn" id="bbtn" onclick="showNewDropdown('gitdd')">Git</button>
 			<div id="gitdd" class="dropdowncontent">
-				<a href="#" onclick="gitclone()">Clone</a>
-				<a href="#" onclick="gitadd()">Add</a>
-				<a href="#" onclick="gitcommit()">Commit</a>
-				<a href="#" onclick="gitpush()">Push</a>
+				<a href="#" onclick="fn.gitclone()">Clone</a>
+				<a href="#" onclick="fn.gitadd()">Add</a>
+				<a href="#" onclick="fn.gitcommit()">Commit</a>
+				<a href="#" onclick="fn.gitpush()">Push</a>
 			</div>
 		</div>
-		<button class="btn" id="vbtn" onclick="openproject()">Settings</button>
+		<button class="btn" id="vbtn">Settings</button>
 
 		<a href="https://glaad.nationbuilder.com/donate" id="donatelink">Donate to GLAAD! </a>
 		<!--  <button onclick="showEditDropdown()" class="dropbtn">Edit</button>
@@ -77,7 +77,7 @@
 
 		  <div style="flex: 1; margin-left: 20px;">
 			  <textarea placeholder="Console" id="consoleWindow" rows="20" cols="25" style="width: 100%;" readonly></textarea>
-			  <input type="text" placeholder="Commands and chat here" id="commandArea" onkeydown="chatkeydown(this)" style="width: 100%" />
+			  <input type="text" placeholder="Commands and chat here" id="commandArea" onkeydown="fn.chatkeydown(this)" style="width: 100%" />
 		  </div>
 
 	  </div>
@@ -94,6 +94,8 @@
 	<script src="js/IDEScript.js"></script>
 	<script src="js/ide.js"></script>
 	<script src="js/rtu.js"></script>
+	<script src="js/fn.js"></script>
+	<script src="js/key.js"></script>
 	<script src="js/socket.js"></script>
 	<script src="/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 

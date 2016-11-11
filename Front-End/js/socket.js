@@ -132,8 +132,8 @@ function Connection()//works
 					ide.updateTabs();
 					ide.updateFileExplorer();
 
-					if (tabs.length == 1) ide.settab(0);
-					ide.gototab(0);
+					//if (tabs.length == 1) ide.settab(0);
+					ide.gototab(tabs.length - 1);
 				}
 				else{
 					alert(contents.Reason);
@@ -169,7 +169,7 @@ function Connection()//works
 						str += contents.Files[i] + "\n";
 					}
 					var dir = prompt(str);
-					getfiles(dir);
+					fn.getfiles(dir);
 					setproj(dir);
 				}
 				else{
@@ -214,24 +214,6 @@ function Connection()//works
 	}//onmessage
 }
 
-function deletefile(file) {
-	var message = {
-		"nickname": nickname,
-		"dir": currproject,
-		"contents": "deletefile " + file
-	}
-	sock.send(JSON.stringify(message));
-}
-
-function deleteproj(proj) {
-	var message = {
-		"nickname": nickname,
-		"dir": currproject,
-		"contents": "deleteproj " + proj
-	}
-	sock.send(JSON.stringify(message));
-}
-
 function setproj(name) {
 	currproject = name;
 	var curdir = document.getElementById('curdir');
@@ -240,163 +222,6 @@ function setproj(name) {
 
 function setfile(name) {
 	currfile = name;
-}
-
-function compile()
-{
-	//Update();
-	var message = {
-		"nickname": nickname,
-		"dir": currproject,
-		"contents": "compile"
-	}
-	sock.send(JSON.stringify(message));
-}
-
-function newproject()//works
-{
-	name = prompt("name of project");
-	var message = {
-		"nickname": nickname,
-		"contents": "newproject "+name
-	}
-	setproj(name);
-	sock.send(JSON.stringify(message));
-}
-
-function newfile()//works
-{
-	name = prompt("name file");
-	var message = {
-		"nickname": nickname,
-		"dir": currproject,
-		"contents": "newfile "+name
-	}
-	sock.send(JSON.stringify(message));
-}
-
-function getfilecontents(params) {
-	var message = {
-		"nickname": nickname,
-		"dir": currproject,
-		"contents": "readfile " + params
-	}
-	sock.send(JSON.stringify(message));
-}
-
-function message()
-{//for chat
-	var chatbox = document.getElementById('commandArea');
-	var message;
-	if (chatbox.value.startsWith("/closetab")) {
-		ide.closetab(parseInt(chatbox.value.split(' ')[1]));
-		chatbox.value = '';
-		return;
-	}
-	else if (chatbox.value.startsWith("/movetab")) {
-		ide.movetab(parseInt(chatbox.value.split(' ')[1]), parseInt(chatbox.value.split(' ')[2]));
-		chatbox.value = '';
-		return;
-	}
-	else if (chatbox.value.startsWith("/"))
-		message = {
-			"nickname": nickname,
-			"dir": currproject,
-			"contents": chatbox.value.substr(1)
-		}
-	else
-		message = {
-			"nickname": nickname,
-			"dir": currproject,
-			"contents": "message "+chatbox.value
-		}
-
-	chatbox.value = '';
-	sock.send(JSON.stringify(message));
-}
-
-function chatkeydown(e)
-{
-	if (event.keyCode == 13) message();
-}
-
-
-function newdir()//works
-{
-	var name = prompt("name new directory");
-	var message = {
-		"nickname": nickname,
-		"dir": currproject,
-		"contents": "newdir "+ name
-	}
-	sock.send(JSON.stringify(message));
-}
-
-function openproject()//works
-{
-	var message = {
-		"nickname": nickname,
-		"contents": "openproject"
-	}
-	sock.send(JSON.stringify(message));
-}
-
-function getfiles(dir)
-{
-	var message = {
-		"nickname": nickname,
-		"dir": dir,
-		"contents": "openfile"
-	}
-	sock.send(JSON.stringify(message));
-}
-
-function run()
-{
-	var message = {
-		"nickname": nickname,
-		"file": currfile,
-		"dir": currproject,
-		"contents": "run"
-	}
-	sock.send(JSON.stringify(message));
-}
-
-function gitpush() {
-	var message = {
-		"nickname": nickname,
-		"dir": currproject,
-		"contents": "git_push"
-	}
-	sock.send(JSON.stringify(message));
-}
-
-function gitcommit() {
-	var msg = prompt("message: ");
-	var message = {
-		"nickname": nickname,
-		"dir": currproject,
-		"contents": "git_commit " + msg
-	}
-	sock.send(JSON.stringify(message));
-}
-
-function gitadd() {
-	var message = {
-		"nickname": nickname,
-		"dir": currproject,
-		"contents": "git_add " + currfile
-	}
-	sock.send(JSON.stringify(message));
-}
-
-function gitclone() {
-	var url = prompt("url: ");
-	var message = {
-		"nickname": nickname,
-		"contents": "git_clone " + url
-	}
-	sock.send(JSON.stringify(message));
 }
 
 function Update(e) { rtu.Update(e); }

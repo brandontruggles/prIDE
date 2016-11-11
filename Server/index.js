@@ -4,6 +4,7 @@ var execFileSync = require('child_process').execFileSync;
 var spawn = require('child_process').spawn;
 var read = require('read');
 var fs = require('fs');
+var http = require('http');
 var child;
 
 var options = {

@@ -8,6 +8,10 @@ var ide = (function () {
 			curtab = i;
 		},
 
+		gettab : function () {
+			return curtab;
+		},
+
 		gototab : function (num) {
 			var oldtab = curtab;
 			var cursor = editor.getCursorPosition();
