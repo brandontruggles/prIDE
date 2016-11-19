@@ -1,6 +1,7 @@
 
 var ide = (function () {
 
+	var tabs = [];
 	var curtab;
 
 	return {
@@ -13,23 +14,18 @@ var ide = (function () {
 		},
 
 		gototab : function (num) {
-			var oldtab = curtab;
-			var cursor = editor.getCursorPosition();
-			if (tabs[oldtab]) {
-				tabs[oldtab].body = editor.getValue();
-				tabs[oldtab].cursor = cursor;
-			}
-			curtab = num;
 			setproj(tabs[num].projname);
 			currfile = tabs[num].filename;
-			updateflag = false;
-			editor.setValue(tabs[num].body);
-			updateflag = true;
-			editor.moveCursorToPosition(tabs[num].cursor);
-			editor.clearSelection();
+			curtab = num;
+
+			editor.setSession(tabs[num].doc);
 			editor.focus();
 
-			this.updateTabs(); //for bg color
+			this.updateTabs();
+		},
+
+		gotolasttab : function () {
+			this.gototab(tabs.length - 1);
 		},
 
 		tabforward : function () {
@@ -37,6 +33,21 @@ var ide = (function () {
 				this.gototab(0);
 			else
 				this.gototab(curtab + 1);
+		},
+
+		addtab : function (dir, file, body, mode) {
+			tabs.push({
+				projname: dir,
+				filename: file,
+				doc: ace.createEditSession(body, mode)
+			});
+		},
+
+		findtab : function (dir, file) {
+			for (var i=0; i<tabs.length;i++)
+				if (tabs[projname] == dir && tabs[filename] == file)
+					return tabs[doc];
+			return null;
 		},
 
 		opennewtab : function (proj, file) {
@@ -57,11 +68,8 @@ var ide = (function () {
 					curtab --;
 				setproj(tabs[curtab].projname);
 				currfile = tabs[curtab].filename;
-				updateflag = false;
-				editor.setValue(tabs[curtab].body);
-				updateflag = true;
-				editor.moveCursorToPosition(tabs[curtab].cursor);
-				editor.clearSelection();
+
+				editor.setSession(tabs[curtab].doc);
 			}
 			this.updateTabs();
 			this.updateFileExplorer();

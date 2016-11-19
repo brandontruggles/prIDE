@@ -5,8 +5,6 @@ var currproject;
 var name;
 var editor;
 var projects = {};
-var tabs = [];
-var updateflag = true;
 
 function Connection()//works
 {
@@ -77,9 +75,8 @@ function Connection()//works
 				break;
 			case "RTU-Broadcast":
 				if (res.nickname == nickname) break;
-				if (res.dir != currproject || res.file != currfile) break;
 
-				rtu.rcv(contents);
+				rtu.rcv(res.dir, res.file, contents);
 				break;
 			case "Compile-Running-Status":
 				if(contents.output[0] == null)
@@ -113,27 +110,15 @@ function Connection()//works
 					projects[currproject].filelist.push(currfile);
 
 					if (currfile.endsWith(".java")){
-						tabs.push({
-							"projname": currproject,
-							"filename":	currfile,
-							"body": "public class "+currfile.substr(0,currfile.length-5)+"\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}\n",
-							"cursor": {"row": 4, "column": 2}
-						});
+						ide.addtab(currproject, currfile, "public class "+currfile.substr(0,currfile.length-5)+"\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}\n", "ace/mode/java");
 					}
 					else
-						tabs.push({
-							"projname": currproject,
-							"filename":	currfile,
-							"body": "",
-							"cursor": {"row": 0, "column": 0}
-						});
-
+						ide.addtab(currproject, currfile, "", "ace/mode/text");
 
 					ide.updateTabs();
 					ide.updateFileExplorer();
 
-					//if (tabs.length == 1) ide.settab(0);
-					ide.gototab(tabs.length - 1);
+					ide.gotolasttab();
 				}
 				else{
 					alert(contents.Reason);
@@ -197,15 +182,10 @@ function Connection()//works
 				break;
 			case "Read-File":
 				/* vvv kinda jank to do this here vvv */
-				tabs.push({
-					"projname": contents.proj,
-					"filename":	contents.file,
-					"body": contents.body,
-					"cursor": {"row": 0, "column": 0}
-				});
+				ide.addtab(contents.proj, contents.file, contents.body, "ace/mode/java");
 				ide.updateTabs();
 				ide.updateFileExplorer(); // now it switches to tab instead of opening a new one
-				ide.gototab(tabs.length - 1);
+				ide.gotolasttab();
 				break;
 
 			default:

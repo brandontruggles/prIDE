@@ -1,5 +1,6 @@
 
 var fs = require('fs');
+var logs = {};
 
 module.exports = {
 	incqstate : function (fpath, nick) {
@@ -58,5 +59,3 @@ module.exports = {
 		logs[fpath] = {"changes": [], "str": "", nickname: 0};
 	}
 };
-
-var logs = {};

@@ -1,6 +1,8 @@
 
 var rtu = (function (q) {
 
+	var updateflag = true;
+
 	this.q = q;
 
 	return {
@@ -35,23 +37,26 @@ var rtu = (function (q) {
 			this.deQ();
 		},
 
-		rcv : function (e) {
+		rcv : function (dir, file, e) {
 
 			var message = {
 				"nickname": nickname,
-				"dir": currproject,
-				"file": currfile,
+				"dir": dir,
+				"file": file,
 				"contents": "gotupdate"
 			};
 			sock.send(JSON.stringify(message));
+
+			var doc = ide.findtab(dir, file);
+			if (doc == null) return;
 
 			//e = adjustchange(e);  // adjust
 
 			updateflag = false; // implement edit
 			if (e.action == "insert")
-				editor.session.insert(e.start, e.lines.join('\n'));
+				doc.insert(e.start, e.lines.join('\n'));
 			else
-				editor.session.remove({"start": e.start, "end": e.end});
+				doc.remove({"start": e.start, "end": e.end});
 
 			updateflag = true;
 		},

@@ -463,7 +463,6 @@ function runServer(portNumber)
 										change = rtu.adjustchange(fpath, nickname, change); // adjust
 										rtu.enQ(fpath, change); // log
 										rtu.bufwrite(fpath, change); // update buffer
-										//fs.writeFile("workspace/" + file, logs[fpath].str); // save to file
 
 										var bc = {
 											"type": "RTU-Broadcast",
