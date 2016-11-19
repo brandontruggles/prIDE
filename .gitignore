@@ -1,7 +1,5 @@
 Server/node_modules
 Server/server.conf
-node_modules
-test.js
 test/
-server.conf
 workspace/
+server.conf
