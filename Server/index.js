@@ -2,9 +2,7 @@
 var rtu = require('./rtu.js');
 var execFileSync = require('child_process').execFileSync;
 var spawn = require('child_process').spawn;
-var read = require('read');
 var fs = require('fs');
-var http = require('http');
 var child;
 
 var options = {
@@ -142,7 +140,7 @@ function createConfig()
 	console.log("No server.conf file detected! Generating server.conf...");
 	try
 	{
-		fs.writeFileSync("server.conf", "{\n\t\"port\": 8080,\n\t\"max_clients\": 8,\n\t\"projects\": [],\n\t\"current_project\": \"\",\n\t\"current_file\": \"\",\n\t\"current_directory\": \"\"\n}");
+		fs.writeFileSync("server.conf", "{\n\t\"port\": 8080,\n\t\"max_clients\": 8\n}");
 		console.log("Successfully generated server.conf!");
 	}
 	catch(err)
@@ -237,7 +235,6 @@ function createProject(projectName)
 	if(!fs.existsSync(projectName))
 	{
 		fs.mkdirSync(projectName);
-		configObj.projects.push(projectName);
 		writeConfig();
 	}
 	else
@@ -339,13 +336,13 @@ function runServer(portNumber)
 										connectionList[connind].pass = params;
 										break;
 									case "testcredentials":
+										response.type = "Valid-Credentials-Status";
 										var user, pass;
 										var valid = false;
 										user = connectionList[connind].user;
 										pass = connectionList[connind].pass;
 										valid = testlogin(user, pass);
 										connectionList[connectionList.indexOf(conn)].valid = valid;
-										response.type = "Valid-Credentials-Status";
 										response.contents = {"Valid": valid};
 										break;
 									case "compile":
