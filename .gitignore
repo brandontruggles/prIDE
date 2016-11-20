@@ -1,7 +1,6 @@
 Server/node_modules
 Server/server.conf
-Server/test/
-Server/test.js
+test/
 workspace/
 server.conf
 .htaccess
