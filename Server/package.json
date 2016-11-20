@@ -13,9 +13,15 @@
     "Online"
   ],
   "repository": {
-  "type": "git",
-  "url": "git://github.com/brandonrninefive/CS_490_Project/CS_490_Project.git"
+    "type": "git",
+    "url": "git://github.com/brandonrninefive/CS_490_Project/CS_490_Project.git"
   },
   "author": "Brandon Ruggles",
-  "license": "GPL-3.0"
+  "license": "GPL-3.0",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "options": "0.0.6",
+    "ultron": "^1.0.2",
+    "ws": "^1.1.1"
+  }
 }
