@@ -4,8 +4,7 @@ var rtu = (function (q)
 	var updateflag = true;
 	this.q = q;
 
-	return 
-	{
+	return {
 		adjustchange : function (change) 
 		{
 			var cur = null;

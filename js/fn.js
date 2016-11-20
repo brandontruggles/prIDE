@@ -1,8 +1,7 @@
 
 var fn = (function () 
 {
-	return 
-	{
+	return {
 		deletefile : function (file) 
 		{
 			var message = 

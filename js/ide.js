@@ -4,8 +4,7 @@ var ide = (function ()
 	var tabs = [];
 	var curtab;
 
-	return 
-	{
+	return {
 		settab : function (i) 
 		{
 			curtab = i;
