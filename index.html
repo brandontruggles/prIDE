@@ -1,21 +1,11 @@
 <!DOCTYPE html>
 <html>
 	<head>
-
 		<link rel="stylesheet" type="text/css" href="css/IDEMainStyle.css">
-		<style type="text/css" media="screen">
-#codespace {
-	position: relative;
-	height: 300px;
-	width: 100%;
-}
-		</style>
 	</head>
 	<title> prIDE </title>
 	<meta charset="utf-8">
-
-	<body OnLoad="Connection()">
-
+	<body onLoad="Connection()">
 		<!-- Buttons go in here -->
 		<!-- Dropdowns go in here -->
 		<div class="dropdown">
@@ -27,6 +17,14 @@
 			</div>
 		</div>
 		<button class="btn" id="obtn">Edit</button>
+		<!--  <button onclick="showEditDropdown()" class="dropbtn">Edit</button>
+	  	<div id="editDropdown" class="dropdown-content">
+	  	<a href="#">Cut</a>
+	  	<a href="#">Copy</a>
+	  	<a href="#">Paste</a>
+	  	</div>
+	  	</div> -->
+
 		<button class="btn" id="ybtn">View </button>
 		<div class="dropdown">
 			<button class="btn" id="gbtn" onclick="showNewDropdown('builddd')">Build</button>
@@ -44,22 +42,16 @@
 				<a href="#" onclick="fn.gitpush()">Push</a>
 			</div>
 		</div>
+		
 		<button class="btn" id="vbtn">Settings</button>
+		
+		<a href="https://glaad.nationbuilder.com/donate" target="_blank"><button class="btn" id="glaadbtn">Donate to GLAAD!</button></a>
+		<br>
+	  	<br>
 
-		<a href="https://glaad.nationbuilder.com/donate" id="donatelink">Donate to GLAAD! </a>
-		<!--  <button onclick="showEditDropdown()" class="dropbtn">Edit</button>
-	  <div id="editDropdown" class="dropdown-content">
-	  <a href="#">Cut</a>
-	  <a href="#">Copy</a>
-	  <a href="#">Paste</a>
-	  </div>
-	  </div> -->
-	  <br>
-	  <br>
-
-	  <ul class="tab" id="tabs">
-		  <li><div class="tablinks">&nbsp;<div></li>
-	  </ul>
+	  	<ul class="tab" id="tabs">
+			  <li><div class="tablinks">&nbsp;<div></li>
+	  	</ul>
 
 	  <!--<div style="display: inline-block;">-->
 

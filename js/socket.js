@@ -16,25 +16,36 @@ function Connection()//works
 	editor.$blockScrolling = Infinity;
 	editor.commands.addCommand({ // adding commands doesn't work
 		name:	'testcommand',
-		bindkey:	{
+		bindkey:	
+		{
 			sender:	'editor|cli',
 			win:	'Ctrl-Alt-h'
 		},
-		exec:	function(editor) {alert("ctrl");console.log("ctrl");}
+		exec:	function(editor) 
+		{
+			alert("ctrl");
+			console.log("ctrl");
+		}
 	});
 	/*
-	ace.config.loadModule("ace/keyboard/vim", function(m) {
+	ace.config.loadModule("ace/keyboard/vim", function(m) 
+	{
 		var VimApi = require("ace/keyboard/vim").CodeMirror.Vim;
-			VimApi.defineEx("write", "w", function(cm, input) {
+			VimApi.defineEx("write", "w", function(cm, input) 
+			{
 				cm.ace.execCommand("save");
 			});
 	});
-	   editor.commands.addCommand({
+	editor.commands.addCommand({
 	   name: 'tabforward',
-	   bindKey: {win: 'Ctrl-Q', mac: 'Command-Q'},
+	   bindKey: 
+	   {
+		win: 'Ctrl-Q', 
+		mac: 'Command-Q'
+	   },
 	   exec: tabforward,
 	   readonly: true
-	   });
+	});
 	   */
 	editor.resize();
 
@@ -43,28 +54,31 @@ function Connection()//works
 	sock = new WebSocket("ws://45.55.218.73:"+port);
 	sock.onopen = function()
 	{
-		var connect = {
+		var connect = 
+		{
 			"nickname": nickname,
 			"contents": "connect"
 		};
 		sock.send(JSON.stringify(connect));
-
 	};
-	sock.onmessage = function(response){
-
+	sock.onmessage = function(response)
+	{
 		var res = JSON.parse(response.data);
 		var contents = res.contents;
-		switch(res.type){
+		switch(res.type)
+		{
 			case "Console":
 				console.log(contents);
 				document.getElementById('consoleWindow').innerHTML += contents;
 				break;
 			case "Connection-Accept":
-				if(contents.Accepted){
+				if(contents.Accepted)
+				{
 					//nickname = document.getElementById('nickname').value;
 					//document.location.href = "IDEMain.html";
 				}
-				else{
+				else
+				{
 					alert(contents.Reason);
 					port = prompt("Enter port");
 					nickname = prompt("Enter nickname");
@@ -74,14 +88,19 @@ function Connection()//works
 				ide.updateFileExplorer(); // pre-load some files
 				break;
 			case "RTU-Broadcast":
-				if (res.nickname == nickname) break;
-
+				if (res.nickname == nickname) 
+				{
+					break;
+				}
 				rtu.rcv(res.dir, res.file, contents);
 				break;
 			case "Compile-Running-Status":
 				if(contents.output[0] == null)
+				{
 					document.getElementById('consoleWindow').innerHTML += 'Successfully Compiled\n';
-				else {
+				}
+				else 
+				{
 					document.getElementById('consoleWindow').innerHTML += contents.output;
 				}
 				break;
@@ -92,40 +111,48 @@ function Connection()//works
 				document.getElementById('consoleWindow').innerHTML += contents+"\n";
 				break;
 			case "Project-Created-Status":
-				if(contents.Created){
+				if(contents.Created)
+				{
 					alert("new project created");
 					projects[name] = {"hidden": false, "filelist": []};
 					ide.updateFileExplorer();
 					setproj(name);
 				}
-				else{
+				else
+				{
 					alert(contents.Reason);
 				}
 				break;
 			case "File-Created-Status":
 				var numOfFiles = 0;
-				if(contents.Created){
+				if(contents.Created)
+				{
 					alert("new file created");
 					currfile = name;
 					projects[currproject].filelist.push(currfile);
 
-					if (currfile.endsWith(".java")){
+					if (currfile.endsWith(".java"))
+					{
 						ide.addtab(currproject, currfile, "public class "+currfile.substr(0,currfile.length-5)+"\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}\n", "ace/mode/java");
 					}
 					else
+					{
 						ide.addtab(currproject, currfile, "", "ace/mode/text");
+					}
 
 					ide.updateTabs();
 					ide.updateFileExplorer();
 
 					ide.gotolasttab();
 				}
-				else{
+				else
+				{
 					alert(contents.Reason);
 				}
 				break;
 			case "File-Deleted-Status":
-				if (contents.Deleted) {
+				if (contents.Deleted) 
+				{
 					var proj = contents.proj;
 					var file = contents.file;
 					var list = projects[proj].filelist;
@@ -133,40 +160,48 @@ function Connection()//works
 					list.splice(list.indexOf(file), 1);
 					ide.updateFileExplorer();
 				}
-				else {
+				else 
+				{
 					alert(contents.Reason);
 				}
 				break;
 			case "Directory-Created-Status":
-				if(contents.Created){
+				if(contents.Created)
+				{
 					alert("directory created");
 					var fileList = document.getElementById('openproj');
 					fileList.innerHTML += '<li><a href="#">'+name+'/</a></li>';
 				}
-				else{
+				else
+				{
 					alert(contents.Reason);
 				}
 				break;
 			case "Project-Open-Response":
-				if(contents.Opened){
+				if(contents.Opened)
+				{
 					var str = '';
-					for(var i = 0; i < contents.Files.length; i++){
+					for(var i = 0; i < contents.Files.length; i++)
+					{
 						str += contents.Files[i] + "\n";
 					}
 					var dir = prompt(str);
 					fn.getfiles(dir);
 					setproj(dir);
 				}
-				else{
+				else
+				{
 					alert("no projects make one");
 				}
 				break;
 			case "File-Open-Response":
-				if(contents.Opened){
+				if(contents.Opened)
+				{
 					projects[contents.Dir] = {"hidden": false, "filelist": contents.Files};
 					ide.updateFileExplorer();
 				}
-				else{
+				else
+				{
 					//alert("no projects make one");
 				}
 				break;
@@ -187,21 +222,25 @@ function Connection()//works
 				ide.updateFileExplorer(); // now it switches to tab instead of opening a new one
 				ide.gotolasttab();
 				break;
-
 			default:
 				break;
 		}//switch
 	}//onmessage
 }
 
-function setproj(name) {
+function setproj(name) 
+{
 	currproject = name;
 	var curdir = document.getElementById('curdir');
 	curdir.innerHTML = currproject;
 }
 
-function setfile(name) {
+function setfile(name) 
+{
 	currfile = name;
 }
 
-function Update(e) { rtu.Update(e); }
+function Update(e) 
+{ 
+	rtu.Update(e); 
+}

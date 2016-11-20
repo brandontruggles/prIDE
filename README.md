@@ -9,10 +9,13 @@ Semester To-do List:
 ======
 
 - [ ] Design a sleek front-end.
-- [ ] Create Node.js websocket server application with a simple project filesystem.
-- [ ] Communicate with the Node.js server from the front-end to display projects and files for editing.
-- [ ] Implement a simple chat system between users for collaboration.
-- [ ] Implement a code sharing feature to allow others to view or perform code updates on the same file at the same time.
+- [ ] Replace input alert boxes with nicer alternatives.
+- [ ] Clean up, refactor, and comment out code for cleanliness.
+- [x] Create Node.js websocket server application with a simple project filesystem.
+- [x] Communicate with the Node.js server from the front-end to display projects and files for editing.
+- [x] Implement a simple chat system between users for collaboration.
+- [x] Implement a code sharing feature to allow others to view or perform code updates on the same file at the same time.
+- [x] Implement git/Github integration.
 
 Project Contributors:
 ======
