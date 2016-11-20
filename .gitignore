@@ -3,3 +3,4 @@ Server/server.conf
 test/
 workspace/
 server.conf
+.htaccess
