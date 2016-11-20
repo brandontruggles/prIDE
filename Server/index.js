@@ -265,9 +265,9 @@ function getProjectFiles(dir)
 function broadcastResponse(connectionList, responseString)
 {
 	connectionList.forEach(function(conn)
-			{
-				conn.connection.send(responseString);
-			});
+	{
+		conn.connection.send(responseString);
+	});
 }
 
 function runServer(portNumber)
@@ -314,13 +314,13 @@ function runServer(portNumber)
 									case "connect":
 										response.type = "Connection-Accept";
 										connectionList.forEach(function(conn)
-												{
-													if(conn.nickname == nickname)
-													{
-														response.contents = {"Accepted": false, "Reason": "The nickname you selected is already in use on this server. Please enter a unique nickname and try again."};
-														console.log("Rejected incoming connection for taken nickname.");
-													}
-												});
+										{
+											if(conn.nickname == nickname)
+											{
+												response.contents = {"Accepted": false, "Reason": "The nickname you selected is already in use on this server. Please enter a unique nickname and try again."};
+												console.log("Rejected incoming connection for taken nickname.");
+											}
+										});
 										if(response.contents == null)
 										{
 											connectionList.push({"connection":ws,"nickname":nickname,"user":null,"pass":null,"valid":false});
