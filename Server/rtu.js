@@ -11,7 +11,7 @@ module.exports =
 	adjustchange : function (fpath, nick, change) 
 	{
 		var cur = null;
-		for (var i = logs[fpath].nick; i < logs[fpath].changes.length; i++) i
+		for (var i = logs[fpath].nick; i < logs[fpath].changes.length; i++)
 		{
 			cur = logs[fpath].changes[i];
 			if (cur.start.row < change.start.row)
