@@ -1,7 +1,5 @@
 
-var sys = require('sys');
 var exec = require('child_process').exec;
-var read = require('read');
 var fs = require('fs');
 var curfolder = "";
 var curfile = "";
@@ -13,33 +11,9 @@ var options =
 	replace: '*'
 };
 
-/*
-read(options, function (error, result, isDefault) 
-{		
-	//testlogin("friedcook", result);
-	//createproj("friedcook", result, "test");
-
-	//clone(projlist[2].html_url, projlist[2].name);
-	
-	createproj("friedcook", result, "test");
-	var projlist = listproj("friedcook");
-	for (var i = 0; i < projlist.length; i++) console.log(projlist[i].name);
-	clone(projlist[0].html_url, projlist[0].name);
-	pull();
-	newfile("test.java");
-	add("test.java");
-	push();
-});
-*/
-
-function puts(error, stdout, stderr) 
-{ 
-	sys.puts(stdout) 
-}
-
 function writeout(error, stdout, stderr) 
 { 
-	fs.writeFile("out.txt", stdout, null); 
+	fs.writeFileSync("out.txt", stdout, null); 
 }
 
 function testlogin(user, pass) 
@@ -48,7 +22,7 @@ function testlogin(user, pass)
 	out = fs.readFileSync("out.txt", "utf8");
 
 	var obj = JSON.parse(out);
-	if (obj.message)
+	if(obj.message)
 	{
 		return true;
 	}
