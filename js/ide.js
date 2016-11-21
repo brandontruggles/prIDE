@@ -51,9 +51,9 @@ var ide = (function ()
 		{
 			for (var i=0; i<tabs.length;i++)
 			{
-				if (tabs[projname] == dir && tabs[filename] == file)
+				if (tabs[i].projname == dir && tabs[i].filename == file)
 				{
-					return tabs[doc];
+					return tabs[i].doc;
 				}
 			}
 			return null;
