@@ -1,6 +1,6 @@
-/* When the user clicks on the button, 
+/* When the user clicks on the button,
    toggle between hiding and showing the dropdown content */
-function showNewDropdown(id) 
+function showNewDropdown(id)
 {
 	closedropdowns();
 	var elem = document.getElementById(id);
@@ -44,26 +44,26 @@ function openChat(evt)
 		}
 		else
 		{
-			document.getElementById("chatWindow").style.display = "inline-block";	
+			document.getElementById("chatWindow").style.display = "inline-block";
 		}
 	}
 }
 
-function openTab(evt, fileName) 
+function openTab(evt, fileName)
 {
 	// Declare all variables
 	var i, tabcontent, tablinks;
 
 	// Get all elements with class="tabcontent" and hide them
 	tabcontent = document.getElementsByClassName("tabcontent");
-	for (i = 0; i < tabcontent.length; i++) 
+	for (i = 0; i < tabcontent.length; i++)
 	{
 		tabcontent[i].style.display = "none";
 	}
 
 	// Get all elements with class="tablinks" and remove the class "active"
 	tablinks = document.getElementsByClassName("tablinks");
-	for (i = 0; i < tablinks.length; i++) 
+	for (i = 0; i < tablinks.length; i++)
 	{
 		tablinks[i].className = tablinks[i].className.replace(" active", "");
 	}
@@ -74,19 +74,19 @@ function openTab(evt, fileName)
 }
 
 // Close the dropdown menu if the user clicks outside of it
-window.onclick = function (event) 
+window.onclick = function (event)
 {
-	if(!event.target.matches('.btn')) 
+	if(!event.target.matches('.btn'))
 	{
 		closedropdowns();
 	}
 }
 
-function closedropdowns() 
+function closedropdowns()
 {
 	var dropdowns = document.getElementsByClassName("dropdowncontent");
 	var i;
-	for (i = 0; i < dropdowns.length; i++) 
+	for (i = 0; i < dropdowns.length; i++)
 	{
 		var elem = dropdowns[i];
 		if (elem.style.display == "block")
@@ -95,4 +95,29 @@ function closedropdowns()
 		}
 		elem.style.zIndex = "5";
 	}
+}
+
+function File(button)
+{
+	document.getElementById('bar').style.display = 'block';
+	document.getElementById('pushed').value = button;
+}
+
+function Creation()
+{
+	var num = document.getElementById('pushed').value;
+	if(num == "1")
+		fn.newfile();
+	else if (num == "2")
+		fn.newproject();
+	else if (num == "4")
+		fn.gitclone();
+	else if (num == "6")
+		fn.gitcommit();
+	else {
+			alert("huh");
+	}
+
+	document.getElementById('bar').style.display = 'none';
+
 }

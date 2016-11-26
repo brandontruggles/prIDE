@@ -16,31 +16,31 @@ function Connection()//works
 	editor.$blockScrolling = Infinity;
 	editor.commands.addCommand({ // adding commands doesn't work
 		name:	'testcommand',
-		bindkey:	
+		bindkey:
 		{
 			sender:	'editor|cli',
 			win:	'Ctrl-Alt-h'
 		},
-		exec:	function(editor) 
+		exec:	function(editor)
 		{
 			alert("ctrl");
 			console.log("ctrl");
 		}
 	});
 	/*
-	ace.config.loadModule("ace/keyboard/vim", function(m) 
+	ace.config.loadModule("ace/keyboard/vim", function(m)
 	{
 		var VimApi = require("ace/keyboard/vim").CodeMirror.Vim;
-			VimApi.defineEx("write", "w", function(cm, input) 
+			VimApi.defineEx("write", "w", function(cm, input)
 			{
 				cm.ace.execCommand("save");
 			});
 	});
 	editor.commands.addCommand({
 	   name: 'tabforward',
-	   bindKey: 
+	   bindKey:
 	   {
-		win: 'Ctrl-Q', 
+		win: 'Ctrl-Q',
 		mac: 'Command-Q'
 	   },
 	   exec: tabforward,
@@ -48,13 +48,17 @@ function Connection()//works
 	});
 	   */
 	editor.resize();
-
+	nickname = document.getElementById('nick').value;
+	var port = document.getElementById('port').value;
+	/*
 	var port = prompt("Enter port");
 	nickname = prompt("Enter nickname");
-	sock = new WebSocket("ws://45.55.218.73:"+port);
+	*/
+	sock = new WebSocket("ws://localhost:"+port)
+	//sock = new WebSocket("ws://45.55.218.73:"+port);
 	sock.onopen = function()
 	{
-		var connect = 
+		var connect =
 		{
 			"nickname": nickname,
 			"contents": "connect"
@@ -74,21 +78,24 @@ function Connection()//works
 			case "Connection-Accept":
 				if(contents.Accepted)
 				{
+					document.getElementById('Loader').style.display = 'none';
+					//document.getElementById('Loader').innerHTML = "";
+					document.getElementById('main-container').style.display = 'block' ;
 					//nickname = document.getElementById('nickname').value;
 					//document.location.href = "IDEMain.html";
 				}
 				else
 				{
 					alert(contents.Reason);
-					port = prompt("Enter port");
+					/*port = prompt("Enter port");
 					nickname = prompt("Enter nickname");
 					sock.close();
-					sock = new WebSocket("ws://45.55.218.73:"+port);
+					sock = new WebSocket("ws://45.55.218.73:"+port);*/
 				}
 				ide.updateFileExplorer(); // pre-load some files
 				break;
 			case "RTU-Broadcast":
-				if (res.nickname == nickname) 
+				if (res.nickname == nickname)
 				{
 					break;
 				}
@@ -99,7 +106,7 @@ function Connection()//works
 				{
 					document.getElementById('consoleWindow').innerHTML += 'Successfully Compiled\n';
 				}
-				else 
+				else
 				{
 					document.getElementById('consoleWindow').innerHTML += contents.output;
 				}
@@ -151,7 +158,7 @@ function Connection()//works
 				}
 				break;
 			case "File-Deleted-Status":
-				if (contents.Deleted) 
+				if (contents.Deleted)
 				{
 					var proj = contents.proj;
 					var file = contents.file;
@@ -160,7 +167,7 @@ function Connection()//works
 					list.splice(list.indexOf(file), 1);
 					ide.updateFileExplorer();
 				}
-				else 
+				else
 				{
 					alert(contents.Reason);
 				}
@@ -228,19 +235,19 @@ function Connection()//works
 	}//onmessage
 }
 
-function setproj(name) 
+function setproj(name)
 {
 	currproject = name;
 	var curdir = document.getElementById('curdir');
 	curdir.innerHTML = currproject;
 }
 
-function setfile(name) 
+function setfile(name)
 {
 	currfile = name;
 }
 
-function Update(e) 
-{ 
-	rtu.Update(e); 
+function Update(e)
+{
+	rtu.Update(e);
 }

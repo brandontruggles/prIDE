@@ -2,84 +2,98 @@
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="css/IDEMainStyle.css">
+			<title> prIDE </title>
+			<meta charset="utf-8">
 	</head>
-	<title> prIDE </title>
-	<meta charset="utf-8">
-	<body onLoad="Connection()">
-		<!-- Buttons go in here -->
-		<!-- Dropdowns go in here -->
-		<div class="dropdown">
-			<button class="btn" id="rbtn" onclick="showNewDropdown('filedd')">File</button>
-			<div id="filedd" class="dropdowncontent">
-				<a href="#" onclick="fn.newfile()">New File</a>
-				<a href="#" onclick="fn.newproject()">New Project</a>
-				<a href="#" onclick="fn.openproject()">Open Project</a>
-			</div>
+	<body>
+
+		<div class="" id="Loader">
+			Name:<input type="text" id="nick" placeholder="Please Enter Nickname"><br>
+			Port #:<input type="text" id="port" placeholder="8080">
+			<input type="button" value="Enter" onclick="Connection()">
 		</div>
-		<button class="btn" id="obtn">Edit</button>
-		<!--  <button onclick="showEditDropdown()" class="dropbtn">Edit</button>
-	  	<div id="editDropdown" class="dropdown-content">
-	  	<a href="#">Cut</a>
-	  	<a href="#">Copy</a>
-	  	<a href="#">Paste</a>
-	  	</div>
-	  	</div> -->
 
-		<button class="btn" id="ybtn">View </button>
-		<div class="dropdown">
-			<button class="btn" id="gbtn" onclick="showNewDropdown('builddd')">Build</button>
-			<div id="builddd" class="dropdowncontent">
-				<a href="#" onclick="fn.compile()">Compile</a>
-				<a href="#" onclick="fn.run()">Run</a>
+		<div class="main-container" id="main-container" style="display:none;">
+			<!-- Buttons go in here -->
+			<!-- Dropdowns go in here -->
+			<div class="dropdown">
+				<button class="btn" id="rbtn" onclick="showNewDropdown('filedd')">File</button>
+				<div id="filedd" class="dropdowncontent">
+					<a href="#" id = "1" onclick="File(this.id)">New File</a>
+					<a href="#" id = "2" onclick="File(this.id)">New Project</a>
+					<a href="#" id = "3" onclick="fn.openproject()">Open Project</a>
+				</div>
 			</div>
-		</div>
-		<div class="dropdown">
-			<button class="btn" id="bbtn" onclick="showNewDropdown('gitdd')">Git</button>
-			<div id="gitdd" class="dropdowncontent">
-				<a href="#" onclick="fn.gitclone()">Clone</a>
-				<a href="#" onclick="fn.gitadd()">Add</a>
-				<a href="#" onclick="fn.gitcommit()">Commit</a>
-				<a href="#" onclick="fn.gitpush()">Push</a>
+			<button class="btn" id="obtn">Edit</button>
+			<!--  <button onclick="showEditDropdown()" class="dropbtn">Edit</button>
+		  	<div id="editDropdown" class="dropdown-content">
+		  	<a href="#">Cut</a>
+		  	<a href="#">Copy</a>
+		  	<a href="#">Paste</a>
+		  	</div>
+		  	</div> -->
+
+			<button class="btn" id="ybtn">View </button>
+			<div class="dropdown">
+				<button class="btn" id="gbtn" onclick="showNewDropdown('builddd')">Build</button>
+				<div id="builddd" class="dropdowncontent">
+					<a href="#" onclick="fn.compile()">Compile</a>
+					<a href="#" onclick="fn.run()">Run</a>
+				</div>
 			</div>
-		</div>
-		
-		<button class="btn" id="vbtn">Settings</button>
-		
-		<a href="https://glaad.nationbuilder.com/donate" target="_blank"><button class="btn" id="glaadbtn">Donate to GLAAD!</button></a>
-		<br>
-	  	<br>
+			<div class="dropdown">
+				<button class="btn" id="bbtn" onclick="showNewDropdown('gitdd')">Git</button>
+				<div id="gitdd" class="dropdowncontent">
+					<a href="#" id = "4" onclick="File(this.id)">Clone</a>
+					<a href="#" id = "5" onclick="fn.gitadd()">Add</a>
+					<a href="#" id = "6" onclick="File(this.id)">Commit</a>
+					<a href="#" id = "7" onclick="fn.gitpush()">Push</a>
+				</div>
+			</div>
 
-	  	<ul class="tab" id="tabs">
-			  <li><div class="tablinks">&nbsp;<div></li>
-	  	</ul>
+			<button class="btn" id="vbtn">Settings</button>
 
-	  <!--<div style="display: inline-block;">-->
+			<a href="https://glaad.nationbuilder.com/donate" target="_blank"><button class="btn" id="glaadbtn">Donate to GLAAD!</button></a>
+			<br>
+			<div id="bar" style="display:none">
+				<input type="text" id="name" placeholder="Enter">
+				<input type="button" value="Enter" onclick="Creation()">
+				<input type="hidden" id="pushed">
 
-	  <div style="display: flex;">
-		  <div style="flex: 1;">
-			  <select id='openproj' name="file" size="20" multiple style="width: 100%;">
-			  </select>
-			  <textarea id="curdir" rows="1" style="background-color: #292429; width: 100%; color: white"></textarea>
-		  </div>
+			 </div>
+		  	<br>
 
-		  <div style="margin: auto; flex: 4;">
-			  <div id="codespace">
+		  	<ul class="tab" id="tabs">
+				  <li><div class="tablinks">&nbsp;</div></li>
+		  	</ul>
+
+		  <!--<div style="display: inline-block;">-->
+
+		  <div style="display: flex;">
+			  <div style="flex: 1;">
+				  <select id='openproj' name="file" size="20" multiple style="width: 100%;">
+				  </select>
+				  <textarea id="curdir" rows="1" style="background-color: #292429; width: 100%; color: white"></textarea>
 			  </div>
+
+			  <div style="margin: auto; flex: 4;">
+				  <div id="codespace">
+				  </div>
+			  </div>
+
+			  <div style="flex: 1; margin-left: 20px;">
+				  <textarea placeholder="Console" id="consoleWindow" rows="20" cols="25" style="width: 100%;" readonly></textarea>
+				  <input type="text" placeholder="Commands and chat here" id="commandArea" onkeydown="fn.chatkeydown(this)" style="width: 100%" />
+			  </div>
+
 		  </div>
 
-		  <div style="flex: 1; margin-left: 20px;">
-			  <textarea placeholder="Console" id="consoleWindow" rows="20" cols="25" style="width: 100%;" readonly></textarea>
-			  <input type="text" placeholder="Commands and chat here" id="commandArea" onkeydown="fn.chatkeydown(this)" style="width: 100%" />
-		  </div>
 
-	  </div>
-
-
-	  <!--<button onclick="openConsole(event)" class="consolebtn" id="console">Console </button> -->
-	  <!--
-	   <button onclick="message()" class="submitbtn" id="submit">Submit </button>
-	  -->
-
+		  <!--<button onclick="openConsole(event)" class="consolebtn" id="console">Console </button> -->
+		  <!--
+		   <button onclick="message()" class="submitbtn" id="submit">Submit </button>
+		  -->
+		</div>
 	</body>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

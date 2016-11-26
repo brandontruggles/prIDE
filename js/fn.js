@@ -1,10 +1,10 @@
 
-var fn = (function () 
+var fn = (function ()
 {
 	return {
-		deletefile : function (file) 
+		deletefile : function (file)
 		{
-			var message = 
+			var message =
 			{
 				"nickname": nickname,
 				"dir": currproject,
@@ -12,9 +12,9 @@ var fn = (function ()
 			};
 			sock.send(JSON.stringify(message));
 		},
-		deleteproj : function (proj) 
+		deleteproj : function (proj)
 		{
-			var message = 
+			var message =
 			{
 				"nickname": nickname,
 				"dir": currproject,
@@ -22,20 +22,20 @@ var fn = (function ()
 			};
 			sock.send(JSON.stringify(message));
 		},
-		setproj : function (name) 
+		setproj : function (name)
 		{
 			currproject = name;
 			var curdir = document.getElementById('curdir');
 			curdir.innerHTML = currproject;
 		},
-		setfile : function (name) 
+		setfile : function (name)
 		{
 			currfile = name;
 		},
 		compile : function ()
 		{
 			//Update();
-			var message = 
+			var message =
 			{
 				"nickname": nickname,
 				"dir": currproject,
@@ -45,8 +45,8 @@ var fn = (function ()
 		},
 		newproject : function ()
 		{
-			name = prompt("name of project");
-			var message = 
+			name = document.getElementById('name').value;
+			var message =
 			{
 				"nickname": nickname,
 				"contents": "newproject "+name
@@ -56,8 +56,8 @@ var fn = (function ()
 		},
 		newfile : function ()
 		{
-			name = prompt("name file");
-			var message = 
+			name = document.getElementById('name').value;
+			var message =
 			{
 				"nickname": nickname,
 				"dir": currproject,
@@ -65,9 +65,9 @@ var fn = (function ()
 			};
 			sock.send(JSON.stringify(message));
 		},
-		getfilecontents : function (params) 
+		getfilecontents : function (params)
 		{
-			var message = 
+			var message =
 			{
 				"nickname": nickname,
 				"dir": currproject,
@@ -79,13 +79,13 @@ var fn = (function ()
 		{//for chat
 			var chatbox = document.getElementById('commandArea');
 			var message;
-			if (chatbox.value.startsWith("/closetab")) 
+			if (chatbox.value.startsWith("/closetab"))
 			{
 				ide.closetab(parseInt(chatbox.value.split(' ')[1]));
 				chatbox.value = '';
 				return;
 			}
-			else if (chatbox.value.startsWith("/movetab")) 
+			else if (chatbox.value.startsWith("/movetab"))
 			{
 				ide.movetab(parseInt(chatbox.value.split(' ')[1]), parseInt(chatbox.value.split(' ')[2]));
 				chatbox.value = '';
@@ -93,7 +93,7 @@ var fn = (function ()
 			}
 			else if (chatbox.value.startsWith("/"))
 			{
-				message = 
+				message =
 				{
 					"nickname": nickname,
 					"dir": currproject,
@@ -102,7 +102,7 @@ var fn = (function ()
 			}
 			else
 			{
-				message = 
+				message =
 				{
 					"nickname": nickname,
 					"dir": currproject,
@@ -114,7 +114,7 @@ var fn = (function ()
 		},
 		chatkeydown : function (e)
 		{
-			if (event.keyCode == 13) 
+			if (event.keyCode == 13)
 			{
 				this.message();
 			}
@@ -122,7 +122,7 @@ var fn = (function ()
 		newdir : function ()
 		{
 			var name = prompt("name new directory");
-			var message = 
+			var message =
 			{
 				"nickname": nickname,
 				"dir": currproject,
@@ -132,7 +132,7 @@ var fn = (function ()
 		},
 		openproject : function ()
 		{
-			var message = 
+			var message =
 			{
 				"nickname": nickname,
 				"contents": "openproject"
@@ -141,7 +141,7 @@ var fn = (function ()
 		},
 		getfiles : function (dir)
 		{
-			var message = 
+			var message =
 			{
 				"nickname": nickname,
 				"dir": dir,
@@ -151,7 +151,7 @@ var fn = (function ()
 		},
 		run : function ()
 		{
-			var message = 
+			var message =
 			{
 				"nickname": nickname,
 				"file": currfile,
@@ -160,9 +160,9 @@ var fn = (function ()
 			};
 			sock.send(JSON.stringify(message));
 		},
-		gitpush : function () 
+		gitpush : function ()
 		{
-			var message = 
+			var message =
 			{
 				"nickname": nickname,
 				"dir": currproject,
@@ -170,10 +170,10 @@ var fn = (function ()
 			};
 			sock.send(JSON.stringify(message));
 		},
-		gitcommit : function () 
+		gitcommit : function ()
 		{
-			var msg = prompt("message: ");
-			var message = 
+			var msg = document.getElementById('name').value;
+			var message =
 			{
 				"nickname": nickname,
 				"dir": currproject,
@@ -181,9 +181,9 @@ var fn = (function ()
 			};
 			sock.send(JSON.stringify(message));
 		},
-		gitadd : function () 
+		gitadd : function ()
 		{
-			var message = 
+			var message =
 			{
 				"nickname": nickname,
 				"dir": currproject,
@@ -191,10 +191,10 @@ var fn = (function ()
 			};
 			sock.send(JSON.stringify(message));
 		},
-		gitclone : function () 
+		gitclone : function ()
 		{
-			var url = prompt("url: ");
-			var message = 
+			var url = document.getElementById('name').value;
+			var message =
 			{
 				"nickname": nickname,
 				"contents": "git_clone " + url
@@ -203,4 +203,3 @@ var fn = (function ()
 		}
 	};
 }());
-
