@@ -202,7 +202,7 @@ function createFile(fileName, dir)
 {
 	if(!fs.existsSync("workspace/" + dir + "/" + fileName))
 	{
-		fs.writeFileSync("workspace/" + dir + "/" + fileName,"public class " + fileName.replace(".java", "") + "\n{\n\tpublic static void main(String [] args)\n\t{\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}");
+		fs.writeFileSync("workspace/" + dir + "/" + fileName,"public class " + fileName.replace(".java", "") + "\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}");
 	}	
 	else
 	{
@@ -417,7 +417,7 @@ function runServer(portNumber)
 						else
 						{
 							response.contents = {"Created": true};
-							var startContents = "public class " + params.replace(".java", "") + "\n{\n\tpublic static void main(String [] args)\n\t{\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}" 
+							var startContents = "public class " + params.replace(".java", "") + "\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}" 
 							rtu.newfile(dir + "/" + params, startContents);
 						}
 						ws.send(JSON.stringify(response));
