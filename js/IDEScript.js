@@ -97,6 +97,7 @@ function closedropdowns()
 	}
 }
 
+//setting values for file
 function File(button)
 {
 	document.getElementById('bar').style.display = 'block';
@@ -110,6 +111,11 @@ function Creation()
 		fn.newfile();
 	else if (num == "2")
 		fn.newproject();
+	else if (num == "3"){
+		fn.getfiles(document.getElementById('name').value);
+		fn.setproj(document.getElementById('name').value);
+		document.getElementById('bar').removeChild(document.getElementById('list'));
+	}
 	else if (num == "4")
 		fn.gitclone();
 	else if (num == "6")
@@ -117,7 +123,9 @@ function Creation()
 	else {
 			alert("huh");
 	}
-
+	//reseting values
 	document.getElementById('bar').style.display = 'none';
+	document.getElementById('name').value = "";
+	document.getElementById('pushed').value = "";
 
 }

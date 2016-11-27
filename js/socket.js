@@ -54,8 +54,8 @@ function Connection()//works
 	var port = prompt("Enter port");
 	nickname = prompt("Enter nickname");
 	*/
-	//sock = new WebSocket("ws://localhost:"+port)
-	sock = new WebSocket("ws://45.55.218.73:"+port);
+	sock = new WebSocket("ws://localhost:"+port)
+	//sock = new WebSocket("ws://45.55.218.73:"+port);
 	sock.onopen = function()
 	{
 		var connect =
@@ -120,7 +120,6 @@ function Connection()//works
 			case "Project-Created-Status":
 				if(contents.Created)
 				{
-					alert("new project created");
 					projects[name] = {"hidden": false, "filelist": []};
 					ide.updateFileExplorer();
 					setproj(name);
@@ -134,7 +133,6 @@ function Connection()//works
 				var numOfFiles = 0;
 				if(contents.Created)
 				{
-					alert("new file created");
 					currfile = name;
 					projects[currproject].filelist.push(currfile);
 
@@ -175,7 +173,6 @@ function Connection()//works
 			case "Directory-Created-Status":
 				if(contents.Created)
 				{
-					alert("directory created");
 					var fileList = document.getElementById('openproj');
 					fileList.innerHTML += '<li><a href="#">'+name+'/</a></li>';
 				}
@@ -192,9 +189,9 @@ function Connection()//works
 					{
 						str += contents.Files[i] + "\n";
 					}
-					var dir = prompt(str);
-					fn.getfiles(dir);
-					setproj(dir);
+					File("3");
+					document.getElementById('bar').innerHTML+='<p id ="list">'+str+'</p>';
+
 				}
 				else
 				{
