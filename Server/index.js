@@ -417,7 +417,8 @@ function runServer(portNumber)
 						else
 						{
 							response.contents = {"Created": true};
-							rtu.newfile(dir + "/" + params);
+							var startContents = "public class " + params.replace(".java", "") + "\n{\n\tpublic static void main(String [] args)\n\t{\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}" 
+							rtu.newfile(dir + "/" + params, startContents);
 						}
 						ws.send(JSON.stringify(response));
 						break;

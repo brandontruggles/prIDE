@@ -78,8 +78,8 @@ module.exports =
 		}
 		logs[fpath][nickname] = logs[fpath].changes.length;
 	},
-	newfile : function (fpath) 
+	newfile : function (fpath, startContents) 
 	{
-		logs[fpath] = {"changes": [], "str": "public class " + fpath.replace(".java", "").replace("Workspace/","") + "\n{\n\tpublic static void main(String [] args)\n\t{\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}", nickname: 0};
+		logs[fpath] = {"changes": [], "str": startContents, nickname: 0};
 	}
 };
