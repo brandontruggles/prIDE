@@ -54,8 +54,8 @@ function Connection()//works
 	var port = prompt("Enter port");
 	nickname = prompt("Enter nickname");
 	*/
-	sock = new WebSocket("ws://localhost:"+port)
-	//sock = new WebSocket("ws://45.55.218.73:"+port);
+	//sock = new WebSocket("ws://localhost:"+port)
+	sock = new WebSocket("ws://45.55.218.73:"+port);
 	sock.onopen = function()
 	{
 		var connect =
