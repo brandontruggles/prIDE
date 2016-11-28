@@ -5,26 +5,26 @@ var spawn = require('child_process').spawn;
 var fs = require('fs');
 var child;
 
-var options = 
+var options =
 {
 	prompt: 'enter pass: ',
 	silent: true,
 	replace: '*'
 };
 
-function writeout(error, stdout, stderr) 
+function writeout(error, stdout, stderr)
 {
 	//	fs.writeFileSync("error.txt", error);
 	fs.writeFileSync("stdout.txt", stdout);
 	fs.writeFileSync("stderr.txt", stderr);
 }
 
-function git(params, dir) 
+function git(params, dir)
 {
 	execFileSync("git", params.split(' '), {"cwd": "workspace/" + dir});
 }
 
-function testlogin(user, pass) 
+function testlogin(user, pass)
 {
 	var out = execFileSync("curl", ["-u", user + ":" + pass, "https://api.github.com"]);
 
@@ -34,7 +34,7 @@ function testlogin(user, pass)
 	return false;
 }
 
-function createproj(user, pass, name) 
+function createproj(user, pass, name)
 {
 	var out = execFileSync("curl", ["-i", "-u", user + ":" + pass, "-d", "\'{\"name\":\"" + name + "\"}\'", "-X", "POST", "https://api.github.com/user/repos"]);
 
@@ -42,30 +42,30 @@ function createproj(user, pass, name)
 	return out;
 }
 
-function clone(url) 
+function clone(url)
 {
 	var out = execFileSync("git", ["clone", url], {"cwd": "workspace"}).toString();
 	console.log(out);
 	return out;
 }
 
-function pull(dir) 
+function pull(dir)
 {
 	var out = execFileSync("git", ["pull"], {"cwd": "workspace/" + dir});
 	console.log(out.toString());
 	return out.toString();
 }
 
-function add(filename, dir) 
+function add(filename, dir)
 {
 	console.log(dir);
 	console.log(filename);
 	var out = execFileSync("git", ["add", filename], {"cwd": "workspace/" + dir});
-	try 
+	try
 	{
 		;
 	}
-	catch (e) 
+	catch (e)
 	{
 		console.log(e.message);
 		return e.message;
@@ -73,13 +73,13 @@ function add(filename, dir)
 	return out.toString();
 }
 
-function commit(message, dir) 
+function commit(message, dir)
 {
-	try 
+	try
 	{
 		var out = execFileSync("git", ["commit", "-am", message], {"cwd": "workspace/" + dir});
 	}
-	catch (e) 
+	catch (e)
 	{
 		console.log(e.message);
 		return e.message;
@@ -87,19 +87,19 @@ function commit(message, dir)
 	return out.toString();
 }
 
-function newfile(filename, dir) 
+function newfile(filename, dir)
 {
 	var out = execFileSync("touch", [filename], {"cwd": "workspace/" + dir});
 	return out.toString();
 }
 
-function push (dir) 
+function push (dir)
 {
 	var out = execFileSync("git", ["push", "origin", "master"], {"cwd": "workspace/" + dir});
 	return out.toString();
 }
 
-function compile(dir) 
+function compile(dir)
 {
 	var files = getProjectFiles(dir);
 	var flies = [];
@@ -110,7 +110,7 @@ function compile(dir)
 			flies.push("workspace/" + dir + "/" + files[i]);
 		}
 	}
-	try 
+	try
 	{
 		/*
 		   child = spawn("javac", flies);
@@ -119,21 +119,21 @@ function compile(dir)
 		   */
 		var ret = execFileSync("javac", flies, {stdio: ['pipe', 'pipe', 'pipe']}).toString();
 		return ret;
-	} 
-	catch (error) 
+	}
+	catch (error)
 	{
 		return error.message;
 	}
 }
 
-function run(prog, args, dir) 
+function run(prog, args, dir)
 {
 	prog = prog.replace(".java","");
 	var str = execFileSync("java", ["-cp", "workspace/" + dir, prog]).toString();
 	return str;
 }
 
-function listproj(user) 
+function listproj(user)
 {
 	execFileSync("curl https://api.github.com/users/" + user + "/repos", writeout);
 	out = fs.readFileSync("stdout.txt", "utf8").toString();
@@ -203,7 +203,7 @@ function createFile(fileName, dir)
 	if(!fs.existsSync("workspace/" + dir + "/" + fileName))
 	{
 		fs.writeFileSync("workspace/" + dir + "/" + fileName,"public class " + fileName.replace(".java", "") + "\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}");
-	}	
+	}
 	else
 	{
 		console.log("Failed to create a file with the name '" + fileName + "' within the current project because a file with that name already exists!");
@@ -217,7 +217,7 @@ function deleteFile(fileName)
 	if(fs.existsSync("workspace/" + fileName))
 	{
 		fs.unlinkSync("workspace/" + fileName);
-	}	
+	}
 	else
 	{
 		console.log("Failed to delete a file with the name '" + fileName + "' within the current project because a file with that name does not exist!");
@@ -230,11 +230,11 @@ function updateFile(fileName, newText, dir)
 {
 	if(fs.existsSync("workspace/" + dir + "/" + fileName))
 	{
-		fs.writeFileSync("workspace/" + dir + "/" + fileName, newText);	
+		fs.writeFileSync("workspace/" + dir + "/" + fileName, newText);
 	}
 	else
 	{
-		console.log("Failed to write to the file " + fileName + "!"); 
+		console.log("Failed to write to the file " + fileName + "!");
 		return false;
 	}
 	return true;
@@ -245,7 +245,7 @@ function createDirectory(dirName, dir)
 	if(!fs.existsSync("workspace/" + dir + "/" + dirName))
 	{
 		fs.mkdirSync("workspace/" + dir + "/" + dirName);
-		configObj.current_directory = dirName;	
+		configObj.current_directory = dirName;
 	}
 	else
 	{
@@ -345,8 +345,14 @@ function runServer(portNumber)
 						});
 						if(response.contents == null)
 						{
+							var proj = fs.readdirSync("workspace/");
+							var files = [];
+							for(var dir in proj){
+								files[dir] = (getProjectFiles(proj[dir]));
+
+							}
 							connectionList.push({"connection":ws,"nickname":nickname,"user":null,"pass":null,"valid":false});
-							response.contents = {"Accepted": true};
+							response.contents = {"Accepted": true, "Proj":proj, "Files": files};
 							console.log("Accepted incoming connection from user '"+ nickname  +"'.");
 						}
 						ws.send(JSON.stringify(response));
@@ -377,7 +383,7 @@ function runServer(portNumber)
 						ws.send(JSON.stringify(response));
 						break;
 					case "run":
-						response.type = "Code-Running-Status";		
+						response.type = "Code-Running-Status";
 						console.log("Running code...");
 						var str = run(file, "some args", dir);
 						console.log(str);
@@ -417,7 +423,7 @@ function runServer(portNumber)
 						else
 						{
 							response.contents = {"Created": true};
-							var startContents = "public class " + params.replace(".java", "") + "\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}" 
+							var startContents = "public class " + params.replace(".java", "") + "\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}"
 							rtu.newfile(dir + "/" + params, startContents);
 						}
 						ws.send(JSON.stringify(response));
@@ -446,19 +452,6 @@ function runServer(portNumber)
 						else
 						{
 							response.contents = {"Created": true};
-						}
-						ws.send(JSON.stringify(response));
-						break;
-					case "openproject":
-						response.type = "Project-Open-Response";
-						var files = fs.readdirSync("workspace/");
-						if(files != null)
-						{
-							response.contents = {"Opened": true, "Files": files};
-						}
-						else
-						{
-							response.contents = {"Opened": false};
 						}
 						ws.send(JSON.stringify(response));
 						break;
@@ -497,7 +490,7 @@ function runServer(portNumber)
 						rtu.enQ(fpath, change); // log
 						rtu.bufwrite(fpath, change); // update buffer
 
-						var bc = 
+						var bc =
 						{
 							"type": "RTU-Broadcast",
 							"nickname": nickname,
