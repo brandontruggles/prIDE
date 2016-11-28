@@ -130,15 +130,6 @@ var fn = (function ()
 			};
 			sock.send(JSON.stringify(message));
 		},
-		openproject : function ()
-		{
-			var message =
-			{
-				"nickname": nickname,
-				"contents": "openproject"
-			};
-			sock.send(JSON.stringify(message));
-		},
 		getfiles : function (dir)
 		{
 			var message =

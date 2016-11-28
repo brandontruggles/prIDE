@@ -100,6 +100,7 @@ function closedropdowns()
 //setting values for file
 function File(button)
 {
+	//setting values
 	document.getElementById('bar').style.display = 'block';
 	document.getElementById('pushed').value = button;
 }
@@ -124,8 +125,18 @@ function Creation()
 			alert("huh");
 	}
 	//reseting values
+
+}
+
+function reset()
+{
 	document.getElementById('bar').style.display = 'none';
 	document.getElementById('name').value = "";
 	document.getElementById('pushed').value = "";
 
+	if(document.getElementById('error').style.display === 'block')
+	{
+		document.getElementById('error').innerHTML = '';
+		document.getElementById('error').style.display = 'none';
+	}
 }

@@ -54,8 +54,8 @@ function Connection()//works
 	var port = prompt("Enter port");
 	nickname = prompt("Enter nickname");
 	*/
-	//sock = new WebSocket("ws://localhost:"+port)
-	sock = new WebSocket("ws://45.55.218.73:"+port);
+	sock = new WebSocket("ws://localhost:"+port)
+	//sock = new WebSocket("ws://45.55.218.73:"+port);
 	sock.onopen = function()
 	{
 		var connect =
@@ -83,10 +83,19 @@ function Connection()//works
 					document.getElementById('main-container').style.display = 'block' ;
 					//nickname = document.getElementById('nickname').value;
 					//document.location.href = "IDEMain.html";
+					for(var i = 0; i < contents.Proj.length; i++)
+					{
+						projects[contents.Proj[i]] = {"hidden": true, "filelist": []};
+						projects[contents.Proj[i]].filelist = contents.Files[i];
+
+					}
+
 				}
 				else
 				{
-					alert(contents.Reason);
+					document.getElementById('error').style.display = 'block';
+					document.getElementById('error').innerHTML = '<span id="reason">'+contents.Reason+'</span>';
+					//alert(contents.Reason);
 					/*port = prompt("Enter port");
 					nickname = prompt("Enter nickname");
 					sock.close();
@@ -123,10 +132,14 @@ function Connection()//works
 					projects[name] = {"hidden": false, "filelist": []};
 					ide.updateFileExplorer();
 					setproj(name);
+
+					reset();
+
 				}
 				else
 				{
-					alert(contents.Reason);
+					document.getElementById('error').style.display = 'block';
+					document.getElementById('error').innerHTML = '<span id="reason">'+contents.Reason+'</span>';
 				}
 				break;
 			case "File-Created-Status":
@@ -149,10 +162,12 @@ function Connection()//works
 					ide.updateFileExplorer();
 
 					ide.gotolasttab();
+					reset();
 				}
 				else
 				{
-					alert(contents.Reason);
+					document.getElementById('error').style.display = 'block';
+					document.getElementById('error').innerHTML = '<span id="reason">'+contents.Reason+'</span>';
 				}
 				break;
 			case "File-Deleted-Status":
@@ -164,10 +179,14 @@ function Connection()//works
 					//projects[proj].filelist.splice(projects[proj].filelist.indexOf(file), 1);
 					list.splice(list.indexOf(file), 1);
 					ide.updateFileExplorer();
+
+					reset();
+
 				}
 				else
 				{
-					alert(contents.Reason);
+					document.getElementById('error').style.display = 'block';
+					document.getElementById('error').innerHTML = '<span id="reason">'+contents.Reason+'</span>';
 				}
 				break;
 			case "Directory-Created-Status":
@@ -175,27 +194,13 @@ function Connection()//works
 				{
 					var fileList = document.getElementById('openproj');
 					fileList.innerHTML += '<li><a href="#">'+name+'/</a></li>';
-				}
-				else
-				{
-					alert(contents.Reason);
-				}
-				break;
-			case "Project-Open-Response":
-				if(contents.Opened)
-				{
-					var str = '';
-					for(var i = 0; i < contents.Files.length; i++)
-					{
-						str += contents.Files[i] + "\n";
-					}
-					File("3");
-					document.getElementById('bar').innerHTML+='<p id ="list">'+str+'</p>';
 
+					reset();
 				}
 				else
 				{
-					alert("no projects make one");
+					document.getElementById('error').style.display = 'block';
+document.getElementById('error').innerHTML = '<span id="reason">'+contents.Reason+'</span>';
 				}
 				break;
 			case "File-Open-Response":
@@ -235,8 +240,6 @@ function Connection()//works
 function setproj(name)
 {
 	currproject = name;
-	var curdir = document.getElementById('curdir');
-	curdir.innerHTML = currproject;
 }
 
 function setfile(name)
