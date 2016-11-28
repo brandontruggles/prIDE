@@ -21,6 +21,7 @@
 				<div id="filedd" class="dropdowncontent">
 					<a href="#" id = "1" onclick="File(this.id)">New File</a>
 					<a href="#" id = "2" onclick="File(this.id)">New Project</a>
+					<a href="#" id = "3" onclick="fn.openproject()">Open Project</a>
 				</div>
 			</div>
 			<button class="btn" id="obtn">Edit</button>
@@ -59,8 +60,6 @@
 				<input type="button" value="Enter" onclick="Creation()">
 				<!--<input type="hidden" id="pushed"> -->
 			 </div>
-			 <div id="error" style="display:none">
-			 </div>
 		  	<br>
 
 		  	<ul class="tab" id="tabs">
@@ -73,6 +72,7 @@
 			  <div style="flex: 1;">
 				  <select id='openproj' name="file" size="20" multiple style="width: 100%;">
 				  </select>
+				  <textarea id="curdir" rows="1" style="background-color: #292429; width: 100%; color: white"></textarea>
 			  </div>
 
 			  <div style="margin: auto; flex: 4;">
