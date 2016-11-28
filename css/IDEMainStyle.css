@@ -279,3 +279,32 @@ ul.tab li a:focus, .active
 	height: 300px;
 	width: 100%;
 }
+#Loader 
+{
+text-align:center;
+}
+
+#firstSubmit
+{
+	padding: 0;
+	border: none;
+	font-size: 32px;
+	background: none;
+	text-align: center;
+
+
+}
+#firstSubmit:hover
+{
+	color: white;
+}
+.firstInput 
+{
+    padding: 6px 16px;
+    margin: 3px 0;
+	font-size: 18px;
+    box-sizing: border-box;
+	text-align: left;
+	
+}
+

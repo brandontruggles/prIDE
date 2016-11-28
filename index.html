@@ -7,10 +7,10 @@
 	</head>
 	<body>
 
-		<div class="" id="Loader">
-			Name:<input type="text" id="nick" placeholder="Please Enter Nickname"><br>
-			Port #:<input type="text" id="port" placeholder="8080">
-			<input type="button" value="Enter" onclick="Connection()">
+		<div class="" id="Loader"/>
+			<input type="text" class="firstInput" id="nick" placeholder="Nickname"><br>
+			<input type="text" class="firstInput" id="port" placeholder="Port: 8080"><br><br>
+			<input type="button" id="firstSubmit" value="Submit" onclick="Connection()">
 		</div>
 
 		<div class="main-container" id="main-container" style="display:none;">
@@ -56,10 +56,9 @@
 			<a href="https://glaad.nationbuilder.com/donate" target="_blank"><button class="btn" id="glaadbtn">Donate to GLAAD!</button></a>
 			<br>
 			<div id="bar" style="display:none">
-				<input type="text" id="name" placeholder="Enter">
+				<input type="text" id="name" placeholder="Name">
 				<input type="button" value="Enter" onclick="Creation()">
-				<input type="hidden" id="pushed">
-
+				<!--<input type="hidden" id="pushed"> -->
 			 </div>
 		  	<br>
 
