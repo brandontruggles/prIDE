@@ -1,7 +1,8 @@
 
 body 
 {
-	background-color: #524f52;
+	/*background-color: #524f52;*/
+	background-image: url("background.jpg");
 }
 
 .btn 
@@ -281,17 +282,18 @@ ul.tab li a:focus, .active
 }
 #Loader 
 {
-text-align:center;
+	text-align:center;
+	margin-top:8%;
 }
 
 #firstSubmit
 {
+	
 	padding: 0;
 	border: none;
 	font-size: 32px;
 	background: none;
 	text-align: center;
-
 
 }
 #firstSubmit:hover
@@ -305,6 +307,22 @@ text-align:center;
 	font-size: 18px;
     box-sizing: border-box;
 	text-align: left;
-	
+}
+#logo
+{
+	text-align:center;
+	font-size:48px;
+}
+#loginPrompt
+{
+	font-size:18px;
+}
+#logo
+{
+	display: block;
+	margin: 0 auto;
+	width:200px;
+	height:86px;
+	margin-top:10px;
 }
 
