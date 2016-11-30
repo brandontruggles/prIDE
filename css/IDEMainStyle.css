@@ -325,4 +325,11 @@ ul.tab li a:focus, .active
 	height:86px;
 	margin-top:10px;
 }
-
+#logo2
+{
+	/*display: block;*/
+	margin: 0 auto;
+	width:200px;
+	height:86px;
+	margin-top:10px;
+}
