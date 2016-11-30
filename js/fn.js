@@ -114,15 +114,16 @@ var fn = (function ()
 		},
 		chat : function ()
 		{
-			var chatbox = document.getElementById('commandArea');
+			var chatbox = document.getElementById('chat');
 			var message;
-			var
 			message =
 			{
 				"nickname": nickname,
 				"dir": currproject,
 				"contents": "message "+chatbox.value
 			};
+			chatbox.value = '';
+			sock.send(JSON.stringify(message));
 		},
 		chatkeydown : function (e)
 		{
