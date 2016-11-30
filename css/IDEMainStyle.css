@@ -277,7 +277,7 @@ ul.tab li a:focus, .active
 #codespace 
 {
 	position: relative;
-	height: 450px;
+	height: 300px;
 	width: 100%;
 }
 #Loader 
