@@ -327,11 +327,11 @@ ul.tab li a:focus, .active
 }
 #logo2
 {
-	display: block;
 	text-align:center;
 	font-size:48px;
+	display: block;
 	margin: 0 auto;
-	width:200px;
-	height:86px;
-	margin-top:10px;
+	width:125px;
+	height:49px;
+	/*margin-top:10px;*/
 }
