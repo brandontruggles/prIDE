@@ -50,12 +50,11 @@ function Connection()//works
 	editor.resize();
 	nickname = document.getElementById('nick').value;
 	var port = document.getElementById('port').value;
-	/*
-	var port = prompt("Enter port");
-	nickname = prompt("Enter nickname");
-	*/
+
+
 	try {
-			sock = new WebSocket("ws://localhost:"+port);
+			//sock = new WebSocket("ws://localhost:"+port);
+			sock = new WebSocket("ws://45.55.218.73:"+port);
 
 			if(document.getElementById('wrong_port'))
 			{
@@ -63,7 +62,7 @@ function Connection()//works
 				document.getElementById('error').style.display = 'none';
 				document.getElementById('error').innerHTML = "";
 			}
-			//sock = new WebSocket("ws://45.55.218.73:"+port);
+
 
 
 
