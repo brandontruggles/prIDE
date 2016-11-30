@@ -313,6 +313,14 @@ ul.tab li a:focus, .active
     box-sizing: border-box;
 	text-align: left;
 }
+#name
+{
+	    padding: 6px 16px;
+    margin: 3px 0;
+	font-size: 18px;
+    box-sizing: border-box;
+	text-align: left;
+}
 #logotwo
 {
 	position:absolute;
