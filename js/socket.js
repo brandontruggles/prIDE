@@ -51,14 +51,16 @@ function Connection()//works
 	nickname = document.getElementById('nick').value;
 	var port = document.getElementById('port').value;
 
+	if(nickname == '')
+		document.getElementById('wrong_port').textContent = 'Invalid Username!';
+	else{
 
 	try {
-			//sock = new WebSocket("ws://localhost:"+port);
-			sock = new WebSocket("ws://45.55.218.73:"+port);
+			sock = new WebSocket("ws://localhost:"+port);
+			//sock = new WebSocket("ws://45.55.218.73:"+port);
 
 			if(document.getElementById('wrong_port'))
 			{
-				document.getElementById('Loader').removeChild(document.getElementById('wrong_port'));
 				document.getElementById('error').style.display = 'none';
 				document.getElementById('error').innerHTML = "";
 			}
@@ -69,7 +71,7 @@ function Connection()//works
 	//sock = new WebSocket("ws://45.55.218.73:"+port);
 			sock.onerror = function()
 			{
-				document.getElementById('Loader').innerHTML += '<br><span id="wrong_port"> Invalid Server Address?</span>';
+				document.getElementById('wrong_port').textContent = 'Invalid Server Name!';
 			};
 			sock.onclose = function()
 			{
@@ -258,8 +260,9 @@ function Connection()//works
 
 		}//try
 		catch (e) {
-			document.getElementById('Loader').innerHTML += '<br><span id="wrong_port"> Invalid Server Address?</span>';
+				document.getElementById('wrong_port').textContent = 'Invalid Server Name!';
 		}
+	}
 }
 
 function setproj(name)
