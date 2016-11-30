@@ -255,7 +255,6 @@ function Connection()//works
 		}//try
 		catch (e) {
 			document.getElementById('Loader').innerHTML += '<br><span id="wrong_port"> Invalid Server Address?</span>';
-
 		}
 }
 
