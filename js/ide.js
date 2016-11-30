@@ -71,6 +71,9 @@ var ide = (function ()
 		},
 		closetab : function (index)
 		{
+			if(isNaN(index))
+				index = curtab;
+
 			if (tabs.length == 1)
 			{
 				return; // temporary to prevent errors
