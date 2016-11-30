@@ -3,14 +3,6 @@ var rtu = require('./rtu.js');
 var execFileSync = require('child_process').execFileSync;
 var spawn = require('child_process').spawn;
 var fs = require('fs');
-var child;
-
-var options =
-{
-	prompt: 'enter pass: ',
-	silent: true,
-	replace: '*'
-};
 
 function writeout(error, stdout, stderr)
 {
@@ -112,11 +104,6 @@ function compile(dir)
 	}
 	try
 	{
-		/*
-		   child = spawn("javac", flies);
-		   child.stdout.on('data', function (data) { ws.send(JSON.stringify({type: "Console", contents: data.toString()}))});
-		   child.stderr.on('data', function (data) { ws.send(JSON.stringify({type: "Console", contents: data.toString()}))});
-		   */
 		var ret = execFileSync("javac", flies, {stdio: ['pipe', 'pipe', 'pipe']}).toString();
 		return ret;
 	}
@@ -245,7 +232,6 @@ function createDirectory(dirName, dir)
 	if(!fs.existsSync("workspace/" + dir + "/" + dirName))
 	{
 		fs.mkdirSync("workspace/" + dir + "/" + dirName);
-		configObj.current_directory = dirName;
 	}
 	else
 	{
@@ -326,204 +312,215 @@ function runServer(portNumber)
 						connind = connectionList.indexOf(conn);
 					}
 				});
-				if(!found)
-				{
-					console.log("User not found");
-				}
 
-				switch(command)
+				if(found || command == "connect")
 				{
-					case "connect":
-						response.type = "Connection-Accept";
-						connectionList.forEach(function(conn)
-						{
-							if(conn.nickname == nickname)
+					switch(command)
+					{
+						case "connect":
+							response.type = "Connection-Accept";
+							if(connectionList.length + 1 > configObj.max_clients)
 							{
-								response.contents = {"Accepted": false, "Reason": "The nickname you selected is already in use on this server. Please enter a unique nickname and try again."};
-								console.log("Rejected incoming connection for taken nickname.");
+								response.contents = {"Accepted": false, "Reason": "The server you tried to connect to is full."};
+								console.log("Rejected incoming connection because the server is full.");
 							}
-						});
-						if(response.contents == null)
-						{
-							var proj = fs.readdirSync("workspace/");
-							var files = [];
-							for(var dir in proj){
-								files[dir] = (getProjectFiles(proj[dir]));
-
+							if(response.contents == null)
+							{
+								connectionList.forEach(function(conn)
+								{
+									if(conn.nickname == nickname)
+									{
+										response.contents = {"Accepted": false, "Reason": "The nickname you selected is already in use on this server. Please enter a unique nickname and try again."};
+										console.log("Rejected incoming connection for taken nickname.");
+									}
+								});
 							}
-							connectionList.push({"connection":ws,"nickname":nickname,"user":null,"pass":null,"valid":false});
-							response.contents = {"Accepted": true, "Proj":proj, "Files": files};
-							console.log("Accepted incoming connection from user '"+ nickname  +"'.");
-						}
-						ws.send(JSON.stringify(response));
-						break;
-					case "git":
-						git(params, dir);
-						break;
-					case "setusername":
-						connectionList[connind].user = params;
-						break;
-					case "setpassword":
-						connectionList[connind].pass = params;
-						break;
-					case "testcredentials":
-						response.type = "Valid-Credentials-Status";
-						var user, pass;
-						var valid = false;
-						user = connectionList[connind].user;
-						pass = connectionList[connind].pass;
-						valid = testlogin(user, pass);
-						connectionList[connectionList.indexOf(conn)].valid = valid;
-						response.contents = {"Valid": valid};
-						break;
-					case "compile":
-						response.type = "Compile-Running-Status";
-						console.log("Received command to compile!");
-						response.contents = {"output": compile(dir)};
-						ws.send(JSON.stringify(response));
-						break;
-					case "run":
-						response.type = "Code-Running-Status";
-						console.log("Running code...");
-						var str = run(file, "some args", dir);
-						console.log(str);
-						response.contents = {"output": str};
-						ws.send(JSON.stringify(response));
-						break;
-					case "message":
-						response.type = "Message-Broadcast";
-						response.contents = nickname + ": " + params;
-						console.log("Received chat message from user '" + nickname + "': " + params);
-						broadcastResponse(connectionList, JSON.stringify(response));
-						break;
-					case "newproject":
-						response.type = "Project-Created-Status";
-						if(!createProject("workspace/" + params))
-						{
-							response.contents = {"Created": false, "Reason": "Failed to create a new project with the name '" + params + "'! That project name is already taken."};
-						}
-						else
-						{
-							response.contents = {"Created": true};
-						}
-						ws.send(JSON.stringify(response));
-						break;
-					case "git_newproject":
-						if (connectionList[connind].valid)
-						{
-							createproj(connectionList[connind].user, connectionList[connind].pass, "workspace/" + dir);
-						}
-						break;
-					case "newfile":
-						response.type = "File-Created-Status";
-						if(!createFile(params, dir))
-						{
-							response.contents = {"Created": false, "Reason": "Failed to create a new file with the name '" + params + "'! That file already exists in the current project."};
-						}
-						else
-						{
-							response.contents = {"Created": true};
-							var startContents = "public class " + params.replace(".java", "") + "\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}"
-							rtu.newfile(dir + "/" + params, startContents);
-						}
-						ws.send(JSON.stringify(response));
-						break;
-					case "deletefile":
-						response.type = "File-Deleted-Status";
-						if(!deleteFile(params))
-						{
-							response.contents = {"Deleted": false, "Reason": "Failed to remove file '" + params + "'"};
-						}
-						else
-						{
-							var split = params.split('/');
-							console.log(split[0]);
-							console.log(split[1]);
-							response.contents = {"Deleted": true, "proj": split[0], "file": split[1]};
-						}
-						ws.send(JSON.stringify(response));
-						break;
-					case "newdir":
-						response.type = "Directory-Created-Status";
-						if(!createFile(params, dir))
-						{
-							response.contents = {"Created": false, "Reason": "Failed to create a new directory with the name '" + params + "'! That file already exists in the current project."};
-						}
-						else
-						{
-							response.contents = {"Created": true};
-						}
-						ws.send(JSON.stringify(response));
-						break;
-					case "openfile":
-						response.type = "File-Open-Response";
-						var files = getProjectFiles(dir);
-						if(files != null)
-						{
-							response.contents = {"Opened": true, "Dir": dir, "Files": files};
-						}
-						else
-						{
-							response.contents = {"Opened": false};
-						}
-						ws.send(JSON.stringify(response));
-						break;
-					case "git_clone":
-						clone(params);
-						//if (connectionList[connind].valid)
-						//	clone(params);
-						break;
-					case "git_pull":
-						pull(params, dir);
-						//if (connectionList[connind].valid)
-						//	pull(params);
-						break;
-					case "gotupdate":
-						incqstate(dir + "/" + file, nickname); // this guy is up to date
-						break;
-					case "rtu":
-						response.type = "RTU-Got-Message";
-						ws.send(JSON.stringify(response)); // ack
+							if(response.contents == null)
+							{
+								var proj = fs.readdirSync("workspace/");
+								var files = [];
+								for(var dir in proj){
+									files[dir] = (getProjectFiles(proj[dir]));
 
-						var fpath = dir + "/" + file;
-						change = rtu.adjustchange(fpath, nickname, change); // adjust
-						rtu.enQ(fpath, change); // log
-						rtu.bufwrite(fpath, change); // update buffer
+								}
+								connectionList.push({"connection":ws,"nickname":nickname,"user":null,"pass":null,"valid":false});
+								response.contents = {"Accepted": true, "Proj":proj, "Files": files};
+								console.log("Accepted incoming connection from user '"+ nickname  +"'.");
+							}
+							ws.send(JSON.stringify(response));
+							break;
+						case "git":
+							git(params, dir);
+							break;
+						case "setusername":
+							connectionList[connind].user = params;
+							break;
+						case "setpassword":
+							connectionList[connind].pass = params;
+							break;
+						case "testcredentials":
+							response.type = "Valid-Credentials-Status";
+							var user, pass;
+							var valid = false;
+							user = connectionList[connind].user;
+							pass = connectionList[connind].pass;
+							valid = testlogin(user, pass);
+							connectionList[connectionList.indexOf(conn)].valid = valid;
+							response.contents = {"Valid": valid};
+							break;
+						case "compile":
+							response.type = "Compile-Running-Status";
+							console.log("Received command to compile!");
+							response.contents = {"output": compile(dir)};
+							ws.send(JSON.stringify(response));
+							break;
+						case "run":
+							response.type = "Code-Running-Status";
+							console.log("Running code...");
+							var str = run(file, "some args", dir);
+							console.log(str);
+							response.contents = {"output": str};
+							ws.send(JSON.stringify(response));
+							break;
+						case "message":
+							response.type = "Message-Broadcast";
+							response.contents = nickname + ": " + params;
+							console.log("Received chat message from user '" + nickname + "': " + params);
+							broadcastResponse(connectionList, JSON.stringify(response));
+							break;
+						case "newproject":
+							response.type = "Project-Created-Status";
+							if(!createProject("workspace/" + params))
+							{
+								response.contents = {"Created": false, "Reason": "Failed to create a new project with the name '" + params + "'! That project name is already taken."};
+							}
+							else
+							{
+								response.contents = {"Created": true};
+							}
+							ws.send(JSON.stringify(response));
+							break;
+						case "git_newproject":
+							if (connectionList[connind].valid)
+							{
+								createproj(connectionList[connind].user, connectionList[connind].pass, "workspace/" + dir);
+							}
+							break;
+						case "newfile":
+							response.type = "File-Created-Status";
+							if(!createFile(params, dir))
+							{
+								response.contents = {"Created": false, "Reason": "Failed to create a new file with the name '" + params + "'! That file already exists in the current project."};
+							}
+							else
+							{
+								response.contents = {"Created": true};
+								var startContents = "public class " + params.replace(".java", "") + "\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}"
+								rtu.newfile(dir + "/" + params, startContents);
+							}
+							ws.send(JSON.stringify(response));
+							break;
+						case "deletefile":
+							response.type = "File-Deleted-Status";
+							if(!deleteFile(params))
+							{
+								response.contents = {"Deleted": false, "Reason": "Failed to remove file '" + params + "'"};
+							}
+							else
+							{
+								var split = params.split('/');
+								console.log(split[0]);
+								console.log(split[1]);
+								response.contents = {"Deleted": true, "proj": split[0], "file": split[1]};
+							}
+							ws.send(JSON.stringify(response));
+							break;
+						case "newdir":
+							response.type = "Directory-Created-Status";
+							if(!createFile(params, dir))
+							{
+								response.contents = {"Created": false, "Reason": "Failed to create a new directory with the name '" + params + "'! That file already exists in the current project."};
+							}
+							else
+							{
+								response.contents = {"Created": true};
+							}
+							ws.send(JSON.stringify(response));
+							break;
+						case "openfile":
+							response.type = "File-Open-Response";
+							var files = getProjectFiles(dir);
+							if(files != null)
+							{
+								response.contents = {"Opened": true, "Dir": dir, "Files": files};
+							}
+							else
+							{
+								response.contents = {"Opened": false};
+							}
+							ws.send(JSON.stringify(response));
+							break;
+						case "git_clone":
+							clone(params);
+							//if (connectionList[connind].valid)
+							//	clone(params);
+							break;
+						case "git_pull":
+							pull(params, dir);
+							//if (connectionList[connind].valid)
+							//	pull(params);
+							break;
+						case "gotupdate":
+							incqstate(dir + "/" + file, nickname); // this guy is up to date
+							break;
+						case "rtu":
+							response.type = "RTU-Got-Message";
+							ws.send(JSON.stringify(response)); // ack
 
-						var bc =
-						{
-							"type": "RTU-Broadcast",
-							"nickname": nickname,
-							"dir": dir,
-							"file": file,
-							"contents": change
-						};
-						broadcastResponse(connectionList, JSON.stringify(bc)); // send out
-						break;
-					case "readfile":
-						response.type = "Read-File";
-						var str = fs.readFileSync("workspace/" + dir + "/" + params, "utf8").toString();
-						response.contents = {"body": str, "proj": dir, "file": params};
-						ws.send(JSON.stringify(response));
-						rtu.readfile(nickname, dir + "/" + params, str);
-						break;
-					case "git_add":
-						add(params, dir);
-						break;
-					case "git_commit":
-						commit(params, dir);
-						//if (connectionList[connind].valid)
-						//	commit(params);
-						break;
-					case "git_push":
-						push(dir);
-						//if (connectionList[connind].valid)
-						//	push();
-						break;
-					default:
-						response.type = "Error";
-						response.contents = "Unrecognized command '" + command  + "'!";
-						break;
+							var fpath = dir + "/" + file;
+							change = rtu.adjustchange(fpath, nickname, change); // adjust
+							rtu.enQ(fpath, change); // log
+							rtu.bufwrite(fpath, change); // update buffer
+
+							var bc =
+							{
+								"type": "RTU-Broadcast",
+								"nickname": nickname,
+								"dir": dir,
+								"file": file,
+								"contents": change
+							};
+							broadcastResponse(connectionList, JSON.stringify(bc)); // send out
+							break;
+						case "readfile":
+							response.type = "Read-File";
+							var str = fs.readFileSync("workspace/" + dir + "/" + params, "utf8").toString();
+							response.contents = {"body": str, "proj": dir, "file": params};
+							ws.send(JSON.stringify(response));
+							rtu.readfile(nickname, dir + "/" + params, str);
+							break;
+						case "git_add":
+							add(params, dir);
+							break;
+						case "git_commit":
+							commit(params, dir);
+							//if (connectionList[connind].valid)
+							//	commit(params);
+							break;
+						case "git_push":
+							push(dir);
+							//if (connectionList[connind].valid)
+							//	push();
+							break;
+						default:
+							response.type = "Error";
+							response.contents = "Unrecognized command '" + command  + "'!";
+							break;
+					}
+				}
+				else
+				{
+					console.log("The user that issued the given command was unrecognized!");
 				}
 			}
 			catch(err)
