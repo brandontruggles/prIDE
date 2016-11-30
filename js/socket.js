@@ -60,13 +60,18 @@ function Connection()//works
 			if(document.getElementById('wrong_port'))
 			{
 				document.getElementById('Loader').removeChild(document.getElementById('wrong_port'));
+				document.getElementById('error').style.display = 'none';
+				document.getElementById('error').innerHTML = "";
 			}
 			//sock = new WebSocket("ws://45.55.218.73:"+port);
 
 
 
 	//sock = new WebSocket("ws://45.55.218.73:"+port);
-
+			sock.onerror = function()
+			{
+				document.getElementById('Loader').innerHTML += '<br><span id="wrong_port"> Invalid Server Address?</span>';
+			};
 			sock.onclose = function()
 			{
 				document.getElementById('error').style.display = 'block';
