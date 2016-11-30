@@ -112,11 +112,31 @@ var fn = (function ()
 			chatbox.value = '';
 			sock.send(JSON.stringify(message));
 		},
+		chat : function ()
+		{
+			var chatbox = document.getElementById('commandArea');
+			var message;
+			var
+			message =
+			{
+				"nickname": nickname,
+				"dir": currproject,
+				"contents": "message "+chatbox.value
+			};
+		},
 		chatkeydown : function (e)
 		{
 			if (event.keyCode == 13)
 			{
-				this.message();
+				var tag = document.activeElement.id;
+				if(tag == "commandArea")
+					this.message();
+				else if (tag == "nick" || tag == "port")
+					Connection();
+				else if (tag == "chat")
+					this.chat();
+				else if (tag == "name")
+					Creation();
 			}
 		},
 		newdir : function ()

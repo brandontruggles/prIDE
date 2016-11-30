@@ -9,8 +9,8 @@
 
 		<div class="" id="Loader"/>
 			<img id="logo" src="image/pridefull.png" alt="Logo">
-			<input type="text" class="firstInput" id="nick" placeholder="Nickname"><br>
-			<input type="text" class="firstInput" id="port" placeholder="Port: 8080"><br><br>
+			<input type="text" class="firstInput" id="nick" placeholder="Nickname" autofocus onkeydown="fn.chatkeydown(this)"><br>
+			<input type="text" class="firstInput" id="port" placeholder="Port: 8080" onkeydown="fn.chatkeydown(this)"><br><br>
 			<input type="button" id="firstSubmit" value="Submit" onclick="Connection()">
 			<br><span id="wrong_port"></span>
 		</div>
@@ -89,7 +89,7 @@
 
 		  </div>
 		<div id="bar" style="display:none">
-				<input type="text" id="name" placeholder="Name">
+				<input type="text" id="name" placeholder="Name" onkeydown="fn.chatkeydown(this)">
 				<input type="button" value="Enter" id="enter" onclick="Creation()">
 				<input type="hidden" id="pushed">
 			 </div>

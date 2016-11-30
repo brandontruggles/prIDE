@@ -103,6 +103,7 @@ function File(button)
 	//setting values
 	document.getElementById('bar').style.display = 'block';
 	document.getElementById('pushed').value = button;
+	document.getElementById('name').focus();
 }
 
 function Creation()
@@ -134,9 +135,5 @@ function reset()
 	document.getElementById('name').value = "";
 	document.getElementById('pushed').value = "";
 
-	if(document.getElementById('error').style.display === 'block')
-	{
-		document.getElementById('error').innerHTML = '';
-		document.getElementById('error').style.display = 'none';
-	}
+
 }
