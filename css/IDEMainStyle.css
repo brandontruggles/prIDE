@@ -310,8 +310,7 @@ ul.tab li a:focus, .active
 }
 #logotwo
 {
-	display: block;
-	margin: auto;
+	float: center;
 	/*text-align:center;
 	font-size:48px;
 	
