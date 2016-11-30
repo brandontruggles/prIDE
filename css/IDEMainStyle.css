@@ -328,6 +328,8 @@ ul.tab li a:focus, .active
 #logo2
 {
 	/*display: block;*/
+	text-align:center;
+	font-size:48px;
 	margin: 0 auto;
 	width:200px;
 	height:86px;
