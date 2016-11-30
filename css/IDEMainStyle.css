@@ -96,6 +96,10 @@ body
 {
 	background-color: #7a0099;
 }
+#glaadbtn:hover, #glaadbtn:focus
+{
+	background-color: #0066cc;
+}
 
 .dropbtn:hover, .dropbtn:focus 
 {
@@ -277,8 +281,8 @@ ul.tab li a:focus, .active
 #codespace 
 {
 	position: relative;
-	height: 200px;
 	
+	  height: 200px;
 	width: 100%;
 }
 #Loader 
