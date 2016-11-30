@@ -65,7 +65,9 @@ function Connection()//works
 			};
 			sock.onclose = function()
 			{
+				//if not on loader screen
 				document.getElementById('consoleWindow').innerHTML += 'Disconnected from Server!\n';
+				document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
 			};
 			sock.onopen = function()
 			{
@@ -85,6 +87,7 @@ function Connection()//works
 					case "Console":
 						console.log(contents);
 						document.getElementById('consoleWindow').innerHTML += contents;
+						document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
 						break;
 					case "Connection-Accept":
 						if(contents.Accepted)
@@ -105,11 +108,8 @@ function Connection()//works
 						else
 						{
 							document.getElementById('consoleWindow').innerHTML += contents.Reason+'\n';
-							//alert(contents.Reason);
-							/*port = prompt("Enter port");
-							nickname = prompt("Enter nickname");
-							sock.close();
-							sock = new WebSocket("ws://45.55.218.73:"+port);*/
+							document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
+
 						}
 						ide.updateFileExplorer(); // pre-load some files
 						break;
@@ -124,18 +124,23 @@ function Connection()//works
 						if(contents.output[0] == null)
 						{
 							document.getElementById('consoleWindow').innerHTML += 'Successfully Compiled\n';
+							document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
 						}
 						else
 						{
 							document.getElementById('consoleWindow').innerHTML += contents.output;
+							document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
 						}
 						break;
 					case "Code-Running-Status":
 						document.getElementById('consoleWindow').innerHTML += contents.output;
+						document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
 						break;//needs code
 					case "Message-Broadcast":
-						document.getElementById('chatWindow').innerHTML += contents+"\n";
+						//document.getElementById('chatWindow').innerHTML += contents+"\n";
 						document.getElementById('consoleWindow').innerHTML += contents+"\n";
+						document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
+						//document.getElementById('chatWindow').scrollTop = document.getElementById('chatWindow').scrollHeight;
 						break;
 					case "Project-Created-Status":
 						if(contents.Created)
@@ -150,6 +155,7 @@ function Connection()//works
 						else
 						{
 							document.getElementById('consoleWindow').innerHTML += contents.Reason+'\n';
+							document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
 						}
 						break;
 					case "File-Created-Status":
@@ -177,6 +183,7 @@ function Connection()//works
 						else
 						{
 							document.getElementById('consoleWindow').innerHTML += contents.Reason+'\n';
+							document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
 						}
 						break;
 					case "File-Deleted-Status":
@@ -195,6 +202,7 @@ function Connection()//works
 						else
 						{
 							document.getElementById('consoleWindow').innerHTML += contents.Reason+'\n';
+							document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
 						}
 						break;
 					case "Directory-Created-Status":
@@ -208,6 +216,7 @@ function Connection()//works
 						else
 						{
 							document.getElementById('consoleWindow').innerHTML += contents.Reason+'\n';
+							document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
 						}
 						break;
 					case "File-Open-Response":
