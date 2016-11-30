@@ -327,7 +327,7 @@ ul.tab li a:focus, .active
 }
 #logo2
 {
-	/*display: block;*/
+	display: block;
 	text-align:center;
 	font-size:48px;
 	margin: 0 auto;
