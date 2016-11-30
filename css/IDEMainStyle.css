@@ -296,7 +296,7 @@ ul.tab li a:focus, .active
 	
 	padding: 0;
 	border: none;
-	font-size: 32px;
+	font-size: 18px;
 	background: none;
 	text-align: center;
 
@@ -320,6 +320,18 @@ ul.tab li a:focus, .active
 	font-size: 18px;
     box-sizing: border-box;
 	text-align: left;
+}
+#enter
+{
+	padding: 0;
+	border: none;
+	font-size: 18px;
+	background: none;
+	text-align: left;
+}
+#enter:hover
+{
+		color:white;
 }
 #logotwo
 {
