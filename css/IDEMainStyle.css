@@ -308,6 +308,17 @@ ul.tab li a:focus, .active
     box-sizing: border-box;
 	text-align: left;
 }
+#logotwo
+{
+	text-align:center;
+	font-size:48px;
+	display: block;
+	margin: 0 auto;
+	width:125px;
+	height:49px;
+	/*margin-top:10px;*/
+}
+
 #logo
 {
 	text-align:center;
@@ -324,14 +335,4 @@ ul.tab li a:focus, .active
 	width:200px;
 	height:86px;
 	margin-top:10px;
-}
-#logo2
-{
-	text-align:center;
-	font-size:48px;
-	display: block;
-	margin: 0 auto;
-	width:125px;
-	height:49px;
-	/*margin-top:10px;*/
 }
