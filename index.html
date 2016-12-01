@@ -9,8 +9,9 @@
 
 		<div class="" id="Loader"/>
 			<img id="logo" src="image/pridefull.png" alt="Logo">
-			<input type="text" class="firstInput" id="nick" placeholder="Nickname" autofocus onkeydown="fn.chatkeydown(this)"><br>
-			<input type="text" class="firstInput" id="port" placeholder="Port: 8080" onkeydown="fn.chatkeydown(this)"><br><br>
+			<input type="text" class="firstInput" id="nick" placeholder="*Nickname" autofocus onkeydown="fn.chatkeydown(this)"><br>
+			<input type="text" class="firstInput" id="port" placeholder="*Port: 8080" onkeydown="fn.chatkeydown(this)"><br><br>
+			<input type="text" class="firstInput" id="ip" placeholder="IP Address"><br>
 			<input type="button" id="firstSubmit" value="Submit" onclick="Connection()">
 			<br><span id="wrong_port"></span>
 		</div>
@@ -96,7 +97,7 @@
 			<input type="text" placeholder="Commands here" id="commandArea" onkeydown="fn.chatkeydown(this)" style="width: 99%" />
 			</div>
 			 <div id="bar" style="display:none">
-				<input type="text" id="name" placeholder="Name" onkeydown="fn.chatkeydown(this)">
+				<input type="text" id="name" placeholder="File/Project Name" onkeydown="fn.chatkeydown(this)">
 				<br>
 				<input type="button" value="Enter" id="enter" onclick="Creation()">
 				<input type="hidden" id="pushed">
