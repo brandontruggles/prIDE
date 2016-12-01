@@ -72,13 +72,11 @@ var ide = (function ()
 		},
 		closetab : function (index)
 		{
-			alert("inside closetab");
 			if(isNaN(index))
 				index = curtab;
 
 			if (tabs.length == 1)
 			{
-				alert("returned");
 				return; // temporary to prevent errors
 			}
 			tabs.splice(index, 1);
@@ -197,6 +195,7 @@ var ide = (function ()
 					}
 				}
 			tablist.innerHTML = str;
+			//brute forcing this. it works. will do it properly tomorrow
 			document.getElementById("tab0").onmousedown = function(event) 
 			{
 				if (event.which == 3) 
@@ -211,6 +210,54 @@ var ide = (function ()
 				{
 					alert("right clicked");
 					ide.closetab(1);
+				}
+			}
+			document.getElementById("tab2").onmousedown = function(event) 
+			{
+				if (event.which == 3) 
+				{
+					alert("right clicked");
+					ide.closetab(2);
+				}
+			}
+			document.getElementById("tab3").onmousedown = function(event) 
+			{
+				if (event.which == 3) 
+				{
+					alert("right clicked");
+					ide.closetab(3);
+				}
+			}
+			document.getElementById("tab4").onmousedown = function(event) 
+			{
+				if (event.which == 3) 
+				{
+					alert("right clicked");
+					ide.closetab(4);
+				}
+			}
+						document.getElementById("tab5").onmousedown = function(event) 
+			{
+				if (event.which == 3) 
+				{
+					alert("right clicked");
+					ide.closetab(5);
+				}
+			}
+			document.getElementById("tab6").onmousedown = function(event) 
+			{
+				if (event.which == 3) 
+				{
+					alert("right clicked");
+					ide.closetab(6);
+				}
+			}
+			document.getElementById("tab7").onmousedown = function(event) 
+			{
+				if (event.which == 3) 
+				{
+					alert("right clicked");
+					ide.closetab(7);
 				}
 			}
 		}
