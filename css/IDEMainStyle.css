@@ -174,7 +174,8 @@ body
 #chat
 {
 	background-color: #272822;	
-	
+		font-weight: bold;
+	color: white;
 }
 #codespace
 {
