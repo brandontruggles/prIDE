@@ -158,7 +158,8 @@ body
 {
 	background-color: #292429;
 	margin-left: 20px;
-	float: right;
+	/*float: right;*/
+	text-align: center;
 	color: white;
 	display: hide;
 	resize: none;
