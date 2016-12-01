@@ -195,14 +195,14 @@ var ide = (function ()
 					}
 				}
 				alert("hello");
-			document.getElementById("tab0").oncontextmenu = function(event) 
+			tablist.innerHTML = str;
+				document.getElementById("tab0").oncontextmenu = function(event) 
 			{
 				if (event.which == 3) 
 				{
 					alert("right clicked!");
 				}
 			}
-			tablist.innerHTML = str;
 		}
 	};
 
