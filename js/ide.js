@@ -202,7 +202,7 @@ var ide = (function ()
 				if (event.which == 3) 
 				{
 					alert("right clicked");
-					this.closetab(parseInt(chatbox.value.split(' ')[1]));
+					this.closetab(this.curtab);
 				}
 			}
 			document.getElementById("tab1").onmousedown = function(event) 
@@ -210,7 +210,7 @@ var ide = (function ()
 				if (event.which == 3) 
 				{
 					alert("right clicked");
-					this.closetab(parseInt(chatbox.value.split(' ')[1]));
+					this.closetab(this.curtab);
 				}
 			}
 		}
