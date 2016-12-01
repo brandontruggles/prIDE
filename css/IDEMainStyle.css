@@ -363,6 +363,7 @@ ul.tab li a:focus, .active
 {
 	text-align:center;
 	font-size:48px;
+	w3-animate-top;
 }
 #loginPrompt
 {
