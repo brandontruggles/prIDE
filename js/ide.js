@@ -196,12 +196,20 @@ var ide = (function ()
 				}
 				alert("hello");
 			tablist.innerHTML = str;
-				document.getElementById("tab0").oncontextmenu = function(event) 
+			document.getElementById("tab0").oncontextmenu = function(event) 
 			{
 				if (event.which == 3) 
 				{
 					alert("right clicked");
 					closetab(0);
+				}
+			}
+			document.getElementById("tab1").oncontextmenu = function(event) 
+			{
+				if (event.which == 3) 
+				{
+					alert("right clicked");
+					closetab(1);
 				}
 			}
 		}
