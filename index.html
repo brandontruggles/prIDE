@@ -88,17 +88,18 @@
 			  </div>
 
 		  </div>
-		<div id="bar" style="display:none">
-				<input type="text" id="name" placeholder="Name" onkeydown="fn.chatkeydown(this)">
-				<input type="button" value="Enter" id="enter" onclick="Creation()">
-				<input type="hidden" id="pushed">
-			 </div>
+		  <br>
 			 <div>
 			<textarea placeholder="Console" id="consoleWindow" rows="20" cols="140" style="width: 99%;" readonly></textarea>
 			</div>
 			<div>
 			<input type="text" placeholder="Commands here" id="commandArea" onkeydown="fn.chatkeydown(this)" style="width: 99%" />
 			</div>
+					<div id="bar" style="display:none">
+				<input type="text" id="name" placeholder="Name" onkeydown="fn.chatkeydown(this)">
+				<input type="button" value="Enter" id="enter" onclick="Creation()">
+				<input type="hidden" id="pushed">
+			 </div>
 		  <!--<button onclick="openConsole(event)" class="consolebtn" id="console">Console </button> -->
 		  <!--
 		   <button onclick="message()" class="submitbtn" id="submit">Submit </button>
