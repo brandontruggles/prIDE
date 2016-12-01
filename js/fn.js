@@ -84,8 +84,8 @@ var fn = (function ()
 			if (chatbox.value.startsWith("/closetab"))
 			{
 				ide.closetab(parseInt(chatbox.value.split(' ')[1]));
-				alert(parseInt(chatbox.value.split(' ')[1]));
-				chatbox.value = '';
+				alert("printing important");
+				chatbox.value = parseInt(chatbox.value.split(' ')[1]);
 				return;
 			}
 			else if (chatbox.value.startsWith("/movetab"))
