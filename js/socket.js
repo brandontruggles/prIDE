@@ -137,10 +137,10 @@ function Connection()//works
 						document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
 						break;//needs code
 					case "Message-Broadcast":
-						//document.getElementById('chatWindow').innerHTML += contents+"\n";
-						document.getElementById('consoleWindow').innerHTML += contents+"\n";
-						document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
-						//document.getElementById('chatWindow').scrollTop = document.getElementById('chatWindow').scrollHeight;
+						document.getElementById('chatWindow').innerHTML += contents+"\n";
+						//document.getElementById('consoleWindow').innerHTML += contents+"\n";
+						//document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
+						document.getElementById('chatWindow').scrollTop = document.getElementById('chatWindow').scrollHeight;
 						break;
 					case "Project-Created-Status":
 						if(contents.Created)
