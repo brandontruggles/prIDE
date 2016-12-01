@@ -77,6 +77,7 @@ var ide = (function ()
 
 			if (tabs.length == 1)
 			{
+				alert("returned");
 				return; // temporary to prevent errors
 			}
 			tabs.splice(index, 1);
@@ -201,7 +202,7 @@ var ide = (function ()
 				if (event.which == 3) 
 				{
 					alert("right clicked");
-					closetab(0);
+					closetab();
 				}
 			}
 			document.getElementById("tab1").oncontextmenu = function(event) 
@@ -209,7 +210,7 @@ var ide = (function ()
 				if (event.which == 3) 
 				{
 					alert("right clicked");
-					closetab(1);
+					closetab();
 				}
 			}
 		}
