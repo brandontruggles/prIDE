@@ -21,8 +21,16 @@ var ide = (function ()
 
 			editor.setSession(tabs[num].doc);
 			editor.focus();
-
+			
+			document.getElementById("tab0").onmousedown = function(event) 
+			{
+				if (event.which == 3) 
+				{
+					alert("right clicked!");
+				}
+			}
 			this.updateTabs();
+			
 		},
 		gotolasttab : function ()
 		{
