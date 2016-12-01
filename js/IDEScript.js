@@ -135,7 +135,7 @@ function reset()
 	document.getElementById('name').value = "";
 	document.getElementById('pushed').value = "";
 }
-function tabRightClicked()
+function tabRightClicked(evt)
 {
 	document.getElementById("tab0").onmousedown = function(event) {
     if (event.which == 3) {
