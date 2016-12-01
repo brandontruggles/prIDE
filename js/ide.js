@@ -197,7 +197,7 @@ var ide = (function ()
 					}
 				}
 			tablist.innerHTML = str;
-			document.getElementById("tab0").oncontextmenu = function(event) 
+			document.getElementById("tab0").onmousedown = function(event) 
 			{
 				if (event.which == 3) 
 				{
@@ -205,7 +205,7 @@ var ide = (function ()
 					this.closetab(0);
 				}
 			}
-			document.getElementById("tab1").oncontextmenu = function(event) 
+			document.getElementById("tab1").onmousedown = function(event) 
 			{
 				if (event.which == 3) 
 				{
