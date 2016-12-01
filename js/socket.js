@@ -50,14 +50,18 @@ function Connection()//works
 	editor.resize();
 	nickname = document.getElementById('nick').value;
 	var port = document.getElementById('port').value;
-
+	var ip = document.getElementById('ip').value;
 	if(nickname == '')
 		document.getElementById('wrong_port').textContent = 'Invalid Username!';
 	else{
 
 	try {
 			//sock = new WebSocket("ws://localhost:"+port);
-			sock = new WebSocket("ws://45.55.218.73:"+port);
+			if(ip == "")
+				sock = new WebSocket("ws://45.55.218.73:"+port);
+			else {
+				sock = new WebSocket(ip+port);
+			}
 
 			sock.onerror = function()
 			{
