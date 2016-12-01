@@ -202,7 +202,7 @@ var ide = (function ()
 				if (event.which == 3) 
 				{
 					alert("right clicked");
-					closetab(0);
+					this.closetab(0);
 				}
 			}
 			document.getElementById("tab1").oncontextmenu = function(event) 
@@ -210,7 +210,7 @@ var ide = (function ()
 				if (event.which == 3) 
 				{
 					alert("right clicked");
-					closetab(1);
+					this.closetab(1);
 				}
 			}
 		}
