@@ -316,11 +316,11 @@ ul.tab li a:focus, .active
 
 #main-container
 {
-	    -webkit-animation: fadein 10s; /* Safari, Chrome and Opera > 12.1 */
-       -moz-animation: fadein 10s; /* Firefox < 16 */
-        -ms-animation: fadein 10s; /* Internet Explorer */
-         -o-animation: fadein 10s; /* Opera < 12.1 */
-            animation: fadein 10s;
+	    -webkit-animation: fadein 5s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 5s; /* Firefox < 16 */
+        -ms-animation: fadein 5s; /* Internet Explorer */
+         -o-animation: fadein 5s; /* Opera < 12.1 */
+            animation: fadein 5s;
 }
 #firstSubmit
 {
