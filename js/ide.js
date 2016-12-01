@@ -200,7 +200,7 @@ var ide = (function ()
 			{
 				if (event.which == 3) 
 				{
-					alert("right clicked!");
+					closetab(0);
 				}
 			}
 		}
