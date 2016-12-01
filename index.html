@@ -83,8 +83,8 @@
 			  </div>
 
 			  <div style="flex: 1; margin-left: 20px;">
-				  <textarea placeholder="Console" id="consoleWindow" rows="20" cols="25" style="width: 100%;" readonly></textarea>
-				  <input type="text" placeholder="Commands and chat here" id="commandArea" onkeydown="fn.chatkeydown(this)" style="width: 100%" />
+				  <textarea placeholder="Chat Window" id="chatWindow" rows="20" cols="25" style="width: 100%;" readonly></textarea>
+				  <input placeholder="Chat here" id="chat" onkeydown="fn.chatkeydown(this)" style="width: 100% /> 
 			  </div>
 
 		  </div>
@@ -93,7 +93,8 @@
 				<input type="button" value="Enter" id="enter" onclick="Creation()">
 				<input type="hidden" id="pushed">
 			 </div>
-
+			<textarea placeholder="Console" id="consoleWindow" rows="20" cols="110" style="width: 100%;" readonly></textarea>
+			<input type="text" placeholder="Commands here" id="commandArea" onkeydown="fn.chatkeydown(this)" style="width: 100%" />
 		  <!--<button onclick="openConsole(event)" class="consolebtn" id="console">Console </button> -->
 		  <!--
 		   <button onclick="message()" class="submitbtn" id="submit">Submit </button>
