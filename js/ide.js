@@ -21,14 +21,7 @@ var ide = (function ()
 
 			editor.setSession(tabs[num].doc);
 			editor.focus();
-			alert("hello");
-			document.getElementById("tab0").oncontextmenu = function(event) 
-			{
-				if (event.which == 3) 
-				{
-					alert("right clicked!");
-				}
-			}
+
 			this.updateTabs();
 			
 		},
@@ -201,6 +194,14 @@ var ide = (function ()
 						str += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+i+'" onclick="ide.gototab('+i+')" style="background-color: gray;">'+tabs[i].filename+'</a></li>';
 					}
 				}
+				alert("hello");
+			document.getElementById("tab0").oncontextmenu = function(event) 
+			{
+				if (event.which == 3) 
+				{
+					alert("right clicked!");
+				}
+			}
 			tablist.innerHTML = str;
 		}
 	};
