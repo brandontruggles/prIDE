@@ -2,6 +2,7 @@ var sock;
 var nickname;
 var currfile;
 var currproject;
+var currfolder;
 var name;
 var editor;
 var projects = {};
@@ -51,16 +52,23 @@ function Connection()//works
 	nickname = document.getElementById('nick').value;
 	var port = document.getElementById('port').value;
 	var ip = document.getElementById('ip').value;
+
 	if(nickname == '')
 		document.getElementById('wrong_port').textContent = 'Invalid Username!';
 	else{
 
 	try {
-			//sock = new WebSocket("ws://localhost:"+port);
+
 			if(ip == "")
-				sock = new WebSocket("ws://45.55.218.73:"+port);
-			else {
-				sock = new WebSocket('ws://'+ip+":"+port);
+  				sock = new WebSocket("ws://45.55.218.73:"+port);
+  			else {
+ 				sock = new WebSocket('ws://'+ip+":"+port);
+  			}
+
+			if(document.getElementById('wrong_port'))
+			{
+				document.getElementById('error').style.display = 'none';
+				document.getElementById('error').innerHTML = "";
 			}
 
 			sock.onerror = function()
@@ -69,9 +77,8 @@ function Connection()//works
 			};
 			sock.onclose = function()
 			{
-				//if not on loader screen
-				document.getElementById('consoleWindow').innerHTML += 'Disconnected from Server!\n';
-				document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
+				document.getElementById('error').style.display = 'block';
+				document.getElementById('error').innerHTML = "Lost Connection to Server!";
 			};
 			sock.onopen = function()
 			{
@@ -91,7 +98,6 @@ function Connection()//works
 					case "Console":
 						console.log(contents);
 						document.getElementById('consoleWindow').innerHTML += contents;
-						document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
 						break;
 					case "Connection-Accept":
 						if(contents.Accepted)
@@ -111,9 +117,13 @@ function Connection()//works
 						}
 						else
 						{
-							document.getElementById('wrong_port').innerHTML = contents.Reason+'\n';
-							//document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
-
+							document.getElementById('error').style.display = 'block';
+							document.getElementById('error').innerHTML = '<span id="reason">'+contents.Reason+'</span>';
+							//alert(contents.Reason);
+							/*port = prompt("Enter port");
+							nickname = prompt("Enter nickname");
+							sock.close();
+							sock = new WebSocket("ws://45.55.218.73:"+port);*/
 						}
 						ide.updateFileExplorer(); // pre-load some files
 						break;
@@ -128,23 +138,17 @@ function Connection()//works
 						if(contents.output[0] == null)
 						{
 							document.getElementById('consoleWindow').innerHTML += 'Successfully Compiled\n';
-							document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
 						}
 						else
 						{
 							document.getElementById('consoleWindow').innerHTML += contents.output;
-							document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
 						}
 						break;
 					case "Code-Running-Status":
 						document.getElementById('consoleWindow').innerHTML += contents.output;
-						document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
 						break;//needs code
 					case "Message-Broadcast":
-						document.getElementById('chatWindow').innerHTML += contents+"\n";
-						//document.getElementById('consoleWindow').innerHTML += contents+"\n";
-						//document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
-						document.getElementById('chatWindow').scrollTop = document.getElementById('chatWindow').scrollHeight;
+						document.getElementById('consoleWindow').innerHTML += contents+"\n";
 						break;
 					case "Project-Created-Status":
 						if(contents.Created)
@@ -158,8 +162,8 @@ function Connection()//works
 						}
 						else
 						{
-							document.getElementById('consoleWindow').innerHTML += contents.Reason+'\n';
-							document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
+							document.getElementById('error').style.display = 'block';
+							document.getElementById('error').innerHTML = '<span id="reason">'+contents.Reason+'</span>';
 						}
 						break;
 					case "File-Created-Status":
@@ -186,8 +190,8 @@ function Connection()//works
 						}
 						else
 						{
-							document.getElementById('consoleWindow').innerHTML += contents.Reason+'\n';
-							document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
+							document.getElementById('error').style.display = 'block';
+							document.getElementById('error').innerHTML = '<span id="reason">'+contents.Reason+'</span>';
 						}
 						break;
 					case "File-Deleted-Status":
@@ -205,8 +209,8 @@ function Connection()//works
 						}
 						else
 						{
-							document.getElementById('consoleWindow').innerHTML += contents.Reason+'\n';
-							document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
+							document.getElementById('error').style.display = 'block';
+							document.getElementById('error').innerHTML = '<span id="reason">'+contents.Reason+'</span>';
 						}
 						break;
 					case "Directory-Created-Status":
@@ -219,8 +223,8 @@ function Connection()//works
 						}
 						else
 						{
-							document.getElementById('consoleWindow').innerHTML += contents.Reason+'\n';
-							document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
+							document.getElementById('error').style.display = 'block';
+							document.getElementById('error').innerHTML = '<span id="reason">'+contents.Reason+'</span>';
 						}
 						break;
 					case "File-Open-Response":

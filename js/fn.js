@@ -56,6 +56,18 @@ var fn = (function ()
 			setproj(name);
 			sock.send(JSON.stringify(message));
 		},
+		newfolder : function()
+		{//work in progress
+			console.log(currproject);
+			var name = document.getElementById('name').value;
+			var message =
+			{
+				"nickname": nickname,
+				"contents": "newproject "+currproject+"/"+currfolder+"/"+name
+			};
+			sock.send(JSON.stringify(message));
+
+		},
 		newfile : function ()
 		{
 			name = document.getElementById('name').value;
@@ -135,7 +147,7 @@ var fn = (function ()
 				var tag = document.activeElement.id;
 				if(tag == "commandArea")
 					this.message();
-				else if (tag == "nick" || tag == "port")
+				else if (tag == "nick" || tag == "port" || tag == "ip")
 					Connection();
 				else if (tag == "chat")
 					this.chat();

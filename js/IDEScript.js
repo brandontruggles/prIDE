@@ -122,8 +122,17 @@ function Creation()
 		fn.gitclone();
 	else if (num == "6")
 		fn.gitcommit();
+	else if (num == "8"){
+			if(currproject)
+			{
+				//work in progress
+			}
+			else {
+				document.getElementById('consoleWindow').innerHTML += "Not Currently in a Project!";
+			}
+	}
 	else {
-			alert("huh");
+		alert("huh");
 	}
 	//reseting values
 

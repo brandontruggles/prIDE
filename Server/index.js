@@ -1,4 +1,3 @@
-
 var rtu = require('./rtu.js');
 var execFileSync = require('child_process').execFileSync;
 var spawn = require('child_process').spawn;
@@ -408,11 +407,7 @@ function runServer(portNumber)
 							break;
 						case "newfile":
 							response.type = "File-Created-Status";
-							if (!dir)
-							{
-								response.contents = {"Created": false, "Reason": "Not currently in a Project. Please select one and try again."};
-							}
-							else if(!createFile(params, dir))
+							if(!createFile(params, dir))
 							{
 								response.contents = {"Created": false, "Reason": "Failed to create a new file with the name '" + params + "'! That file already exists in the current project."};
 							}
