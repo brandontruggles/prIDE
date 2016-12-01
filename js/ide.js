@@ -72,6 +72,7 @@ var ide = (function ()
 		},
 		closetab : function (index)
 		{
+			alert("inside closetab");
 			if(isNaN(index))
 				index = curtab;
 
@@ -195,14 +196,13 @@ var ide = (function ()
 						str += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+i+'" onclick="ide.gototab('+i+')" style="background-color: gray;">'+tabs[i].filename+'</a></li>';
 					}
 				}
-				alert("hello");
 			tablist.innerHTML = str;
 			document.getElementById("tab0").oncontextmenu = function(event) 
 			{
 				if (event.which == 3) 
 				{
 					alert("right clicked");
-					closetab();
+					closetab(0);
 				}
 			}
 			document.getElementById("tab1").oncontextmenu = function(event) 
@@ -210,7 +210,7 @@ var ide = (function ()
 				if (event.which == 3) 
 				{
 					alert("right clicked");
-					closetab();
+					closetab(1);
 				}
 			}
 		}
