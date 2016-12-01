@@ -128,6 +128,7 @@ var ide = (function ()
 		},
 		updateFileExplorer : function ()
 		{
+			console.log(currproject);
 			var filelist = document.getElementById('openproj');
 			var str = '';
 			for (var key in projects)
@@ -138,10 +139,22 @@ var ide = (function ()
 				}
 				if (projects[key].hidden)
 				{
-					str += '<option value="'+key+'" onclick="ide.togglecollapse(\''+key+'\')">+ '+key+'</option>';
+					if(currproject == key)
+					{
+						str += '<option id="'+key+'" value="'+key+'" style="color:red" onclick="ide.togglecollapse(\''+key+'\')">+ '+key+'</option>';
+					}
+					else {
+					str += '<option id="'+key+'" value="'+key+'" onclick="ide.togglecollapse(\''+key+'\')">+ '+key+'</option>';
+					}
 					continue;
 				}
-				str += '<option value="'+key+'" onclick="ide.togglecollapse(\''+key+'\')">- '+key+'</option>';
+				if(currproject == key)
+				{
+					str += '<option  id="'+key+'" value="'+key+'" style="color:red" onclick="ide.togglecollapse(\''+key+'\')">- '+key+'</option>';
+				}
+				else {
+				str += '<option  id="'+key+'" value="'+key+'" onclick="ide.togglecollapse(\''+key+'\')">- '+key+'</option>';
+				}
 				for (var j = 0; j < projects[key].filelist.length; j++)
 				{
 					var t = -1;

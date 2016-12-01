@@ -60,7 +60,7 @@ function Connection()//works
 			if(ip == "")
 				sock = new WebSocket("ws://45.55.218.73:"+port);
 			else {
-				sock = new WebSocket(ip+port);
+				sock = new WebSocket('ws://'+ip+port);
 			}
 
 			sock.onerror = function()
@@ -111,8 +111,8 @@ function Connection()//works
 						}
 						else
 						{
-							document.getElementById('consoleWindow').innerHTML += contents.Reason+'\n';
-							document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
+							document.getElementById('wrong_port').innerHTML = contents.Reason+'\n';
+							//document.getElementById('consoleWindow').scrollTop = document.getElementById('consoleWindow').scrollHeight;
 
 						}
 						ide.updateFileExplorer(); // pre-load some files
