@@ -200,7 +200,7 @@ var ide = (function ()
 			{
 				if (event.which == 3) 
 				{
-					alert("right clicked");
+					
 					ide.closetab(0);
 				}
 			}
@@ -208,7 +208,7 @@ var ide = (function ()
 			{
 				if (event.which == 3) 
 				{
-					alert("right clicked");
+					
 					ide.closetab(1);
 				}
 			}
@@ -216,7 +216,7 @@ var ide = (function ()
 			{
 				if (event.which == 3) 
 				{
-					alert("right clicked");
+					
 					ide.closetab(2);
 				}
 			}
@@ -224,7 +224,7 @@ var ide = (function ()
 			{
 				if (event.which == 3) 
 				{
-					alert("right clicked");
+					
 					ide.closetab(3);
 				}
 			}
@@ -232,7 +232,7 @@ var ide = (function ()
 			{
 				if (event.which == 3) 
 				{
-					alert("right clicked");
+					
 					ide.closetab(4);
 				}
 			}
@@ -240,7 +240,7 @@ var ide = (function ()
 			{
 				if (event.which == 3) 
 				{
-					alert("right clicked");
+					
 					ide.closetab(5);
 				}
 			}
@@ -248,7 +248,7 @@ var ide = (function ()
 			{
 				if (event.which == 3) 
 				{
-					alert("right clicked");
+					
 					ide.closetab(6);
 				}
 			}
@@ -256,7 +256,6 @@ var ide = (function ()
 			{
 				if (event.which == 3) 
 				{
-					alert("right clicked");
 					ide.closetab(7);
 				}
 			}
