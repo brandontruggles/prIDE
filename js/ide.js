@@ -21,7 +21,7 @@ var ide = (function ()
 
 			editor.setSession(tabs[num].doc);
 			editor.focus();
-			
+			alert("hello");
 			document.getElementById("tab0").onmousedown = function(event) 
 			{
 				if (event.which == 3) 
