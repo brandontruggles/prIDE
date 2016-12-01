@@ -60,7 +60,7 @@ function Connection()//works
 			if(ip == "")
 				sock = new WebSocket("ws://45.55.218.73:"+port);
 			else {
-				sock = new WebSocket('ws://'+ip+port);
+				sock = new WebSocket('ws://'+ip+":"+port);
 			}
 
 			sock.onerror = function()
