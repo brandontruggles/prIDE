@@ -159,7 +159,6 @@ body
 	background-color: #292429;
 	margin-left: 20px;
 	/*float: right;*/
-	text-align: center;
 	color: white;
 	display: hide;
 	resize: none;
@@ -171,7 +170,11 @@ body
 	display: hide;
 	resize: none;
 }
-
+#chat
+{
+	background-color: #272822;	
+	
+}
 #codespace
 {
 	display: inline-block;
