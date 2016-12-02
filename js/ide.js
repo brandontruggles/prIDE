@@ -77,6 +77,11 @@ var ide = (function ()
 
 			if (tabs.length == 1)
 			{
+				tabs = [];
+				currfile = '';
+				editor.setSession(ace.createEditSession('', "ace/mode/java"));
+				this.updateTabs();
+				this.updateFileExplorer();
 				return; // temporary to prevent errors
 			}
 			tabs.splice(index, 1);
@@ -127,8 +132,8 @@ var ide = (function ()
 			projects[proj].hidden = !projects[proj].hidden;
 			this.updateFileExplorer();
 		},
-		updateFileExplorer : function ()
-		{
+		updateFileExplorer : function ()//work in progress
+		{//needs to be separated into different functions
 			var filelist = document.getElementById('openproj');
 			var str = '';
 			for (var key in projects)
@@ -186,78 +191,15 @@ var ide = (function ()
 				{
 					if (i != curtab)
 					{
-						str += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+i+'" onclick="ide.gototab('+i+')">'+tabs[i].filename+'</a></li>';
+						str += '<li><a href="javascript:void(0)" class="tablinks" oncontextmenu="ide.closetab('+i+'); return false;" id="tab'+i+'" onclick="ide.gototab('+i+')">'+tabs[i].filename+'</a></li>';
 					}
 					else
 					{
-						str += '<li><a href="javascript:void(0)" class="tablinks" id="tab'+i+'" onclick="ide.gototab('+i+')" style="background-color: gray;">'+tabs[i].filename+'</a></li>';
+						str += '<li><a href="javascript:void(0)" class="tablinks" oncontextmenu="ide.closetab('+i+'); return false;" id="tab'+i+'" onclick="ide.gototab('+i+')" style="background-color: gray;">'+tabs[i].filename+'</a></li>';
 					}
 				}
 			tablist.innerHTML = str;
-			//brute forcing this. it works. will do it properly tomorrow
-			document.getElementById("tab0").onmousedown = function(event)
-			{
-				if (event.which == 3)
-				{
 
-					ide.closetab(0);
-				}
-			}
-			document.getElementById("tab1").onmousedown = function(event)
-			{
-				if (event.which == 3)
-				{
-
-					ide.closetab(1);
-				}
-			}
-			document.getElementById("tab2").onmousedown = function(event)
-			{
-				if (event.which == 3)
-				{
-
-					ide.closetab(2);
-				}
-			}
-			document.getElementById("tab3").onmousedown = function(event)
-			{
-				if (event.which == 3)
-				{
-
-					ide.closetab(3);
-				}
-			}
-			document.getElementById("tab4").onmousedown = function(event)
-			{
-				if (event.which == 3)
-				{
-
-					ide.closetab(4);
-				}
-			}
-						document.getElementById("tab5").onmousedown = function(event)
-			{
-				if (event.which == 3)
-				{
-
-					ide.closetab(5);
-				}
-			}
-			document.getElementById("tab6").onmousedown = function(event)
-			{
-				if (event.which == 3)
-				{
-
-					ide.closetab(6);
-				}
-			}
-			document.getElementById("tab7").onmousedown = function(event)
-			{
-				if (event.which == 3)
-				{
-					ide.closetab(7);
-				}
-			}
 		}
 	};
 

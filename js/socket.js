@@ -2,7 +2,7 @@ var sock;
 var nickname;
 var currfile;
 var currproject;
-var currfolder;
+var currfolder = "";
 var name;
 var editor;
 var projects = {};
@@ -77,8 +77,7 @@ function Connection()//works
 			};
 			sock.onclose = function()
 			{
-				document.getElementById('error').style.display = 'block';
-				document.getElementById('error').innerHTML = "Lost Connection to Server!";
+				document.getElementById('consoleWindow').innerHTML += "Lost Connection to Server!";
 			};
 			sock.onopen = function()
 			{
@@ -148,7 +147,7 @@ function Connection()//works
 						document.getElementById('consoleWindow').innerHTML += contents.output;
 						break;//needs code
 					case "Message-Broadcast":
-						document.getElementById('consoleWindow').innerHTML += contents+"\n";
+						document.getElementById('chatWindow').innerHTML += contents+"\n";
 						break;
 					case "Project-Created-Status":
 						if(contents.Created)
@@ -162,8 +161,7 @@ function Connection()//works
 						}
 						else
 						{
-							document.getElementById('error').style.display = 'block';
-							document.getElementById('error').innerHTML = '<span id="reason">'+contents.Reason+'</span>';
+							document.getElementById('consoleWindow').innerHTML += contents;
 						}
 						break;
 					case "File-Created-Status":
@@ -190,8 +188,7 @@ function Connection()//works
 						}
 						else
 						{
-							document.getElementById('error').style.display = 'block';
-							document.getElementById('error').innerHTML = '<span id="reason">'+contents.Reason+'</span>';
+							document.getElementById('consoleWindow').innerHTML += contents;
 						}
 						break;
 					case "File-Deleted-Status":
@@ -209,8 +206,7 @@ function Connection()//works
 						}
 						else
 						{
-							document.getElementById('error').style.display = 'block';
-							document.getElementById('error').innerHTML = '<span id="reason">'+contents.Reason+'</span>';
+							document.getElementById('consoleWindow').innerHTML += contents;
 						}
 						break;
 					case "Directory-Created-Status":
@@ -223,8 +219,7 @@ function Connection()//works
 						}
 						else
 						{
-							document.getElementById('error').style.display = 'block';
-							document.getElementById('error').innerHTML = '<span id="reason">'+contents.Reason+'</span>';
+							document.getElementById('consoleWindow').innerHTML += contents;
 						}
 						break;
 					case "File-Open-Response":

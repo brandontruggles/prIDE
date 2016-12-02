@@ -2,7 +2,7 @@ var rtu = require('./rtu.js');
 var execFileSync = require('child_process').execFileSync;
 var spawn = require('child_process').spawn;
 var fs = require('fs');
-
+var curpath = 'workspace/';
 function writeout(error, stdout, stderr)
 {
 	//	fs.writeFileSync("error.txt", error);
@@ -268,6 +268,24 @@ function getProjectFiles(dir)
 	}
 	return files;
 }
+function explorerCreator(proj)
+{
+	var files = [];
+	for(var dir in proj){
+		files[dir] = (getProjectFiles(proj[dir]));
+
+		for(var f in files[dir])
+		{
+			console.log(files[dir][f]+":");
+			if(fs.lstatSync('workspace/'+proj[dir]+'/'+files[dir][f]).isDirectory())
+			{
+				curpath += proj[dir]+'/'+files[dir][f];
+				explorerCreator(fs.readdirSync(curpath));//needs a string that holds current path
+			}
+		}
+
+	}
+}
 
 function broadcastResponse(connectionList, responseString)
 {
@@ -337,6 +355,7 @@ function runServer(portNumber)
 							if(response.contents == null)
 							{
 								var proj = fs.readdirSync("workspace/");
+								//explorerCreator(proj)
 								var files = [];
 								for(var dir in proj){
 									files[dir] = (getProjectFiles(proj[dir]));

@@ -126,6 +126,7 @@ function Creation()
 			if(currproject)
 			{
 				//work in progress
+				fn.newfolder();
 			}
 			else {
 				document.getElementById('consoleWindow').innerHTML += "Not Currently in a Project!";
@@ -143,12 +144,4 @@ function reset()
 	document.getElementById('bar').style.display = 'none';
 	document.getElementById('name').value = "";
 	document.getElementById('pushed').value = "";
-}
-function tabRightClicked(evt)
-{
-	document.getElementById("tab0").onmousedown = function(event) {
-    if (event.which == 3) {
-        alert("right clicked!");
-    }
-}
 }
