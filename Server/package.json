@@ -1,22 +1,23 @@
 {
-  "name": "cs_490_server",
+  "name": "prIDE Server",
   "version": "1.0.0",
-  "description": "A websocket server and file system manager for our online IDE.",
+  "description": "A websocket server and file system manager for the online IDE, prIDE.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node index.js"
   },
   "keywords": [
     "Websocket",
     "Node",
     "IDE",
-    "Online"
+    "Online",
+    "prIDE"
   ],
   "repository": {
     "type": "git",
     "url": "git://github.com/brandonrninefive/CS_490_Project/CS_490_Project.git"
   },
-  "author": "Brandon Ruggles",
+  "author": "Brandon Ruggles, Alec Brion",
   "license": "GPL-3.0",
   "dependencies": {
     "fs": "0.0.1-security",

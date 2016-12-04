@@ -1,10 +1,6 @@
 var execFileSync = require('child_process').execFileSync;
 module.exports = 
 {
-	runGit:function(params, dir)
-	{
-		execFileSync("git", params.split(' '), {"cwd": "workspace/" + dir});
-	},
 	createproj:function(user, pass, name)
 	{
 		var out = execFileSync("curl", ["-i", "-u", user + ":" + pass, "-d", "\'{\"name\":\"" + name + "\"}\'", "-X", "POST", "https://api.github.com/user/repos"]);

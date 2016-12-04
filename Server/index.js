@@ -246,9 +246,6 @@ function runServer(portNumber)
 							ws.send(JSON.stringify(response));
 							rtu.readfile(nickname, dir + "/" + params, str);
 							break;
-						case "git":
-							git.runGit(params, dir);
-							break;
 						case "git_newproject":
 							if (connectionList[connind].valid)
 							{
