@@ -1,6 +1,7 @@
 Server/node_modules
 Server/server.conf
 test/
+bower_components/
 workspace/
 server.conf
 .htaccess

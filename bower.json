@@ -1,0 +1,28 @@
+{
+  "name": "pride-online-ide",
+  "homepage": "https://github.com/brandonrninefive/CS_490_Project",
+  "authors": [
+    "Brandon Ruggles <brandonrninefive@gmail.com>"
+  ],
+  "description": "A free online IDE with real-time code sharing between peers, a built-in chat system, GitHub integration, and a built-in file system for creating and managing projects.",
+  "main": "index.html",
+  "keywords": [
+    "Online",
+    "IDE",
+    "prIDE",
+    "Free",
+    "GitHub"
+  ],
+  "license": "GPL-3",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies":{
+    "ace-builds": "1.2.6"
+  }
+}
