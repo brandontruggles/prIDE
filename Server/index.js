@@ -136,13 +136,13 @@ function runServer(portNumber)
 						case "compile":
 							response.type = "Compile-Running-Status";
 							console.log("Received command to compile!");
-							response.contents = {"output": compile(dir)};
+							response.contents = {"output": ideFS.compile(dir)};
 							ws.send(JSON.stringify(response));
 							break;
 						case "run":
 							response.type = "Code-Running-Status";
 							console.log("Running code...");
-							var str = run(file, "some args", dir);
+							var str = ideFS.run(file, "some args", dir);
 							console.log(str);
 							response.contents = {"output": str};
 							ws.send(JSON.stringify(response));
