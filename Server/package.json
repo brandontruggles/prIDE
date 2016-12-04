@@ -1,5 +1,5 @@
 {
-  "name": "prIDE Server",
+  "name": "pride-online-ide-server",
   "version": "1.0.0",
   "description": "A websocket server and file system manager for the online IDE, prIDE.",
   "main": "index.js",
