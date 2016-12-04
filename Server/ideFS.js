@@ -1,4 +1,5 @@
 var fs = require('fs');
+var execFileSync = require('child_process').execFileSync;
 var configObj = {};
 module.exports = 
 {
@@ -72,7 +73,7 @@ module.exports =
 		var out = "";
 		try
 		{
-			out = fs.execFileSync("touch", [filename], {"cwd": "workspace/" + dir});
+			out = execFileSync("touch", [filename], {"cwd": "workspace/" + dir});
 		}
 		catch (e)
 		{
@@ -93,7 +94,7 @@ module.exports =
 		}
 		try
 		{
-			var ret = fs.execFileSync("javac", flies, {stdio: ['pipe', 'pipe', 'pipe']}).toString();
+			var ret = execFileSync("javac", flies, {stdio: ['pipe', 'pipe', 'pipe']}).toString();
 			return ret;
 		}
 		catch (error)
@@ -104,12 +105,12 @@ module.exports =
 	run:function(prog, args, dir)
 	{
 		prog = prog.replace(".java","");
-		var str = fs.execFileSync("java", ["-cp", "workspace/" + dir, prog]).toString();
+		var str = execFileSync("java", ["-cp", "workspace/" + dir, prog]).toString();
 		return str;
 	},
 	listproj:function(user)
 	{
-		fs.execFileSync("curl https://api.github.com/users/" + user + "/repos", writeout);
+		execFileSync("curl https://api.github.com/users/" + user + "/repos", writeout);
 		out = fs.readFileSync("stdout.txt", "utf8").toString();
 		var obj = JSON.parse(out);
 

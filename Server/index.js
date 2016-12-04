@@ -2,8 +2,6 @@ var rtu = require('./rtu.js');
 var git = require('./git.js');
 var ideFS = require('./ideFS.js');
 var fs = require('fs');
-var execFileSync = require('child_process').execFileSync;
-var spawn = require('child_process').spawn;
 var WebSocketServer = require('ws').Server;
 
 function explorerCreator(files,proj, curpath)
