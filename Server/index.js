@@ -155,7 +155,7 @@ function runServer(portNumber)
 							break;
 						case "newproject":
 							response.type = "Project-Created-Status";
-							if(!createProject("workspace/" + params))
+							if(!ideFS.createProject("workspace/" + params))
 							{
 								response.contents = {"Created": false, "Reason": "Failed to create a new project with the name '" + params + "'! That project name is already taken."};
 							}
