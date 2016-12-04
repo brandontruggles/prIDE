@@ -10,7 +10,7 @@ function explorerCreator(files,proj, curpath)
 {//finished i think working as intended
 	var newproj = [];
 	for(var dir in proj){
-		files.push(getProjectFiles(curpath+proj[dir]));
+		files.push(ideFS.getProjectFiles(curpath+proj[dir]));
 		var count = 0;
 		for(var f in files[files.length-1])
 		{
@@ -106,7 +106,7 @@ function runServer(portNumber)
 								explorerCreator(files= [],proj, curpath);
 								/*var files = [];
 								for(var dir in proj){
-									files[dir] = (getProjectFiles(proj[dir]));
+									files[dir] = (ideFS.getProjectFiles(proj[dir]));
 
 								}*/
 								for(var dir in files)

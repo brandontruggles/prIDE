@@ -53,6 +53,19 @@ module.exports =
 		{
 			console.log("Failed to write server.conf! Reason: " + err);
 		}
+	},
+	getProjectFiles:function(dir)
+	{
+		var files = null;
+		try
+		{
+			files = fs.readdirSync("workspace/" + dir);
+		}
+		catch(err)
+		{
+			console.log("Failed to read files from the current project directory!");
+		}
+		return files;
 	},      	
 	newfile:function(filename, dir)
 	{
