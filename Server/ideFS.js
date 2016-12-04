@@ -72,7 +72,7 @@ module.exports =
 		var out = "";
 		try
 		{
-			out = execFileSync("touch", [filename], {"cwd": "workspace/" + dir});
+			out = fs.execFileSync("touch", [filename], {"cwd": "workspace/" + dir});
 		}
 		catch (e)
 		{
@@ -93,7 +93,7 @@ module.exports =
 		}
 		try
 		{
-			var ret = execFileSync("javac", flies, {stdio: ['pipe', 'pipe', 'pipe']}).toString();
+			var ret = fs.execFileSync("javac", flies, {stdio: ['pipe', 'pipe', 'pipe']}).toString();
 			return ret;
 		}
 		catch (error)
@@ -104,12 +104,12 @@ module.exports =
 	run:function(prog, args, dir)
 	{
 		prog = prog.replace(".java","");
-		var str = execFileSync("java", ["-cp", "workspace/" + dir, prog]).toString();
+		var str = fs.execFileSync("java", ["-cp", "workspace/" + dir, prog]).toString();
 		return str;
 	},
 	listproj:function(user)
 	{
-		execFileSync("curl https://api.github.com/users/" + user + "/repos", writeout);
+		fs.execFileSync("curl https://api.github.com/users/" + user + "/repos", writeout);
 		out = fs.readFileSync("stdout.txt", "utf8").toString();
 		var obj = JSON.parse(out);
 
