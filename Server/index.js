@@ -1,4 +1,3 @@
-
 var rtu = require('./rtu.js');
 var git = require('./git.js');
 var ideFS = require('./ideFS.js');
@@ -7,6 +6,33 @@ var execFileSync = require('child_process').execFileSync;
 var spawn = require('child_process').spawn;
 var WebSocketServer = require('ws').Server;
 
+function explorerCreator(files,proj, curpath)
+{//finished i think working as intended
+	var newproj = [];
+	for(var dir in proj){
+		files.push(getProjectFiles(curpath+proj[dir]));
+		var count = 0;
+		for(var f in files[files.length-1])
+		{
+			if(fs.lstatSync('workspace/'+curpath+proj[dir]+'/'+files[files.length-1][f]).isDirectory())
+			{
+				newproj.push(files[files.length-1][f]);
+				//point to array with folder in it
+				files[files.length-1][f]+='/'+((+files.length+ +count));
+				count++;
+				//return explorerCreator(files,fs.readdirSync(curpath), curpath);//needs a string that holds current path
+			}//if directory
+
+		}//finds all directories within directory
+		if(newproj.length != 0){
+			explorerCreator(files,newproj,curpath+proj[dir]+'/');
+			newproj = [];
+		}
+		else {
+			return;
+		}
+	}//completed array
+}
 function broadcastResponse(connectionList, responseString)
 {
 	connectionList.forEach(function(conn)
@@ -75,11 +101,16 @@ function runServer(portNumber)
 							if(response.contents == null)
 							{
 								var proj = fs.readdirSync("workspace/");
-								var files = [];
+								var curpath = '';
+								var files;
+								explorerCreator(files= [],proj, curpath);
+								/*var files = [];
 								for(var dir in proj){
 									files[dir] = (getProjectFiles(proj[dir]));
 
-								}
+								}*/
+								for(var dir in files)
+									console.log(files[dir]);
 								connectionList.push({"connection":ws,"nickname":nickname,"user":null,"pass":null,"valid":false});
 								response.contents = {"Accepted": true, "Proj":proj, "Files": files};
 								console.log("Accepted incoming connection from user '"+ nickname  +"'.");

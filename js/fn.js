@@ -24,9 +24,11 @@ var fn = (function ()
 		},
 		setproj : function (name)
 		{
+			console.log("gets here");
 			currproject = name;
-			var curdir = document.getElementById('curdir');
-			curdir.innerHTML = currproject;
+			var curdir = document.getElementById(name);
+			curdir.style.backgroundColor = "#FDFF47";
+			//curdir.innerHTML = currproject;
 		},
 		setfile : function (name)
 		{
@@ -53,6 +55,18 @@ var fn = (function ()
 			};
 			setproj(name);
 			sock.send(JSON.stringify(message));
+		},
+		newfolder : function()
+		{//work in progress
+			console.log(currproject);
+			var name = document.getElementById('name').value;
+			var message =
+			{
+				"nickname": nickname,
+				"contents": "newproject "+currproject+"/"+currfolder+"/"+name
+			};
+			sock.send(JSON.stringify(message));
+
 		},
 		newfile : function ()
 		{
@@ -82,7 +96,8 @@ var fn = (function ()
 			if (chatbox.value.startsWith("/closetab"))
 			{
 				ide.closetab(parseInt(chatbox.value.split(' ')[1]));
-				chatbox.value = '';
+				alert("printing important");
+				chatbox.value = parseInt(chatbox.value.split(' ')[1]);
 				return;
 			}
 			else if (chatbox.value.startsWith("/movetab"))
@@ -112,11 +127,32 @@ var fn = (function ()
 			chatbox.value = '';
 			sock.send(JSON.stringify(message));
 		},
+		chat : function ()
+		{
+			var chatbox = document.getElementById('chat');
+			var message;
+			message =
+			{
+				"nickname": nickname,
+				"dir": currproject,
+				"contents": "message "+chatbox.value
+			};
+			chatbox.value = '';
+			sock.send(JSON.stringify(message));
+		},
 		chatkeydown : function (e)
 		{
 			if (event.keyCode == 13)
 			{
-				this.message();
+				var tag = document.activeElement.id;
+				if(tag == "commandArea")
+					this.message();
+				else if (tag == "nick" || tag == "port" || tag == "ip")
+					Connection();
+				else if (tag == "chat")
+					this.chat();
+				else if (tag == "name")
+					Creation();
 			}
 		},
 		newdir : function ()

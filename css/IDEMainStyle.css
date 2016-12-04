@@ -96,6 +96,10 @@ body
 {
 	background-color: #7a0099;
 }
+#glaadbtn:hover, #glaadbtn:focus
+{
+	background-color: #0066cc;
+}
 
 .dropbtn:hover, .dropbtn:focus 
 {
@@ -153,8 +157,9 @@ body
 #consoleWindow
 {
 	background-color: #292429;
-	margin-left: 20px;
-	float: right;
+	margin-left: 5px;
+	margin-right:8px;
+	/*float: right;*/
 	color: white;
 	display: hide;
 	resize: none;
@@ -166,7 +171,12 @@ body
 	display: hide;
 	resize: none;
 }
-
+#chat
+{
+	background-color: #272822;	
+		font-weight: bold;
+	color: white;
+}
 #codespace
 {
 	display: inline-block;
@@ -186,10 +196,11 @@ body
 	/*background-color: #292429;*/
 	background-color: #272822;
 	clear: right;
-	float: right;
+	/*float: right;*/
 	font-weight: bold;
 	color: white;
 	display: inline-block;
+	margin-left:5px;
 	/*
 	width: 1025px;
 	height: 50px;
@@ -277,21 +288,47 @@ ul.tab li a:focus, .active
 #codespace 
 {
 	position: relative;
-	height: 450px;
+	
+	  height: 300px;
 	width: 100%;
 }
 #Loader 
 {
 	text-align:center;
 	margin-top:8%;
+
+}
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
 
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+#main-container
+{
+	    -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 1s; /* Firefox < 16 */
+        -ms-animation: fadein 1s; /* Internet Explorer */
+         -o-animation: fadein 1s; /* Opera < 12.1 */
+            animation: fadein 1s;
+}
 #firstSubmit
 {
 	
 	padding: 0;
 	border: none;
-	font-size: 32px;
+	font-size: 36px;
 	background: none;
 	text-align: center;
 
@@ -308,11 +345,34 @@ ul.tab li a:focus, .active
     box-sizing: border-box;
 	text-align: left;
 }
+#bar
+{
+	text-align:center;
+}
+#name
+{
+	padding: 6px 16px;
+    margin: 3px 0;
+	font-size: 18px;
+    box-sizing: border-box;
+	text-align: center;
+}
+#enter
+{
+	padding: 0;
+	border: none;
+	font-size: 18px;
+	background: none;
+	text-align: center;
+}
+#enter:hover
+{
+		color:white;
+}
 #logotwo
 {
 	position:absolute;
 	left:50%;
-	
 	
 	/*text-align:center;
 	font-size:48px;
@@ -328,6 +388,11 @@ ul.tab li a:focus, .active
 {
 	text-align:center;
 	font-size:48px;
+    -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 2s; /* Firefox < 16 */
+        -ms-animation: fadein 2s; /* Internet Explorer */
+         -o-animation: fadein 2s; /* Opera < 12.1 */
+            animation: fadein 2s;
 }
 #loginPrompt
 {

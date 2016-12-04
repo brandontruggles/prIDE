@@ -103,6 +103,7 @@ function File(button)
 	//setting values
 	document.getElementById('bar').style.display = 'block';
 	document.getElementById('pushed').value = button;
+	document.getElementById('name').focus();
 }
 
 function Creation()
@@ -121,8 +122,18 @@ function Creation()
 		fn.gitclone();
 	else if (num == "6")
 		fn.gitcommit();
+	else if (num == "8"){
+			if(currproject)
+			{
+				//work in progress
+				fn.newfolder();
+			}
+			else {
+				document.getElementById('consoleWindow').innerHTML += "Not Currently in a Project!";
+			}
+	}
 	else {
-			alert("huh");
+		alert("huh");
 	}
 	//reseting values
 
@@ -133,10 +144,4 @@ function reset()
 	document.getElementById('bar').style.display = 'none';
 	document.getElementById('name').value = "";
 	document.getElementById('pushed').value = "";
-
-	if(document.getElementById('error').style.display === 'block')
-	{
-		document.getElementById('error').innerHTML = '';
-		document.getElementById('error').style.display = 'none';
-	}
 }
