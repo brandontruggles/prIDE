@@ -1,274 +1,11 @@
 
 var rtu = require('./rtu.js');
+var git = require('./git.js');
+var ideFS = require('./ideFS.js');
+var fs = require('fs');
 var execFileSync = require('child_process').execFileSync;
 var spawn = require('child_process').spawn;
-var fs = require('fs');
-
-function writeout(error, stdout, stderr)
-{
-	//	fs.writeFileSync("error.txt", error);
-	fs.writeFileSync("stdout.txt", stdout);
-	fs.writeFileSync("stderr.txt", stderr);
-}
-
-function git(params, dir)
-{
-	execFileSync("git", params.split(' '), {"cwd": "workspace/" + dir});
-}
-
-function testlogin(user, pass)
-{
-	var out = execFileSync("curl", ["-u", user + ":" + pass, "https://api.github.com"]);
-
-	var obj = JSON.parse(out);
-	if (obj.message)
-		return true;
-	return false;
-}
-
-function createproj(user, pass, name)
-{
-	var out = execFileSync("curl", ["-i", "-u", user + ":" + pass, "-d", "\'{\"name\":\"" + name + "\"}\'", "-X", "POST", "https://api.github.com/user/repos"]);
-
-	var obj = JSON.parse(out);
-	return out;
-}
-
-function clone(url)
-{
-	var out = execFileSync("git", ["clone", url], {"cwd": "workspace"}).toString();
-	console.log(out);
-	return out;
-}
-
-function pull(dir)
-{
-	var out = execFileSync("git", ["pull"], {"cwd": "workspace/" + dir});
-	console.log(out.toString());
-	return out.toString();
-}
-
-function add(filename, dir)
-{
-	console.log(dir);
-	console.log(filename);
-	var out = execFileSync("git", ["add", filename], {"cwd": "workspace/" + dir});
-	try
-	{
-		;
-	}
-	catch (e)
-	{
-		console.log(e.message);
-		return e.message;
-	}
-	return out.toString();
-}
-
-function commit(message, dir)
-{
-	try
-	{
-		var out = execFileSync("git", ["commit", "-am", message], {"cwd": "workspace/" + dir});
-	}
-	catch (e)
-	{
-		console.log(e.message);
-		return e.message;
-	}
-	return out.toString();
-}
-
-function newfile(filename, dir)
-{
-	var out = execFileSync("touch", [filename], {"cwd": "workspace/" + dir});
-	return out.toString();
-}
-
-function push (dir)
-{
-	var out = execFileSync("git", ["push", "origin", "master"], {"cwd": "workspace/" + dir});
-	return out.toString();
-}
-
-function compile(dir)
-{
-	var files = getProjectFiles(dir);
-	var flies = [];
-	for (var i = 0; i < files.length; i++)
-	{
-		if (files[i].substr(files[i].length - 5) == ".java")
-		{
-			flies.push("workspace/" + dir + "/" + files[i]);
-		}
-	}
-	try
-	{
-		var ret = execFileSync("javac", flies, {stdio: ['pipe', 'pipe', 'pipe']}).toString();
-		return ret;
-	}
-	catch (error)
-	{
-		return error.message;
-	}
-}
-
-function run(prog, args, dir)
-{
-	prog = prog.replace(".java","");
-	var str = execFileSync("java", ["-cp", "workspace/" + dir, prog]).toString();
-	return str;
-}
-
-function listproj(user)
-{
-	execFileSync("curl https://api.github.com/users/" + user + "/repos", writeout);
-	out = fs.readFileSync("stdout.txt", "utf8").toString();
-	var obj = JSON.parse(out);
-
-	return obj;
-}
-
 var WebSocketServer = require('ws').Server;
-var fs = require('fs');
-var configObj = {};
-
-function configExists()
-{
-	var exists = true;
-	try
-	{
-		fs.accessSync("server.conf");
-	}
-	catch(err)
-	{
-		exists = false;
-	}
-	return exists;
-}
-
-function createConfig()
-{
-	console.log("No server.conf file detected! Generating server.conf...");
-	try
-	{
-		fs.writeFileSync("server.conf", "{\n\t\"port\": 8080,\n\t\"max_clients\": 8\n}");
-		console.log("Successfully generated server.conf!");
-	}
-	catch(err)
-	{
-		console.log("Failed to generate server.conf! Reason: " + err);
-	}
-}
-
-function readConfig()
-{
-	try
-	{
-		configObj = JSON.parse(fs.readFileSync("server.conf", "utf8").toString());
-	}
-	catch(err)
-	{
-		console.log("Failed to read server.conf! Reason: " + err);
-	}
-}
-
-function writeConfig()
-{
-	try
-	{
-		fs.writeFileSync("server.conf", JSON.stringify(configObj, null, "\t"));
-	}
-	catch(err)
-	{
-		console.log("Failed to write server.conf! Reason: " + err);
-	}
-}
-
-function createFile(fileName, dir)
-{
-	if(!fs.existsSync("workspace/" + dir + "/" + fileName))
-	{
-		fs.writeFileSync("workspace/" + dir + "/" + fileName,"public class " + fileName.replace(".java", "") + "\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}");
-	}
-	else
-	{
-		console.log("Failed to create a file with the name '" + fileName + "' within the current project because a file with that name already exists!");
-		return false;
-	}
-	return true;
-}
-
-function deleteFile(fileName)
-{
-	if(fs.existsSync("workspace/" + fileName))
-	{
-		fs.unlinkSync("workspace/" + fileName);
-	}
-	else
-	{
-		console.log("Failed to delete a file with the name '" + fileName + "' within the current project because a file with that name does not exist!");
-		return false;
-	}
-	return true;
-}
-
-function updateFile(fileName, newText, dir)
-{
-	if(fs.existsSync("workspace/" + dir + "/" + fileName))
-	{
-		fs.writeFileSync("workspace/" + dir + "/" + fileName, newText);
-	}
-	else
-	{
-		console.log("Failed to write to the file " + fileName + "!");
-		return false;
-	}
-	return true;
-}
-
-function createDirectory(dirName, dir)
-{
-	if(!fs.existsSync("workspace/" + dir + "/" + dirName))
-	{
-		fs.mkdirSync("workspace/" + dir + "/" + dirName);
-	}
-	else
-	{
-		console.log("Failed to create a directory with the name '" + dirName + "' within the current project because a file with that name already exists!");
-		return false;
-	}
-	return true;
-}
-
-function createProject(projectName)
-{
-	if(!fs.existsSync(projectName))
-	{
-		fs.mkdirSync(projectName);
-		writeConfig();
-	}
-	else
-	{
-		console.log("Failed to create a project with the name '" + projectName + "' since one already exists!");
-		return false;
-	}
-	return true;
-}
-
-function getProjectFiles(dir)
-{
-	var files = null;
-	try
-	{
-		files = fs.readdirSync("workspace/" + dir);
-	}
-	catch(err)
-	{
-		console.log("Failed to read files from the current project directory!");
-	}
-	return files;
-}
 
 function broadcastResponse(connectionList, responseString)
 {
@@ -319,7 +56,7 @@ function runServer(portNumber)
 					{
 						case "connect":
 							response.type = "Connection-Accept";
-							if(connectionList.length + 1 > configObj.max_clients)
+							if(connectionList.length + 1 > ideFS.getConfigObj().max_clients)
 							{
 								response.contents = {"Accepted": false, "Reason": "The server you tried to connect to is full."};
 								console.log("Rejected incoming connection because the server is full.");
@@ -349,9 +86,6 @@ function runServer(portNumber)
 							}
 							ws.send(JSON.stringify(response));
 							break;
-						case "git":
-							git(params, dir);
-							break;
 						case "setusername":
 							connectionList[connind].user = params;
 							break;
@@ -364,7 +98,7 @@ function runServer(portNumber)
 							var valid = false;
 							user = connectionList[connind].user;
 							pass = connectionList[connind].pass;
-							valid = testlogin(user, pass);
+							valid = git.testlogin(user, pass);
 							connectionList[connectionList.indexOf(conn)].valid = valid;
 							response.contents = {"Valid": valid};
 							break;
@@ -400,15 +134,9 @@ function runServer(portNumber)
 							}
 							ws.send(JSON.stringify(response));
 							break;
-						case "git_newproject":
-							if (connectionList[connind].valid)
-							{
-								createproj(connectionList[connind].user, connectionList[connind].pass, "workspace/" + dir);
-							}
-							break;
 						case "newfile":
 							response.type = "File-Created-Status";
-							if(!createFile(params, dir))
+							if(!ideFS.createFile(params, dir))
 							{
 								response.contents = {"Created": false, "Reason": "Failed to create a new file with the name '" + params + "'! That file already exists in the current project."};
 							}
@@ -422,7 +150,7 @@ function runServer(portNumber)
 							break;
 						case "deletefile":
 							response.type = "File-Deleted-Status";
-							if(!deleteFile(params))
+							if(!ideFS.deleteFile(params))
 							{
 								response.contents = {"Deleted": false, "Reason": "Failed to remove file '" + params + "'"};
 							}
@@ -437,7 +165,7 @@ function runServer(portNumber)
 							break;
 						case "newdir":
 							response.type = "Directory-Created-Status";
-							if(!createFile(params, dir))
+							if(!ideFS.createFile(params, dir))
 							{
 								response.contents = {"Created": false, "Reason": "Failed to create a new directory with the name '" + params + "'! That file already exists in the current project."};
 							}
@@ -459,16 +187,6 @@ function runServer(portNumber)
 								response.contents = {"Opened": false};
 							}
 							ws.send(JSON.stringify(response));
-							break;
-						case "git_clone":
-							clone(params);
-							//if (connectionList[connind].valid)
-							//	clone(params);
-							break;
-						case "git_pull":
-							pull(params, dir);
-							//if (connectionList[connind].valid)
-							//	pull(params);
 							break;
 						case "gotupdate":
 							incqstate(dir + "/" + file, nickname); // this guy is up to date
@@ -499,18 +217,29 @@ function runServer(portNumber)
 							ws.send(JSON.stringify(response));
 							rtu.readfile(nickname, dir + "/" + params, str);
 							break;
+						case "git":
+							git.runGit(params, dir);
+							break;
+						case "git_newproject":
+							if (connectionList[connind].valid)
+							{
+								git.createproj(connectionList[connind].user, connectionList[connind].pass, "workspace/" + dir);
+							}
+							break;
+						case "git_clone":
+							git.clone(params);
+							break;
+						case "git_pull":
+							git.pull(params, dir);
+							break;
 						case "git_add":
-							add(params, dir);
+							git.add(params, dir);
 							break;
 						case "git_commit":
-							commit(params, dir);
-							//if (connectionList[connind].valid)
-							//	commit(params);
+							git.commit(params, dir);
 							break;
 						case "git_push":
-							push(dir);
-							//if (connectionList[connind].valid)
-							//	push();
+							git.push(dir);
 							break;
 						default:
 							response.type = "Error";
@@ -550,11 +279,11 @@ function runServer(portNumber)
 	});
 }
 
-if(!configExists())
+if(!ideFS.configExists())
 {
-	createConfig();
+	ideFS.createConfig();
 }
 
-readConfig();
+ideFS.readConfig();
 
-runServer(configObj.port);
+runServer(ideFS.getConfigObj().port);
