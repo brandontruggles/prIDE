@@ -1,3 +1,4 @@
+var execFileSync = require('child_process').execFileSync;
 module.exports = 
 {
 	runGit:function(params, dir)
