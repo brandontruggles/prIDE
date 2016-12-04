@@ -4,32 +4,33 @@ var ideFS = require('./ideFS.js');
 var fs = require('fs');
 var WebSocketServer = require('ws').Server;
 
-function explorerCreator(files,proj, curpath)
+function explorerCreator(explorer, proj, curpath, pathing)
 {//finished i think working as intended
 	var newproj = [];
 	for(var dir in proj){
-		files.push(ideFS.getProjectFiles(curpath+proj[dir]));
+		explorer.push(ideFS.getProjectFiles(curpath+proj[dir]));
+		pathing.push(curpath+proj[dir]);
 		var count = 0;
-		for(var f in files[files.length-1])
+		for(var f in explorer[explorer.length-1])
 		{
-			if(fs.lstatSync('workspace/'+curpath+proj[dir]+'/'+files[files.length-1][f]).isDirectory())
+			if(fs.lstatSync('workspace/'+curpath+proj[dir]+'/'+explorer[explorer.length-1][f]).isDirectory())
 			{
-				newproj.push(files[files.length-1][f]);
+				newproj.push(explorer[explorer.length-1][f]);
 				//point to array with folder in it
-				files[files.length-1][f]+='/'+((+files.length+ +count));
+				explorer[explorer.length-1][f]+='/'+((+explorer.length+ +count));
 				count++;
-				//return explorerCreator(files,fs.readdirSync(curpath), curpath);//needs a string that holds current path
 			}//if directory
 
 		}//finds all directories within directory
 		if(newproj.length != 0){
-			explorerCreator(files,newproj,curpath+proj[dir]+'/');
+			explorerCreator(explorer,newproj,curpath+proj[dir]+'/', pathing);
 			newproj = [];
 		}
 		else {
-			return;
+			//return;
 		}
 	}//completed array
+	return;
 }
 function broadcastResponse(connectionList, responseString)
 {
@@ -100,17 +101,18 @@ function runServer(portNumber)
 							{
 								var proj = fs.readdirSync("workspace/");
 								var curpath = '';
-								var files;
-								explorerCreator(files= [],proj, curpath);
+								var explorer;
+								var pathing;
+								explorerCreator(explorer = [],proj, curpath, pathing=[]);
 								/*var files = [];
 								for(var dir in proj){
 									files[dir] = (ideFS.getProjectFiles(proj[dir]));
 
 								}*/
-								for(var dir in files)
-									console.log(files[dir]);
+								for(var dir in explorer)
+									console.log(explorer[dir]);
 								connectionList.push({"connection":ws,"nickname":nickname,"user":null,"pass":null,"valid":false});
-								response.contents = {"Accepted": true, "Proj":proj, "Files": files};
+								response.contents = {"Accepted": true, "Proj":proj, "Files": explorer, "paths": pathing};
 								console.log("Accepted incoming connection from user '"+ nickname  +"'.");
 							}
 							ws.send(JSON.stringify(response));

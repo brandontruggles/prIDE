@@ -106,13 +106,26 @@ function Connection()//works
 							document.getElementById('main-container').style.display = 'block' ;
 							//nickname = document.getElementById('nickname').value;
 							//document.location.href = "IDEMain.html";
+							var count = 0;
 							for(var i = 0; i < contents.Proj.length; i++)
 							{
 								projects[contents.Proj[i]] = {"hidden": true, "filelist": []};
-								projects[contents.Proj[i]].filelist = contents.Files[i];
+								projects[contents.Proj[i]].filelist = contents.Files[i+count];
+								//test
+								for(var k = 0; k <projects[contents.Proj[i]].filelist.length; k++)
+								{
+									if(projects[contents.Proj[i]].filelist[k].includes("/"))
+									{
+										count++;
+										projects[projects[contents.Proj[i]].filelist[k]] = {"hidden": true, "filelist": []};
+										projects[projects[contents.Proj[i]].filelist[k]].filelist = contents.Files[i+count];
+									}
+								}
 
 							}
-
+							for (var x = 0; x <contents.paths.length; x++)
+								console.log(contents.paths[x]);
+							ide.updateFileExplorer();
 						}
 						else
 						{
@@ -124,7 +137,7 @@ function Connection()//works
 							sock.close();
 							sock = new WebSocket("ws://45.55.218.73:"+port);*/
 						}
-						ide.updateFileExplorer(); // pre-load some files
+						// pre-load some files
 						break;
 					case "RTU-Broadcast":
 						if (res.nickname == nickname)

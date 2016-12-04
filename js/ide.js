@@ -128,18 +128,91 @@ var ide = (function ()
 		},
 		togglecollapse : function (proj)
 		{
+			if(!document.getElementById(proj).value.includes('/')){
 			setproj(proj);
+			}
+			else{
+				alert("Im in there");
+			}
 			projects[proj].hidden = !projects[proj].hidden;
+
 			this.updateFileExplorer();
 		},
 
 
-		updatefolder : function(str)
+		updatefolder : function(str,key)
+		{
+				if (projects[key].hidden)
+				{
+					if(currproject == key)
+					{
+						str += '<option id="'+key+'" value="'+key+'" style="color:red" onclick="ide.togglecollapse(\''+key+'\')">+ '+key+'</option>';
+					}
+					else {
+					str += '<option id="'+key+'" value="'+key+'" onclick="ide.togglecollapse(\''+key+'\')">+ '+key+'</option>';
+					}
+				}
+			else{
+				if(currproject == key)
+				{
+					str += '<option  id="'+key+'" value="'+key+'" style="color:red" onclick="ide.togglecollapse(\''+key+'\')">- '+key+'</option>';
+				}
+				else {
+				str += '<option  id="'+key+'" value="'+key+'" onclick="ide.togglecollapse(\''+key+'\')">- '+key+'</option>';
+				}
+				str = this.updatefiles(str,key);
+			}
+
+			return str;
+		},
+
+		updatefiles : function(str,key)
 		{
 			//
+			for (var j = 0; j < projects[key].filelist.length; j++)
+			{
+				if(projects[key].filelist[j].includes('/'))
+				{
+					str = ide.updatefolder(str,projects[key].filelist[j]);
+					if(projects[projects[key].filelist[j]].hidden){
+						continue;
+					}
+
+				}
+				else{
+				var t = -1;
+				for (var k = 0; k < tabs.length; k++)
+				{
+					if (tabs[k].projname == key && tabs[k].filename == projects[key].filelist[j])
+					{
+						t = k;
+						break;
+					}
+				}
+				if (t == -1)
+				{
+					str += '<option value="'+projects[key].filelist[j]+'" onclick="ide.opennewtab(\''+key+'\', \''+projects[key].filelist[j]+'\')">'+projects[key].filelist[j]+'</option>';
+				}
+				else
+				{
+					str += '<option value="'+projects[key].filelist[j]+'" onclick="ide.gototab('+t+')">'+projects[key].filelist[j]+'</option>';
+				}
+				}
+			}
+
+			return str;
+		},
+		updateFileExplorer : function ()//work in progress
+		{//needs to be separated into different functions
+			var filelist = document.getElementById('openproj');
+			var str = '';
 			for (var key in projects)
 			{
 				if (!projects.hasOwnProperty(key))
+				{
+					continue;
+				}
+				if(key.includes('/'))
 				{
 					continue;
 				}
@@ -162,86 +235,8 @@ var ide = (function ()
 				str += '<option  id="'+key+'" value="'+key+'" onclick="ide.togglecollapse(\''+key+'\')">- '+key+'</option>';
 				}
 				str = this.updatefiles(str,key);
-			}
-			return str;
-		},
 
-		updatefiles : function(str,key)
-		{
-			//
-			for (var j = 0; j < projects[key].filelist.length; j++)
-			{
-				var t = -1;
-				for (var k = 0; k < tabs.length; k++)
-				{
-					if (tabs[k].projname == key && tabs[k].filename == projects[key].filelist[j])
-					{
-						t = k;
-						break;
-					}
-				}
-				if (t == -1)
-				{
-					str += '<option value="'+projects[key].filelist[j]+'" onclick="ide.opennewtab(\''+key+'\', \''+projects[key].filelist[j]+'\')">'+projects[key].filelist[j]+'</option>';
-				}
-				else
-				{
-					str += '<option value="'+projects[key].filelist[j]+'" onclick="ide.gototab('+t+')">'+projects[key].filelist[j]+'</option>';
-				}
 			}
-			return str;
-		},
-		updateFileExplorer : function ()//work in progress
-		{//needs to be separated into different functions
-			var filelist = document.getElementById('openproj');
-			var str = '';
-			str = this.updatefolder(str);
-
-			/*for (var key in projects)
-			{
-				if (!projects.hasOwnProperty(key))
-				{
-					continue;
-				}
-				if (projects[key].hidden)
-				{
-					if(currproject == key)
-					{
-						str += '<option id="'+key+'" value="'+key+'" style="color:red" onclick="ide.togglecollapse(\''+key+'\')">+ '+key+'</option>';
-					}
-					else {
-					str += '<option id="'+key+'" value="'+key+'" onclick="ide.togglecollapse(\''+key+'\')">+ '+key+'</option>';
-					}
-					continue;
-				}
-				if(currproject == key)
-				{
-					str += '<option  id="'+key+'" value="'+key+'" style="color:red" onclick="ide.togglecollapse(\''+key+'\')">- '+key+'</option>';
-				}
-				else {
-				str += '<option  id="'+key+'" value="'+key+'" onclick="ide.togglecollapse(\''+key+'\')">- '+key+'</option>';
-				}
-				for (var j = 0; j < projects[key].filelist.length; j++)
-				{
-					var t = -1;
-					for (var k = 0; k < tabs.length; k++)
-					{
-						if (tabs[k].projname == key && tabs[k].filename == projects[key].filelist[j])
-						{
-							t = k;
-							break;
-						}
-					}
-					if (t == -1)
-					{
-						str += '<option value="'+projects[key].filelist[j]+'" onclick="ide.opennewtab(\''+key+'\', \''+projects[key].filelist[j]+'\')">'+projects[key].filelist[j]+'</option>';
-					}
-					else
-					{
-						str += '<option value="'+projects[key].filelist[j]+'" onclick="ide.gototab('+t+')">'+projects[key].filelist[j]+'</option>';
-					}
-				}
-			}*/
 			filelist.innerHTML = str;
 		},
 		updateTabs : function ()
