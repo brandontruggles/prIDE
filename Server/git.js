@@ -19,15 +19,29 @@ module.exports =
 	},
 	clone:function(url)
 	{
-		var out = execFileSync("git", ["clone", url], {"cwd": "workspace"}).toString();
-		console.log(out);
+		var out = "";
+		try
+		{
+			out = execFileSync("git", ["clone", url], {"cwd": "workspace"}).toString();
+		}
+		catch(e)
+		{
+			out = e.message.toString();
+		}
 		return out;
 	},	
 	pull:function(dir)
 	{
-		var out = execFileSync("git", ["pull"], {"cwd": "workspace/" + dir});
-		console.log(out.toString());
-		return out.toString();
+		var out = "";
+		try
+		{
+			out = execFileSync("git", ["pull"], {"cwd": "workspace/" + dir});
+		}
+		catch(e)
+		{
+			out = e.message.toString();
+		}
+		return out;
 	},
 	add:function(filename, dir)
 	{
