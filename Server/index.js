@@ -312,4 +312,9 @@ if(!ideFS.configExists())
 
 ideFS.readConfig();
 
+if(!ideFS.workspaceExists())
+{
+	ideFS.createWorkspace();
+}
+
 runServer(ideFS.getConfigObj().port);

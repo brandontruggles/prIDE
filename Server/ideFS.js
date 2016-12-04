@@ -55,6 +55,32 @@ module.exports =
 			console.log("Failed to write server.conf! Reason: " + err);
 		}
 	},
+	workspaceExists:function()
+	{
+		var exists = true;
+		try
+		{
+			fs.accessSync("workspace/");
+		}
+		catch(err)
+		{
+			exists = false;
+		}
+		return exists;
+	},
+	createWorkspace:function()
+	{
+		console.log("No workspace directory detected! Generating workspace directory...");
+		try
+		{
+			fs.mkdirSync("workspace/");
+			console.log("Successfully generated a new workspace directory!");
+		}
+		catch(err)
+		{
+			console.log("Failed to generate the workspace directory! Reason: " + err);
+		}
+	},
 	getProjectFiles:function(dir)
 	{
 		var files = null;
