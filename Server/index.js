@@ -208,7 +208,7 @@ function runServer(portNumber)
 							break;
 						case "openfile":
 							response.type = "File-Open-Response";
-							var files = getProjectFiles(dir);
+							var files = ideFS.getProjectFiles(dir);
 							if(files != null)
 							{
 								response.contents = {"Opened": true, "Dir": dir, "Files": files};
