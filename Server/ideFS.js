@@ -82,7 +82,7 @@ module.exports =
 	},
 	compile:function(dir)
 	{
-		var files = getProjectFiles(dir);
+		var files = this.getProjectFiles(dir);
 		var flies = [];
 		for (var i = 0; i < files.length; i++)
 		{
