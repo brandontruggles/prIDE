@@ -172,7 +172,6 @@ module.exports =
 		if(!fs.existsSync(projectName))
 		{
 			fs.mkdirSync(projectName);
-			writeConfig();
 		}
 		else
 		{
