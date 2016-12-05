@@ -232,18 +232,6 @@ var fn = (function ()
 		{
 			var win = window.open("https://github.com/login/oauth/authorize?client_id=a0529985d128d88ea4b7", "GitHub Authentication", "width=400,height=500");
 			win.focus();
-		},
-		parseGithubCode:function()
-		{
-			var hash = window.location.hash;
-			console.log(hash);
-			window.close();
-			var message =
-			{
-				"nickname": nickname,
-				"contents": "git_auth " + hash
-			};
-			sock.send(JSON.stringify(message));
 		}
 	};
 }());
