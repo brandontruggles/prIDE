@@ -110,7 +110,7 @@ module.exports =
 		});
 		//https://www.github.com/login/oauth/access_token	
 		var options = {
-		hostname: "www.github.com",
+		hostname: "github.com",
 		port: "443",
 		path: "/login/oauth/access_token",
 		method: "POST",
