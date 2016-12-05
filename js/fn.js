@@ -232,6 +232,14 @@ var fn = (function ()
 		{
 			var win = window.open("https://github.com/login/oauth/authorize?client_id=a0529985d128d88ea4b7", "GitHub Authentication", "width=400,height=500");
 			win.focus();
+		},
+		processAuth:function(code)
+		{
+			var message = 
+			{
+				"nickname": nickname,
+				"contents": "git_auth " + code
+			};
 		}
 	};
 }());
