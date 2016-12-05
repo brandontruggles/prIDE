@@ -109,7 +109,7 @@ module.exports =
 			"client_secret": "2bd05f7419968ca3cd47dd64a1eb986db30a08c"
 		});	
 		var options = {
-		hostname: "https://www.github.com",
+		hostname: "www.github.com",
 		port: "80",
 		path: "login/oauth/access_token",
 		method: "POST",
