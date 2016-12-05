@@ -107,10 +107,11 @@ module.exports =
 			"client_id": "a0529985d128d88ea4b7",
 			"client_secret": "2bd05f7419968ca3cd47dd64a1eb986db30a08c",
 			"code" : params
-		});	
+		});
+		//https://www.github.com/login/oauth/access_token	
 		var options = {
 		hostname: "www.github.com",
-		port: "80",
+		port: "443",
 		path: "/login/oauth/access_token",
 		method: "POST",
 		headers: {
