@@ -138,7 +138,7 @@ module.exports =
 
 		req.on("error", function(e)
 		{
-			console.log(e);
+			console.log(e.message);
 		});
 
 		req.write(postData);
