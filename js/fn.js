@@ -240,6 +240,7 @@ var fn = (function ()
 				"nickname": nickname,
 				"contents": "git_auth " + code
 			};
+			sock.send(JSON.stringify(message));
 		}
 	};
 }());
