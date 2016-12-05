@@ -1,6 +1,22 @@
 var execFileSync = require('child_process').execFileSync;
 module.exports = 
 {
+	generateSSHKey:function()
+	{
+		var out = "";
+		try
+		{
+			var date = new Date();
+			var utcDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+			out = execFileSync("ssh-keygen", ["-t", "rsa","-f","key_" + (utcDate.getTime()/1000) + ".rsa","-N", ""], {"cwd": "ssh_keys/"}).toString();
+		}
+		catch(e)
+		{
+			out = e.message.toString();
+		}
+		return out;
+
+	},
 	createproj:function(user, pass, name)
 	{
 		var out = execFileSync("curl", ["-i", "-u", user + ":" + pass, "-d", "\'{\"name\":\"" + name + "\"}\'", "-X", "POST", "https://api.github.com/user/repos"]);
@@ -8,21 +24,12 @@ module.exports =
 		var obj = JSON.parse(out);
 		return out;
 	},
-	testlogin:function(user, pass)
-	{
-		var out = execFileSync("curl", ["-u", user + ":" + pass, "https://api.github.com"]);
-
-		var obj = JSON.parse(out);
-		if (obj.message)
-			return true;
-		return false;
-	},
 	clone:function(url)
 	{
 		var out = "";
 		try
 		{
-			out = execFileSync("git", ["clone", url], {"cwd": "workspace"}).toString();
+			out = execFileSync("git", ["clone", url], {"cwd": "workspace/"}).toString();
 		}
 		catch(e)
 		{
@@ -69,12 +76,38 @@ module.exports =
 		}
 		return out;
 	},
-	push:function(dir)
+	checkout:function(branchName, dir)
 	{
 		var out = "";
 		try
 		{
-			out = execFileSync("git", ["push", "origin", "master"], {"cwd": "workspace/" + dir});
+			out = execFileSync("git", ["checkout", branchName], {"cwd": "workspace/" + dir});
+		}
+		catch (e)
+		{
+			out = e.message.toString();
+		}
+		return out;
+	},
+	createBranch:function(branchName, dir)
+	{
+		var out = "";
+		try
+		{
+			out = execFileSync("git", ["checkout", "-b", branchName], {"cwd": "workspace/" + dir});
+		}
+		catch (e)
+		{
+			out = e.message.toString();
+		}
+		return out;
+	},
+	push:function(remoteName, branchName, dir)
+	{
+		var out = "";
+		try
+		{
+			out = execFileSync("git", ["push", remoteName, branchName], {"cwd": "workspace/" + dir});
 		}
 		catch (e)
 		{

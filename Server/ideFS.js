@@ -81,6 +81,33 @@ module.exports =
 			console.log("Failed to generate the workspace directory! Reason: " + err);
 		}
 	},
+	keyDirExists:function()
+	{
+		var exists = true;
+		try
+		{
+			fs.accessSync("ssh_keys/");
+		}
+		catch(err)
+		{
+			exists = false;
+		}
+		return exists;
+	},
+	createKeyDir:function()
+	{
+		console.log("No SSH key directory detected! Generating SSH key directory...");
+		try
+		{
+			fs.mkdirSync("ssh_keys/");
+			console.log("Successfully generated a new SSH key directory!");
+		}
+		catch(err)
+		{
+			console.log("Failed to generate the SSH key directory! Reason: " + err);
+		}
+
+	},
 	getProjectFiles:function(dir)
 	{
 		var files = null;

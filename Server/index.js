@@ -117,23 +117,7 @@ function runServer(portNumber)
 							}
 							ws.send(JSON.stringify(response));
 							break;
-						case "setusername":
-							connectionList[connind].user = params;
-							break;
-						case "setpassword":
-							connectionList[connind].pass = params;
-							break;
-						case "testcredentials":
-							response.type = "Valid-Credentials-Status";
-							var user, pass;
-							var valid = false;
-							user = connectionList[connind].user;
-							pass = connectionList[connind].pass;
-							valid = git.testlogin(user, pass);
-							connectionList[connectionList.indexOf(conn)].valid = valid;
-							response.contents = {"Valid": valid};
-							break;
-						case "compile":
+							case "compile":
 							response.type = "Compile-Running-Status";
 							console.log("Received command to compile!");
 							response.contents = {"output": ideFS.compile(dir)};
@@ -318,5 +302,12 @@ if(!ideFS.workspaceExists())
 {
 	ideFS.createWorkspace();
 }
+
+if(!ideFS.keyDirExists())
+{
+	ideFS.createKeyDir();
+}
+
+console.log(git.generateSSHKey());
 
 runServer(ideFS.getConfigObj().port);

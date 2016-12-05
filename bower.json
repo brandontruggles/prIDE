@@ -3,7 +3,7 @@
   "homepage": "https://github.com/brandonrninefive/prIDE",
   "authors": [
     "Brandon Ruggles <brandonrninefive@gmail.com>",
-    "John Moreira ",
+    "John Moreira",
     "Alec Brion",
     "Jarel Pellew"
   ],
@@ -23,7 +23,8 @@
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+    "Server/*"
   ],
   "dependencies":{
     "ace-builds": "1.2.6"
