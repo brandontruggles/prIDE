@@ -105,7 +105,7 @@ module.exports =
 	{
 		var postData = querystring.stringify({
 			"client_id": "a0529985d128d88ea4b7",
-			"client_secret": "2bd05f7419968ca3cd47dd64a1eb986db30a08c",
+			"client_secret": "a2bd05f7419968ca3cd47dd64a1eb986db30a08c",
 			"code" : params
 		});
 		//https://www.github.com/login/oauth/access_token	
