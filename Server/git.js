@@ -1,6 +1,6 @@
 var execFileSync = require('child_process').execFileSync;
 var querystring = require('querystring');
-var http = require('http');
+var http = require('https');
 module.exports = 
 {	
 	createproj:function(user, pass, name)
@@ -121,7 +121,7 @@ module.exports =
 			}
 		};
 		
-		var req = http.request(options, function(res)
+		var req = https.request(options, function(res)
 		{
 			console.log("Begin of server response:");
 			console.log("Status: " + res.statusCode);
