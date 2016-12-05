@@ -128,7 +128,7 @@ module.exports =
 			console.log("Headers: " + JSON.stringify(res.headers));
 			res.on('data', function(chunk)
 			{
-				console.log(chunk);	
+				console.log(chunk.toJSON());	
 			});	
 			res.on('end', function()
 			{
