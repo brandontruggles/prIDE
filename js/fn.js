@@ -233,12 +233,13 @@ var fn = (function ()
 			var win = window.open("https://github.com/login/oauth/authorize?client_id=a0529985d128d88ea4b7", "GitHub Authentication", "width=400,height=500");
 			win.focus();
 		},
-		processAuth:function(code)
+		processAuth:function(params)
 		{
+			params = params.replace("?code=","");
 			var message = 
 			{
 				"nickname": nickname,
-				"contents": "git_auth " + code
+				"contents": "git_auth " + params
 			};
 			sock.send(JSON.stringify(message));
 		}

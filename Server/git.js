@@ -1,4 +1,5 @@
 var execFileSync = require('child_process').execFileSync;
+var http = require('http');
 module.exports = 
 {	
 	createproj:function(user, pass, name)
@@ -98,5 +99,44 @@ module.exports =
 			out = e.message.toString();
 		}
 		return out;
+	},
+	requestToken:function(params)
+	{
+		var postData = querystring.stringify({
+			"code" : params,
+			"client_id": "a0529985d128d88ea4b7",
+			"client_secret": "2bd05f7419968ca3cd47dd64a1eb986db30a08c"
+		});	
+		var options = {
+		hostname: "https://www.github.com",
+		port: "80",
+		path: "login/oauth/access_token",
+		method: "POST",
+		headers: {
+			"Content-Type": "application/x-www-form-urlencoded",
+			"Content-Length": Buffer.byteLength(postData)
+			}
+		};
+		
+		var req = http.request(options, function(res)
+		{
+			res.setEncoding('utf8');
+			res.on('data', function(chunk)
+			{
+				console.log(chunk);	
+			});	
+			res.on('end', function()
+			{
+				console.log("reached end of data.");
+			});
+		});
+
+		req.on("error", function(e)
+		{
+			console.log(e);
+		});
+
+		req.write(postData);
+		req.end();
 	}
 };

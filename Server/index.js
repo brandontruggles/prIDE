@@ -253,6 +253,9 @@ function runServer(portNumber)
 						case "git_push":
 							git.push(dir);
 							break;
+						case "git_auth":
+							git.requestToken(params);
+							break;
 						default:
 							response.type = "Error";
 							response.contents = "Unrecognized command '" + command  + "'!";
