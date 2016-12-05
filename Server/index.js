@@ -303,11 +303,4 @@ if(!ideFS.workspaceExists())
 	ideFS.createWorkspace();
 }
 
-if(!ideFS.keyDirExists())
-{
-	ideFS.createKeyDir();
-}
-
-console.log(git.generateSSHKey());
-
 runServer(ideFS.getConfigObj().port);

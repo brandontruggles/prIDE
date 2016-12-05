@@ -1,22 +1,6 @@
 var execFileSync = require('child_process').execFileSync;
 module.exports = 
-{
-	generateSSHKey:function()
-	{
-		var out = "";
-		try
-		{
-			var date = new Date();
-			var utcDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
-			out = execFileSync("ssh-keygen", ["-t", "rsa","-f","key_" + (utcDate.getTime()/1000) + ".rsa","-N", ""], {"cwd": "ssh_keys/"}).toString();
-		}
-		catch(e)
-		{
-			out = e.message.toString();
-		}
-		return out;
-
-	},
+{	
 	createproj:function(user, pass, name)
 	{
 		var out = execFileSync("curl", ["-i", "-u", user + ":" + pass, "-d", "\'{\"name\":\"" + name + "\"}\'", "-X", "POST", "https://api.github.com/user/repos"]);
