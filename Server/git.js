@@ -114,6 +114,7 @@ module.exports =
 		path: "login/oauth/access_token",
 		method: "POST",
 		headers: {
+			"Accept": "application/json",
 			"Content-Type": "application/x-www-form-urlencoded",
 			"Content-Length": Buffer.byteLength(postData)
 			}
@@ -121,7 +122,6 @@ module.exports =
 		
 		var req = http.request(options, function(res)
 		{
-			res.setEncoding('utf8');
 			res.on('data', function(chunk)
 			{
 				console.log(chunk);	
