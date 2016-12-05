@@ -1,5 +1,4 @@
 Server/node_modules
-Server/ssh_keys
 Server/server.conf
 test/
 bower_components/
