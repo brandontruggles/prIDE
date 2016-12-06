@@ -384,7 +384,17 @@ ul.tab li a:focus, .active
 	height:49px;*/
 	/*margin-top:10px;*/
 }
-
+@media screen and (min-width: 850px) {
+	#logotwo
+	{
+		float: right;
+	}
+	
+	#glaadbtn
+	{
+		display: none;
+	}
+}
 #logo
 {
 	text-align:center;
