@@ -230,7 +230,7 @@ var fn = (function ()
 		},
 		gitauth:function()
 		{
-			var win = window.open("https://github.com/login/oauth/authorize?client_id=a0529985d128d88ea4b7", "GitHub Authentication", "width=400,height=500");
+			var win = window.open("https://github.com/login/oauth/authorize?client_id=a0529985d128d88ea4b7&scope=repo", "GitHub Authentication", "width=400,height=500");
 			win.focus();
 		},
 		processAuth:function(params)
