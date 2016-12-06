@@ -240,7 +240,7 @@ function runServer(portNumber)
 							rtu.readfile(nickname, dir + "/" + params, str);
 							break;
 						case "git_init":
-							git.init(dir);
+							console.log(git.init(dir));
 							break;
 						case "git_addremote":
 							git.addremote(dir, params);
