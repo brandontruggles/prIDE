@@ -3,7 +3,7 @@ var querystring = require('querystring');
 var https = require('https');
 module.exports = 
 {	
-	init:function()
+	init:function(dir)
 	{
 		var out = "";
 		try
