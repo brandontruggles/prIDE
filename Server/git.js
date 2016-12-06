@@ -146,7 +146,7 @@ module.exports =
 		
 		var req = https.request(options, function(res)
 		{
-			console.log("Begin of server response:");
+			//console.log("Begin of server response:");
 			//console.log("Status: " + res.statusCode);
 			//console.log("Headers: " + JSON.stringify(res.headers));
 			res.on('data', function(chunk)

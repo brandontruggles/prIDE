@@ -187,13 +187,25 @@ var fn = (function ()
 			};
 			sock.send(JSON.stringify(message));
 		},
+		gitinit : function()
+		{
+			var message = 
+			{
+				"nickname": nickname,
+				"dir": currproject,
+				"contents": "git_init"
+			};
+			sock.send(JSON.stringify(message));
+		}
 		gitpush : function ()
 		{
+			var url = "";
+			var branchName = "";
 			var message =
 			{
 				"nickname": nickname,
 				"dir": currproject,
-				"contents": "git_push"
+				"contents": "git_push " + url + " " + branchName
 			};
 			sock.send(JSON.stringify(message));
 		},
