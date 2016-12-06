@@ -64,7 +64,7 @@ var ide = (function ()
 			var message =
 			{
 				"nickname": nickname,
-				"dir": proj,
+				"dir": projects[proj].path,
 				"contents": "readfile " + file
 			};
 			sock.send(JSON.stringify(message));
@@ -128,12 +128,7 @@ var ide = (function ()
 		},
 		togglecollapse : function (proj)
 		{
-			if(!document.getElementById(proj).value.includes('/')){
 			setproj(proj);
-			}
-			else{
-				alert("Im in there");
-			}
 			projects[proj].hidden = !projects[proj].hidden;
 
 			this.updateFileExplorer();
@@ -148,6 +143,10 @@ var ide = (function ()
 					{
 						str += '<option id="'+key+'" value="'+key+'" style="color:red" onclick="ide.togglecollapse(\''+key+'\')">+ '+key+'</option>';
 					}
+					else if (currfolder == key)
+					{
+						str += '<option id="'+key+'" value="'+key+'" style="color:yellow" onclick="ide.togglecollapse(\''+key+'\')">+ '+key+'</option>';
+					}
 					else {
 					str += '<option id="'+key+'" value="'+key+'" onclick="ide.togglecollapse(\''+key+'\')">+ '+key+'</option>';
 					}
@@ -156,6 +155,10 @@ var ide = (function ()
 				if(currproject == key)
 				{
 					str += '<option  id="'+key+'" value="'+key+'" style="color:red" onclick="ide.togglecollapse(\''+key+'\')">- '+key+'</option>';
+				}
+				else if (currfolder == key)
+				{
+					str += '<option  id="'+key+'" value="'+key+'" style="color:yellow" onclick="ide.togglecollapse(\''+key+'\')">- '+key+'</option>';
 				}
 				else {
 				str += '<option  id="'+key+'" value="'+key+'" onclick="ide.togglecollapse(\''+key+'\')">- '+key+'</option>';

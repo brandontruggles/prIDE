@@ -10,15 +10,13 @@ function explorerCreator(explorer, proj, curpath, pathing)
 	for(var dir in proj){
 		explorer.push(ideFS.getProjectFiles(curpath+proj[dir]));
 		pathing.push(curpath+proj[dir]);
-		var count = 0;
 		for(var f in explorer[explorer.length-1])
 		{
 			if(fs.lstatSync('workspace/'+curpath+proj[dir]+'/'+explorer[explorer.length-1][f]).isDirectory())
 			{
 				newproj.push(explorer[explorer.length-1][f]);
 				//point to array with folder in it
-				explorer[explorer.length-1][f]+='/'+((+explorer.length+ +count));
-				count++;
+				explorer[explorer.length-1][f]+='/';
 			}//if directory
 
 		}//finds all directories within directory
@@ -35,7 +33,7 @@ function explorerCreator(explorer, proj, curpath, pathing)
 
 function storeGitToken(token, connectionList, connind)
 {
-	connectionList[connind].token = token;	
+	connectionList[connind].token = token;
 }
 
 function broadcastResponse(connectionList, responseString)

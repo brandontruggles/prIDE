@@ -5,6 +5,7 @@ var currproject;
 var currfolder = "";
 var name;
 var editor;
+var paths = {};
 var projects = {};
 
 function Connection()//works
@@ -77,7 +78,8 @@ function Connection()//works
 			};
 			sock.onclose = function()
 			{
-				document.getElementById('consoleWindow').innerHTML += "Lost Connection to Server!";
+				if(document.getElementById('Loader').style.display != 'block')
+					document.getElementById('consoleWindow').innerHTML += "Lost Connection to Server!";
 			};
 			sock.onopen = function()
 			{
@@ -106,36 +108,21 @@ function Connection()//works
 							document.getElementById('main-container').style.display = 'block' ;
 							//nickname = document.getElementById('nickname').value;
 							//document.location.href = "IDEMain.html";
+
 							var count = 0;
 							for(var i = 0; i < contents.Proj.length; i++)
 							{
-								projects[contents.Proj[i]] = {"hidden": true, "filelist": []};
-								projects[contents.Proj[i]].filelist = contents.Files[i+count];
-								//test
-								for(var k = 0; k <projects[contents.Proj[i]].filelist.length; k++)
-								{
-									if(projects[contents.Proj[i]].filelist[k].includes("/"))
-									{
-										count++;
-										projects[projects[contents.Proj[i]].filelist[k]] = {"hidden": true, "filelist": []};
-										projects[projects[contents.Proj[i]].filelist[k]].filelist = contents.Files[i+count];
-									}
-								}
-
+								projects[contents.Proj[i]] = {"hidden": true, "filelist": [], "path": contents.paths[i+count]};
+								projects[contents.Proj[i]].filelist = contents.Files[count];
+								count = solutionexplorer(count,contents.Proj[i], contents);
+								count++;
+								console.log(count);
 							}
-							for (var x = 0; x <contents.paths.length; x++)
-								console.log(contents.paths[x]);
 							ide.updateFileExplorer();
 						}
 						else
 						{
-							document.getElementById('error').style.display = 'block';
-							document.getElementById('error').innerHTML = '<span id="reason">'+contents.Reason+'</span>';
-							//alert(contents.Reason);
-							/*port = prompt("Enter port");
-							nickname = prompt("Enter nickname");
-							sock.close();
-							sock = new WebSocket("ws://45.55.218.73:"+port);*/
+							document.getElementById('wrong_port').innerHTML = contents.Reason;
 						}
 						// pre-load some files
 						break;
@@ -165,7 +152,7 @@ function Connection()//works
 					case "Project-Created-Status":
 						if(contents.Created)
 						{
-							projects[name] = {"hidden": false, "filelist": []};
+							projects[name] = {"hidden": false, "filelist": [], "path": ''};//work in progress
 							ide.updateFileExplorer();
 							setproj(name);
 
@@ -238,7 +225,7 @@ function Connection()//works
 					case "File-Open-Response":
 						if(contents.Opened)
 						{
-							projects[contents.Dir] = {"hidden": false, "filelist": contents.Files};
+							projects[contents.Dir] = {"hidden": false, "filelist": contents.Files, "path": ''};//work in progress
 							ide.updateFileExplorer();
 						}
 						else
@@ -277,7 +264,14 @@ function Connection()//works
 
 function setproj(name)
 {
-	currproject = name;
+	if(document.getElementById(name).value.includes('/'))
+	{
+		currfolder = name;
+	}
+
+	else {
+		currproject = name;
+	}
 }
 
 function setfile(name)
@@ -288,4 +282,25 @@ function setfile(name)
 function Update(e)
 {
 	rtu.Update(e);
+}
+
+function solutionexplorer(count,projname,contents)
+{//move this
+	for( var k = 0; k < projects[projname].filelist.length; k++)
+	{
+		if(projects[projname].filelist[k].includes("/"))
+		{
+			count++;
+			projects[projects[projname].filelist[k]] = {"hidden": true, "filelist": [],"path": contents.paths[count]};
+			projects[projects[projname].filelist[k]].filelist = contents.Files[count];
+			count = solutionexplorer(count,projects[projname].filelist[k], contents);
+
+
+		}
+		else {
+			console.log(projects[projname].filelist[k]+' not a folder');
+		}
+	}
+console.log("Currently in "+ projname);
+	return count;
 }
