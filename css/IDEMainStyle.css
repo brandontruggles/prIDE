@@ -419,7 +419,9 @@ ul.tab li a:focus, .active
 {
 	position: fixed;
 	bottom:10px;
-	right:0px:
+	right:50%;
 	height:20px;
-	width:100px;
+	width:150px;
+	color:black;
+	
 }
