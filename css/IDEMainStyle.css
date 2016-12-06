@@ -372,8 +372,10 @@ ul.tab li a:focus, .active
 }
 #logotwo
 {
-	position:relative;
-	left:20%;
+	/*position:relative;
+	left:20%;*/
+	float: right;
+	margin-right: 20%
 	
 	/*text-align:center;
 	font-size:48px;
