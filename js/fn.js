@@ -196,7 +196,19 @@ var fn = (function ()
 				"contents": "git_init"
 			};
 			sock.send(JSON.stringify(message));
-		}
+		},
+		gitaddremote: function()
+		{
+			var remoteName = "";
+			var url = "";
+			var message = 
+			{
+				"nickname": nickname,
+				"dir": currproject,
+				"contents": "git_addremote " + remoteName + " " + url
+			};
+			sock.send(JSON.stringify(message));	
+		},
 		gitpush : function ()
 		{
 			var url = "";
