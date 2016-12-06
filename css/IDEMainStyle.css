@@ -169,6 +169,7 @@ body
 {
 	background-color: #272822;
 	display: hide;
+	color: white;
 	resize: none;
 }
 #chat
