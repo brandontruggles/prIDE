@@ -34,7 +34,14 @@ module.exports =
 		var out = "";
 		try
 		{
-			out = execFileSync("git", ["clone", url], {"cwd": "workspace/"}).toString();
+			if(token != null)
+			{
+				out = execFileSync("git", ["clone", "https://" + token + "@github.com:" + url], {"cwd": "workspace/"}).toString();
+			}
+			else
+			{
+				out = execFileSync("git", ["clone", url], {"cwd": "workspace/"}).toString();	
+			}
 		}
 		catch(e)
 		{
