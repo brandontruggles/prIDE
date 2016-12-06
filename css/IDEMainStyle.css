@@ -175,7 +175,7 @@ body
 #chat
 {
 	background-color: #272822;	
-		font-weight: bold;
+	font-weight: bold;
 	color: white;
 }
 #codespace
@@ -372,7 +372,7 @@ ul.tab li a:focus, .active
 }
 #logotwo
 {
-	position:absolute;
+	position:relative;
 	left:50%;
 	
 	/*text-align:center;
@@ -394,16 +394,13 @@ ul.tab li a:focus, .active
         -ms-animation: fadein 2s; /* Internet Explorer */
          -o-animation: fadein 2s; /* Opera < 12.1 */
             animation: fadein 2s;
+		display: block;
+		margin: 0 auto;
+		width:200px;
+		height:86px;
+		margin-top:10px;
 }
 #loginPrompt
 {
 	font-size:18px;
-}
-#logo
-{
-	display: block;
-	margin: 0 auto;
-	width:200px;
-	height:86px;
-	margin-top:10px;
 }
