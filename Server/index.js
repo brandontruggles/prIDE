@@ -32,6 +32,12 @@ function explorerCreator(explorer, proj, curpath, pathing)
 	}//completed array
 	return;
 }
+
+function storeGitToken(token, connectionList, connind)
+{
+	connectionList[connind].token = token;	
+}
+
 function broadcastResponse(connectionList, responseString)
 {
 	connectionList.forEach(function(conn)
@@ -63,7 +69,7 @@ function runServer(portNumber)
 				var change = json_message.change;
 				var command = contents.split(' ')[0].toLowerCase();
 				var spaceIndex = contents.indexOf(' ');
-				var params = contents.substring(spaceIndex + 1);
+				var params = contents.substring(spaceIndex + 1);				var token = null;
 
 				var found = false;
 				connectionList.forEach(function(conn)
@@ -72,6 +78,7 @@ function runServer(portNumber)
 					{
 						found = true;
 						connind = connectionList.indexOf(conn);
+						token = connectionList[connind].token;
 					}
 				});
 
@@ -111,7 +118,7 @@ function runServer(portNumber)
 								}*/
 								for(var dir in explorer)
 									console.log(explorer[dir]);
-								connectionList.push({"connection":ws,"nickname":nickname,"user":null,"pass":null,"valid":false});
+								connectionList.push({"connection":ws,"nickname":nickname,"token":null});
 								response.contents = {"Accepted": true, "Proj":proj, "Files": explorer, "paths": pathing};
 								console.log("Accepted incoming connection from user '"+ nickname  +"'.");
 							}
@@ -232,14 +239,13 @@ function runServer(portNumber)
 							ws.send(JSON.stringify(response));
 							rtu.readfile(nickname, dir + "/" + params, str);
 							break;
-						case "git_newproject":
-							if (connectionList[connind].valid)
-							{
-								git.createproj(connectionList[connind].user, connectionList[connind].pass, "workspace/" + dir);
-							}
+						case "git_init":
+							git.init(dir);
 							break;
+						case "git_addremote":
+							git.addremote(dir, params);
 						case "git_clone":
-							git.clone(params);
+							git.clone(params, token);
 							break;
 						case "git_pull":
 							git.pull(params, dir);
@@ -251,10 +257,10 @@ function runServer(portNumber)
 							git.commit(params, dir);
 							break;
 						case "git_push":
-							git.push(dir);
+							git.push(dir, token, params);
 							break;
 						case "git_auth":
-							git.requestToken(params);
+							git.requestToken(params,storeGitToken, connectionList, connind);
 							break;
 						default:
 							response.type = "Error";

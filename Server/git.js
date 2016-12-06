@@ -3,14 +3,33 @@ var querystring = require('querystring');
 var https = require('https');
 module.exports = 
 {	
-	createproj:function(user, pass, name)
+	init:function()
 	{
-		var out = execFileSync("curl", ["-i", "-u", user + ":" + pass, "-d", "\'{\"name\":\"" + name + "\"}\'", "-X", "POST", "https://api.github.com/user/repos"]);
-
-		var obj = JSON.parse(out);
+		var out = "";
+		try
+		{
+			out = execFileSync("git", ["init"], {"cwd": "workspace/" + dir});
+		}
+		catch(e)
+		{
+			out = e.message.toString();
+		}
 		return out;
 	},
-	clone:function(url)
+	addremote:function(dir, remoteName, url)
+	{
+		var out = "";
+		try
+		{
+			out = execFileSync("git", ["remote", "add", remoteName, url], {"cwd": "workspace/"}).toString();
+		}
+		catch(e)
+		{
+			out = e.message.toString();
+		}
+		return out;
+	},
+	clone:function(dir, url, token)
 	{
 		var out = "";
 		try
@@ -88,12 +107,15 @@ module.exports =
 		}
 		return out;
 	},
-	push:function(remoteName, branchName, dir)
+	push:function(dir, token, remoteName, branchName)
 	{
 		var out = "";
 		try
 		{
-			out = execFileSync("git", ["push", remoteName, branchName], {"cwd": "workspace/" + dir});
+			if(token != null)
+			{
+				out = execFileSync("git", ["push", "https://" + token + "@github.com:" + remoteName, branchName], {"cwd": "workspace/" + dir});
+			}
 		}
 		catch (e)
 		{
@@ -101,7 +123,7 @@ module.exports =
 		}
 		return out;
 	},
-	requestToken:function(params)
+	requestToken:function(params, callback, connectionList, connind)
 	{
 		var postData = querystring.stringify({
 			"client_id": "a0529985d128d88ea4b7",
@@ -109,6 +131,7 @@ module.exports =
 			"code" : params
 		});
 		//https://www.github.com/login/oauth/access_token	
+		//git push https://token@github.com/brandonrninefive/prIDE.git master
 		var options = {
 		hostname: "github.com",
 		port: "443",
@@ -124,15 +147,19 @@ module.exports =
 		var req = https.request(options, function(res)
 		{
 			console.log("Begin of server response:");
-			console.log("Status: " + res.statusCode);
-			console.log("Headers: " + JSON.stringify(res.headers));
+			//console.log("Status: " + res.statusCode);
+			//console.log("Headers: " + JSON.stringify(res.headers));
 			res.on('data', function(chunk)
 			{
-				console.log(chunk.toString());	
+				if(res.statusCode == 200)
+				{
+					token = JSON.parse(chunk.toString()).access_token;
+					callback(token, connectionList, connind);
+				}
 			});	
 			res.on('end', function()
 			{
-				console.log("reached end of data.");
+				//console.log("reached end of data.");
 			});
 		});
 
