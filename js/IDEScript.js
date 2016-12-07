@@ -154,8 +154,8 @@ function reset()
 
 
 $('#changebackground').click(function() {
-	$('body').css({
-		'background-image: url("background2.jpg");'
-	});
+	$('body').css(
+		'background-image', 'url("background2.jpg")'
+	);
 });
 
