@@ -190,3 +190,38 @@ $('#changebackground').click(function() {
 	}
 	backnum = backnum + 1;
 });
+
+$('#changebackground2').click(function() {
+	if(backnum == 0)
+	{
+		$('body').css(
+			'background-image', 'url("../image/background2.jpg")'
+		);
+	}
+	if(backnum == 1)
+	{
+		$('body').css(
+			'background-image', 'url("../image/background3.jpg")'
+		);
+	}
+	if(backnum == 2)
+	{
+		$('body').css(
+			'background-image', 'url("../image/background4.jpg")'
+		);
+	}
+	if(backnum == 3)
+	{
+		$('body').css(
+			'background-image', 'url("../image/background5.jpg")'
+		);
+	}
+	if(backnum == 4)
+	{
+		$('body').css(
+			'background-image', 'url("../image/background.jpg")'
+		);
+		backnum = -1;
+	}
+	backnum = backnum + 1;
+});
