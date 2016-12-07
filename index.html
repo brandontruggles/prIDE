@@ -102,7 +102,9 @@
 				  <textarea placeholder="Chat Window" id="chatWindow" rows="21" cols="25" style="width: 100%;" readonly></textarea>
 				  <input placeholder="Chat here" id="chat" onkeydown="fn.chatkeydown(this)" style="width: 100%" />
 			  </div>
-
+			<input type="text" id="name" placeholder="File/Project Name" onkeydown="fn.chatkeydown(this)">
+				<br>
+				<input type="button" value="Enter" id="enter" onclick="Creation()">
 		  </div>
 		  <br>
 			 <div>
@@ -112,9 +114,9 @@
 			<input type="text" placeholder="Commands here" id="commandArea" onkeydown="fn.chatkeydown(this)" style="width: 99%" />
 			</div>
 			 <div id="bar" style="display:none">
-				<input type="text" id="name" placeholder="File/Project Name" onkeydown="fn.chatkeydown(this)">
+				<!--<input type="text" id="name" placeholder="File/Project Name" onkeydown="fn.chatkeydown(this)">
 				<br>
-				<input type="button" value="Enter" id="enter" onclick="Creation()">
+				<input type="button" value="Enter" id="enter" onclick="Creation()">-->
 				<input type="hidden" id="pushed">
 			 </div>
 		  <!--<button onclick="openConsole(event)" class="consolebtn" id="console">Console </button> -->
