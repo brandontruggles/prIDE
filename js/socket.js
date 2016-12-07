@@ -145,7 +145,7 @@ function Connection()//works
 					case "Project-Created-Status":
 						if(contents.Created)
 						{
-							projects[name] = {"hidden": false, "filelist": [], "path": ''};//work in progress
+							projects[name] = {"hidden": false, "filelist": [], "path": name};//work in progress
 							setproj(name);
 							ide.updateFileExplorer();
 
