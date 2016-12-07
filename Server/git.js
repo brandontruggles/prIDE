@@ -21,7 +21,7 @@ module.exports =
 		var out = "";
 		try
 		{
-			out = execFileSync("git", ["remote", "add", remoteName, url], {"cwd": "workspace/"}).toString();
+			out = execFileSync("git", ["remote", "add", remoteName, url], {"cwd": "workspace/" + dir}).toString();
 		}
 		catch(e)
 		{
