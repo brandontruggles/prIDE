@@ -1,5 +1,6 @@
 /* When the user clicks on the button,
    toggle between hiding and showing the dropdown content */
+  var backNum = 0;
 function showNewDropdown(id)
 {
 	closedropdowns();
@@ -154,8 +155,25 @@ function reset()
 
 
 $('#changebackground').click(function() {
-	$('body').css(
-		'background-image', 'url("../image/background2.jpg")'
-	);
+	if(backnum = 0)
+	{
+		$('body').css(
+			'background-image', 'url("../image/background2.jpg")'
+		);
+	}
+	if(backnum = 1)
+	{
+		$('body').css(
+			'background-image', 'url("../image/background3.jpg")'
+		);
+	}
+	if(backnum = 2)
+	{
+		$('body').css(
+			'background-image', 'url("../image/background.jpg")'
+		);
+		backnum = -1;
+	}
+	backnum++
 });
 
