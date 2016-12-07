@@ -248,6 +248,7 @@ function runServer(portNumber)
 							break;
 						case "git_addremote":
 							console.log(git.addremote(dir, params.split(' ')[0], params.split(' ')[1]).toString());
+							break;
 						case "git_clone":
 							console.log(git.clone(params, token).toString());
 							break;
