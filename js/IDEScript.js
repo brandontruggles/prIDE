@@ -151,3 +151,9 @@ function reset()
 	document.getElementById('name').value = "";
 	document.getElementById('pushed').value = "";
 }
+
+$('#changeback').click(function() {
+    $('body').css({
+        'background-image: url("background2.jpg");'
+    });
+});
