@@ -80,7 +80,12 @@
 			 <div id="error" style="display:none">
 			 </div>
 		  	<br>
-
+				<div id="bar" style="display:none">
+				<input type="text" id="name" placeholder="File/Project Name" onkeydown="fn.chatkeydown(this)">
+				<br>
+				<input type="button" value="Enter" id="enter" onclick="Creation()">
+				<input type="hidden" id="pushed">
+			 </div>
 		  	<ul class="tab" id="tabs">
 				  <li><div class="tablinks"></div></li>
 		  	</ul>
@@ -104,12 +109,7 @@
 			  </div>
 
 		  </div>
-				<div id="bar" style="display:none">
-				<input type="text" id="name" placeholder="File/Project Name" onkeydown="fn.chatkeydown(this)">
-				<br>
-				<input type="button" value="Enter" id="enter" onclick="Creation()">
-				<input type="hidden" id="pushed">
-			 </div>
+
 		  <br>
 			 <div>
 			<textarea placeholder="Console" id="consoleWindow" rows="12" cols="140" style="width: 99%;" readonly></textarea>
