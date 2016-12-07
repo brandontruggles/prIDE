@@ -348,7 +348,7 @@ ul.tab li a:focus, .active
 }
 #bar
 {
-	text-align:center;
+	
 }
 #name
 {
@@ -356,7 +356,6 @@ ul.tab li a:focus, .active
     margin: 3px 0;
 	font-size: 18px;
     box-sizing: border-box;
-	text-align: center;
 }
 #enter
 {
@@ -364,7 +363,6 @@ ul.tab li a:focus, .active
 	border: none;
 	font-size: 18px;
 	background: none;
-	text-align: center;
 }
 #enter:hover
 {
