@@ -152,7 +152,7 @@ function reset()
 	document.getElementById('pushed').value = "";
 }
 
-$('#changeback').click(function() {
+$('#changebackground').click(function() {
     $('body').css({
         'background-image: url("background2.jpg");'
     });
