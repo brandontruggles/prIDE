@@ -13,6 +13,7 @@ function Connection()//works
 	editor = ace.edit("codespace");
 	editor.setTheme("ace/theme/monokai");
 	editor.getSession().setMode("ace/mode/java");
+	editor.setReadOnly(true);
 	editor.setKeyboardHandler("ace/keyboard/vim");
 	editor.on("change", Update);
 	editor.$blockScrolling = Infinity;
@@ -106,18 +107,10 @@ function Connection()//works
 							document.getElementById('Loader').style.display = 'none';
 							//document.getElementById('Loader').innerHTML = "";
 							document.getElementById('main-container').style.display = 'block' ;
-							//nickname = document.getElementById('nickname').value;
-							//document.location.href = "IDEMain.html";
 
-							var count = 0;
-							for(var i = 0; i < contents.Proj.length; i++)
-							{
-								projects[contents.Proj[i]] = {"hidden": true, "filelist": [], "path": contents.paths[i+count]};
-								projects[contents.Proj[i]].filelist = contents.Files[count];
-								count = solutionexplorer(count,contents.Proj[i], contents);
-								count++;
-								console.log(count);
-							}
+							createSolution(contents);
+
+
 							ide.updateFileExplorer();
 						}
 						else
@@ -153,8 +146,8 @@ function Connection()//works
 						if(contents.Created)
 						{
 							projects[name] = {"hidden": false, "filelist": [], "path": ''};//work in progress
-							ide.updateFileExplorer();
 							setproj(name);
+							ide.updateFileExplorer();
 
 							reset();
 
@@ -169,7 +162,7 @@ function Connection()//works
 						if(contents.Created)
 						{
 							currfile = name;
-							projects[currproject].filelist.push(currfile);
+							projects[currfolder].filelist.push(currfile);
 
 							if (currfile.endsWith(".java"))
 							{
@@ -212,8 +205,10 @@ function Connection()//works
 					case "Directory-Created-Status":
 						if(contents.Created)
 						{
-							var fileList = document.getElementById('openproj');
-							fileList.innerHTML += '<li><a href="#">'+name+'/</a></li>';
+							createSolution(contents);
+							setproj(name);
+							console.log(name);
+							ide.updateFileExplorer();
 
 							reset();
 						}
@@ -264,13 +259,23 @@ function Connection()//works
 
 function setproj(name)
 {
-	if(document.getElementById(name).value.includes('/'))
+	if(document.getElementById(name))
 	{
-		currfolder = name;
-	}
+		if(document.getElementById(name).value.includes('/'))
+		{
+			currfolder = name;
+		}
 
+		else {
+			currfolder = name;
+			currproject = name;
+		}
+
+	}
 	else {
+		currfolder = name;
 		currproject = name;
+
 	}
 }
 
@@ -284,6 +289,21 @@ function Update(e)
 	rtu.Update(e);
 }
 
+
+function createSolution(contents)
+{
+	projects = {};
+	var count = 0;
+	for(var i = 0; i < contents.Proj.length; i++)
+	{
+		projects[contents.Proj[i]] = {"hidden": true, "filelist": [], "path": contents.paths[count]};
+		projects[contents.Proj[i]].filelist = contents.Files[count];
+		count = solutionexplorer(count,contents.Proj[i], contents);
+		count++;
+	}
+
+}
+
 function solutionexplorer(count,projname,contents)
 {//move this
 	for( var k = 0; k < projects[projname].filelist.length; k++)
@@ -291,16 +311,14 @@ function solutionexplorer(count,projname,contents)
 		if(projects[projname].filelist[k].includes("/"))
 		{
 			count++;
-			projects[projects[projname].filelist[k]] = {"hidden": true, "filelist": [],"path": contents.paths[count]};
-			projects[projects[projname].filelist[k]].filelist = contents.Files[count];
-			count = solutionexplorer(count,projects[projname].filelist[k], contents);
-
-
+			projects[contents.paths[count]] = {"hidden": true, "filelist": [],"path": contents.paths[count]};
+			projects[contents.paths[count]].filelist = contents.Files[count];
+			count = solutionexplorer(count,contents.paths[count], contents);
 		}
 		else {
-			console.log(projects[projname].filelist[k]+' not a folder');
+
 		}
 	}
-console.log("Currently in "+ projname);
+
 	return count;
 }

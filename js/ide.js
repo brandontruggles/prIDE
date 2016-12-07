@@ -176,8 +176,8 @@ var ide = (function ()
 			{
 				if(projects[key].filelist[j].includes('/'))
 				{
-					str = ide.updatefolder(str,projects[key].filelist[j]);
-					if(projects[projects[key].filelist[j]].hidden){
+					str = ide.updatefolder(str, projects[key].path+'/'+projects[key].filelist[j].slice(0,-1));
+					if(projects[projects[key].path+'/'+projects[key].filelist[j].slice(0,-1)].hidden){
 						continue;
 					}
 

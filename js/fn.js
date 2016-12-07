@@ -40,7 +40,7 @@ var fn = (function ()
 			var message =
 			{
 				"nickname": nickname,
-				"dir": currproject,
+				"dir": projects[currfolder].path,
 				"contents": "compile"
 			};
 			sock.send(JSON.stringify(message));
@@ -59,12 +59,13 @@ var fn = (function ()
 		newfolder : function()
 		{//work in progress
 			console.log(currproject);
-			var name = document.getElementById('name').value;
+			name = document.getElementById('name').value;
 			var message =
 			{
 				"nickname": nickname,
-				"contents": "newproject "+currproject+"/"+currfolder+"/"+name
+				"contents": "newproject "+projects[currfolder].path+"/"+name
 			};
+
 			sock.send(JSON.stringify(message));
 
 		},
@@ -74,7 +75,7 @@ var fn = (function ()
 			var message =
 			{
 				"nickname": nickname,
-				"dir": currproject,
+				"dir": projects[currfolder].path,
 				"contents": "newfile "+name
 			};
 			sock.send(JSON.stringify(message));
@@ -157,13 +158,15 @@ var fn = (function ()
 		},
 		newdir : function ()
 		{
-			var name = prompt("name new directory");
+			name = document.getElementById('name').value;
 			var message =
 			{
 				"nickname": nickname,
-				"dir": currproject,
-				"contents": "newdir "+ name
+				"contents": "newdir "+projects[currfolder].path+"/"+name
 			};
+
+
+			setproj(name);
 			sock.send(JSON.stringify(message));
 		},
 		getfiles : function (dir)
@@ -189,7 +192,7 @@ var fn = (function ()
 		},
 		gitinit : function()
 		{
-			var message = 
+			var message =
 			{
 				"nickname": nickname,
 				"dir": currproject,
@@ -201,13 +204,13 @@ var fn = (function ()
 		{
 			var remoteName = "";
 			var url = "";
-			var message = 
+			var message =
 			{
 				"nickname": nickname,
 				"dir": currproject,
 				"contents": "git_addremote " + remoteName + " " + url
 			};
-			sock.send(JSON.stringify(message));	
+			sock.send(JSON.stringify(message));
 		},
 		gitpush : function ()
 		{
@@ -260,7 +263,7 @@ var fn = (function ()
 		processAuth:function(params)
 		{
 			params = params.replace("?code=","");
-			var message = 
+			var message =
 			{
 				"nickname": nickname,
 				"contents": "git_auth " + params

@@ -1,7 +1,7 @@
 var fs = require('fs');
 var execFileSync = require('child_process').execFileSync;
 var configObj = {};
-module.exports = 
+module.exports =
 {
 	getConfigObj:function()
 	{
@@ -120,7 +120,7 @@ module.exports =
 			console.log("Failed to read files from the current project directory!");
 		}
 		return files;
-	},      	
+	},
 	newfile:function(filename, dir)
 	{
 		var out = "";
@@ -208,15 +208,15 @@ module.exports =
 		}
 		return true;
 	},
-	createDirectory:function(dirName, dir)
+	createDirectory:function(dir)
 	{
-		if(!fs.existsSync("workspace/" + dir + "/" + dirName))
+		if(!fs.existsSync("workspace/" + dir))
 		{
-			fs.mkdirSync("workspace/" + dir + "/" + dirName);
+			fs.mkdirSync("workspace/" + dir);
 		}
 		else
 		{
-			console.log("Failed to create a directory with the name '" + dirName + "' within the current project because a file with that name already exists!");
+			console.log("Failed to create a directory with the name '" + dir + "' within the current project because a file with that name already exists!");
 			return false;
 		}
 		return true;

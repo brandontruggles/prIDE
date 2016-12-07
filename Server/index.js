@@ -109,13 +109,8 @@ function runServer(portNumber)
 								var explorer;
 								var pathing;
 								explorerCreator(explorer = [],proj, curpath, pathing=[]);
-								/*var files = [];
-								for(var dir in proj){
-									files[dir] = (ideFS.getProjectFiles(proj[dir]));
-
-								}*/
-								for(var dir in explorer)
-									console.log(explorer[dir]);
+								for(var k in explorer)
+									console.log(explorer[k]);
 								connectionList.push({"connection":ws,"nickname":nickname,"token":null});
 								response.contents = {"Accepted": true, "Proj":proj, "Files": explorer, "paths": pathing};
 								console.log("Accepted incoming connection from user '"+ nickname  +"'.");
@@ -150,7 +145,8 @@ function runServer(portNumber)
 							}
 							else
 							{
-								response.contents = {"Created": true};
+									response.contents = {"Created": true, "Folder": false};
+
 							}
 							ws.send(JSON.stringify(response));
 							break;
@@ -185,13 +181,23 @@ function runServer(portNumber)
 							break;
 						case "newdir":
 							response.type = "Directory-Created-Status";
-							if(!ideFS.createFile(params, dir))
+							if(!ideFS.createDirectory(params))
 							{
 								response.contents = {"Created": false, "Reason": "Failed to create a new directory with the name '" + params + "'! That file already exists in the current project."};
 							}
 							else
 							{
-								response.contents = {"Created": true};
+									var proj = fs.readdirSync("workspace/");
+									var curpath = '';
+									var explorer;
+									var pathing;
+									explorerCreator(explorer = [],proj, curpath, pathing=[]);
+									for(var k in explorer)
+										console.log(explorer[k]);
+									for(var k in pathing)
+										console.log(pathing[k]);
+									response.contents = {"Created": true, "Proj":proj, "Files": explorer, "paths": pathing};
+
 							}
 							ws.send(JSON.stringify(response));
 							break;

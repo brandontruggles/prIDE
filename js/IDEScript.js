@@ -126,7 +126,7 @@ function Creation()
 			if(currproject)
 			{
 				//work in progress
-				fn.newfolder();
+				fn.newdir();
 			}
 			else {
 				document.getElementById('consoleWindow').innerHTML += "Not Currently in a Project!";
