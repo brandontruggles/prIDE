@@ -202,8 +202,8 @@ var fn = (function ()
 		},
 		gitaddremote: function()
 		{
-			var remoteName = "";
-			var url = "";
+			var remoteName = document.getElementById('name').value;
+			var url = document.getElementById('url').value;
 			var message =
 			{
 				"nickname": nickname,
@@ -214,8 +214,8 @@ var fn = (function ()
 		},
 		gitpush : function ()
 		{
-			var url = "";
-			var branchName = "";
+			var url = document.getElementById('url').value;
+			var branchName = document.getElementById('name').value;
 			var message =
 			{
 				"nickname": nickname,

@@ -103,6 +103,9 @@ function File(button)
 	//setting values
 	document.getElementById('bar').style.display = 'block';
 	document.getElementById('pushed').value = button;
+
+	if(button == "7" || button == "10")
+		document.getElementById('url').style.display = 'block';
 	document.getElementById('name').focus();
 }
 
@@ -122,10 +125,13 @@ function Creation()
 		fn.gitclone();
 	else if (num == "6")
 		fn.gitcommit();
+	else if (num == "7") {
+		fn.gitpush();
+		document.getElementById('url').style.display = 'none';
+	}
 	else if (num == "8"){
 			if(currproject)
 			{
-				//work in progress
 				fn.newdir();
 			}
 			else {

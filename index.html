@@ -21,7 +21,7 @@
 			<br><br>
 			<br><span id="wrong_port"></span>
 			<a href="https://github.com/brandonrninefive/prIDE" id="githublink">prIDE on GitHub</a>
-				
+
 		</div>
 
 		<div class="main-container" id="main-container" style="display:none">
@@ -58,10 +58,10 @@
 					<a href="#" id = "4" onclick="File(this.id)">Clone</a>
 					<a href="#" id = "5" onclick="fn.gitadd()">Add</a>
 					<a href="#" id = "6" onclick="File(this.id)">Commit</a>
-					<a href="#" id = "7" onclick="fn.gitpush()">Push</a>
+					<a href="#" id = "7" onclick="File(this.id)">Push</a>
 					<a href="#" id = "8" onclick="fn.gitauth()">Login</a>
 					<a href="#" id = "9" onclick="fn.gitinit()">Init</a>
-					<a href="#" id = "10" onclick="fn.gitaddremote()">Add Remote</a>
+					<a href="#" id = "10" onclick="File(this.id)">Add Remote</a>
 				</div>
 			</div>
 
@@ -70,7 +70,7 @@
 			<a href="http://45.55.218.73/">
 			<img id="logotwo" src="image/pridefull3.png" alt="Logo2">
 			</a>
-			
+
 			<br>
 			<!--<div id="bar" style="display:none">
 				<input type="text" id="name" placeholder="Name">
@@ -82,9 +82,10 @@
 		  	<br>
 				<div id="bar" style="display:none">
 				<input type="text" id="name" placeholder="File/Project Name" onkeydown="fn.chatkeydown(this)">
+				<input type="text" id="url" placeholder="Url" onkeydown="fn.chatkeydown(this)" style="display:none">
 				<input type="button" value="Enter" id="enter" onclick="Creation()">
-				<br>
 				<input type="hidden" id="pushed">
+				<br>
 			 </div>
 		  	<ul class="tab" id="tabs">
 				  <li><div class="tablinks"></div></li>
