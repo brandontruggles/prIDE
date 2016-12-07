@@ -172,6 +172,18 @@ $('#changebackground').click(function() {
 		$('body').css(
 			'background-image', 'url("../image/background.jpg")'
 		);
+	}
+	if(backnum == 3)
+	{
+		$('body').css(
+			'background-image', 'url("dreamcodes/bg_images/color/c12.jpg") no-repeat center top'
+		);
+	}
+	if(backnum == 4)
+	{
+		$('body').css(
+			'background-image', 'url("dreamcodes/bg_images/color/c7.jpg") no-repeat center top'
+		);
 		backnum = -1;
 	}
 	backnum = backnum + 1;
