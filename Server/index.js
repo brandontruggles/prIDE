@@ -244,24 +244,52 @@ function runServer(portNumber)
 							rtu.readfile(nickname, dir + "/" + params, str);
 							break;
 						case "git_init":
-							console.log(git.init(dir).toString());
+							response.type = "Git";
+							var initial = git.init(dir).toString();
+							response.contents = {"Message": initial};
+							ws.send(JSON.stringify(response));
+							console.log(initial);
 							break;
 						case "git_addremote":
-							console.log(git.addremote(dir, params.split(' ')[0], params.split(' ')[1]).toString());
+							response.type = "Git";
+							var remote = git.addremote(dir, params.split(' ')[0], params.split(' ')[1]).toString();
+							response.contents = {"Message": remote};
+							ws.send(JSON.stringify(response));
+							console.log(remote);
 							break;
 						case "git_clone":
-							console.log(git.clone(params, token).toString());
+							response.type = "Git";
+							var clone = git.clone(params,token).toString();
+							response.contents = {"Message": clone};
+							ws.send(JSON.stringify(response));
+							console.log(clone);
 							break;
 						case "git_pull":
-							console.log(git.pull(params, dir).toString());
+							response.type = "Git";
+							var pull = git.pull(params, dir).toString();
+							response.contents = {"Message": pull};
+							ws.send(JSON.stringify(response));
+							console.log(pull);
 							break;
 						case "git_add":
-							console.log(git.add(params, dir).toString());
+							response.type = "Git";
+							var add = git.add(params, dir).toString();
+							response.contents = {"Message": add};
+							ws.send(JSON.stringify(response));
+							console.log(add);
 							break;
 						case "git_commit":
-							console.log(git.commit(params, dir).toString());
+							response.type = "Git";
+							var commit = git.commit(params, dir).toString();
+							response.contents = {"Message": commit};
+							ws.send(JSON.stringify(response));
+							console.log(commit);
 							break;
 						case "git_push":
+							response.type = "Git";//needs to be sent
+							var push = git.push(dir, token, params.split(' ')[0], params.split(' ')[1]).toString();
+							response.contents = {"Message": push};
+							ws.send(JSON.stringify(response));
 							console.log(git.push(dir, token, params.split(' ')[0], params.split(' ')[1]).toString());
 							break;
 						case "git_auth":

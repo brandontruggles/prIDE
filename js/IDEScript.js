@@ -140,7 +140,9 @@ function Creation()
 			}
 	}
 	else if(num == "10")
+	{
 		fn.gitaddremote();
+	}
 	else {
 		alert("huh");
 	}
@@ -153,6 +155,8 @@ function reset()
 	document.getElementById('bar').style.display = 'none';
 	document.getElementById('name').value = "";
 	document.getElementById('pushed').value = "";
+	document.getElementById('url').value = "";
+	document.getElementById('url').style.display = 'none';
 }
 
 

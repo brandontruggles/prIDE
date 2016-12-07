@@ -154,7 +154,7 @@ function Connection()//works
 						}
 						else
 						{
-							document.getElementById('consoleWindow').innerHTML += contents;
+							document.getElementById('consoleWindow').innerHTML += contents.Reason;
 						}
 						break;
 					case "File-Created-Status":
@@ -205,6 +205,7 @@ function Connection()//works
 					case "Directory-Created-Status":
 						if(contents.Created)
 						{
+							//adding to project
 							createSolution(contents);
 							setproj(name);
 							console.log(name);
@@ -214,7 +215,7 @@ function Connection()//works
 						}
 						else
 						{
-							document.getElementById('consoleWindow').innerHTML += contents;
+							document.getElementById('consoleWindow').innerHTML += contents.Reason;
 						}
 						break;
 					case "File-Open-Response":
@@ -245,6 +246,26 @@ function Connection()//works
 						ide.updateFileExplorer(); // now it switches to tab instead of opening a new one
 						ide.gotolasttab();
 						break;
+					case "Git":
+						document.getElementById('consoleWindow').innerHTML += contents.Message;
+						reset();
+						break;
+
+					case "Git-Clone-Made":
+						document.getElementById('consoleWindow').innerHTML += contents.Message;
+						reset();
+						break;
+					case "Git-Commit-Created":
+						document.getElementById('consoleWindow').innerHTML += contents.Message;
+						reset();
+						break;
+					case "Git-Push":
+						document.getElementById('consoleWindow').innerHTML += contents.Message;
+						reset();
+						break;
+					case "Git-pull":
+						document.getElementById('consoleWindow').innerHTML += contents.Message;
+						reset();
 					default:
 						break;
 				}//switch
@@ -292,12 +313,12 @@ function Update(e)
 
 function createSolution(contents)
 {
-	projects = {};
 	var count = 0;
 	for(var i = 0; i < contents.Proj.length; i++)
 	{
-		projects[contents.Proj[i]] = {"hidden": true, "filelist": [], "path": contents.paths[count]};
-		projects[contents.Proj[i]].filelist = contents.Files[count];
+			projects[contents.Proj[i]] = {"hidden": true, "filelist": [], "path": contents.paths[count]};
+			projects[contents.Proj[i]].filelist = contents.Files[count];
+
 		count = solutionexplorer(count,contents.Proj[i], contents);
 		count++;
 	}
