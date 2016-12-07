@@ -194,6 +194,7 @@ var fn = (function ()
 		},
 		gitinit : function()
 		{
+			console.log(currfolder);
 			var message =
 			{
 				"nickname": nickname,
