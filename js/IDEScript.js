@@ -170,19 +170,19 @@ $('#changebackground').click(function() {
 	if(backnum == 2)
 	{
 		$('body').css(
-			'background-image', 'url("../image/background.jpg")'
+			'background-image', 'url("../image/background4.jpg")'
 		);
 	}
 	if(backnum == 3)
 	{
 		$('body').css(
-			'background-image', 'url("dreamcodes/bg_images/color/c12.jpg") no-repeat center top'
+			'background-image', 'url("../image/background5.jpg")'
 		);
 	}
 	if(backnum == 4)
 	{
 		$('body').css(
-			'background-image', 'url("dreamcodes/bg_images/color/c7.jpg") no-repeat center top'
+			'background-image', 'url("../image/background.jpg") no-repeat center top'
 		);
 		backnum = -1;
 	}
