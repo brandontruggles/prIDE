@@ -262,7 +262,7 @@ function runServer(portNumber)
 							console.log(git.commit(params, dir).toString());
 							break;
 						case "git_push":
-							console.log(git.push(dir, token, params).toString());
+							console.log(git.push(dir, token, params.split(' ')[0], params.split(' ')[1]).toString());
 							break;
 						case "git_auth":
 							git.requestToken(params,storeGitToken, connectionList, connind);
