@@ -244,24 +244,24 @@ function runServer(portNumber)
 							rtu.readfile(nickname, dir + "/" + params, str);
 							break;
 						case "git_init":
-							console.log(git.init(dir));
+							console.log(git.init(dir).toString());
 							break;
 						case "git_addremote":
-							git.addremote(dir, params);
+							console.log(git.addremote(dir, params.split(' ')[0], params.split(' ')[1]).toString());
 						case "git_clone":
-							git.clone(params, token);
+							console.log(git.clone(params, token).toString());
 							break;
 						case "git_pull":
-							git.pull(params, dir);
+							console.log(git.pull(params, dir).toString());
 							break;
 						case "git_add":
-							git.add(params, dir);
+							console.log(git.add(params, dir).toString());
 							break;
 						case "git_commit":
-							git.commit(params, dir);
+							console.log(git.commit(params, dir).toString());
 							break;
 						case "git_push":
-							git.push(dir, token, params);
+							console.log(git.push(dir, token, params).toString());
 							break;
 						case "git_auth":
 							git.requestToken(params,storeGitToken, connectionList, connind);
