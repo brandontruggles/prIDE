@@ -197,7 +197,7 @@ var fn = (function ()
 			var message =
 			{
 				"nickname": nickname,
-				"dir": currproject,
+				"dir": projects[currfolder].path,
 				"contents": "git_init"
 			};
 			sock.send(JSON.stringify(message));
@@ -209,7 +209,7 @@ var fn = (function ()
 			var message =
 			{
 				"nickname": nickname,
-				"dir": currproject,
+				"dir": projects[currfolder].path,
 				"contents": "git_addremote " + remoteName + " " + url
 			};
 			sock.send(JSON.stringify(message));
@@ -221,7 +221,7 @@ var fn = (function ()
 			var message =
 			{
 				"nickname": nickname,
-				"dir": currproject,
+				"dir": projects[currfolder].path,
 				"contents": "git_push " + url + " " + branchName
 			};
 			sock.send(JSON.stringify(message));
@@ -232,7 +232,7 @@ var fn = (function ()
 			var message =
 			{
 				"nickname": nickname,
-				"dir": currproject,
+				"dir": projects[currfolder].path,
 				"contents": "git_commit " + msg
 			};
 			sock.send(JSON.stringify(message));
@@ -242,7 +242,7 @@ var fn = (function ()
 			var message =
 			{
 				"nickname": nickname,
-				"dir": currproject,
+				"dir": projects[currfolder].path,
 				"contents": "git_add " + currfile
 			};
 			sock.send(JSON.stringify(message));
