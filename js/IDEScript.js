@@ -174,6 +174,6 @@ $('#changebackground').click(function() {
 		);
 		backnum = -1;
 	}
-	backnum++
+	backnum = backnum + 1;
 });
 
