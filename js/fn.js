@@ -37,6 +37,7 @@ var fn = (function ()
 		compile : function ()
 		{
 			//Update();
+			console.log(currfolder);
 			var message =
 			{
 				"nickname": nickname,
@@ -181,11 +182,12 @@ var fn = (function ()
 		},
 		run : function ()
 		{
+			console.log(currproject);
 			var message =
 			{
 				"nickname": nickname,
 				"file": currfile,
-				"dir": currproject,
+				"dir": projects[currfolder].path,
 				"contents": "run"
 			};
 			sock.send(JSON.stringify(message));
