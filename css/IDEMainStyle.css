@@ -429,10 +429,11 @@ ul.tab li a:focus, .active
 	bottom:10px;
 	left:10px;
 	height:20px;
-	width:150px;
+	width:100px;
 	color:black;
 	border: none;
 	background: none;
+	font-size:15px;
 }
 #changebackground:hover
 {
