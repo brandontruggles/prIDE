@@ -153,6 +153,7 @@ function reset()
 }
 
 function back()
+{
 $('#changebackground').click(function() {
     $('body').css({
         'background-image: url("background2.jpg");'
