@@ -152,8 +152,10 @@ function reset()
 	document.getElementById('pushed').value = "";
 }
 
+function back()
 $('#changebackground').click(function() {
     $('body').css({
         'background-image: url("background2.jpg");'
     });
 });
+}
