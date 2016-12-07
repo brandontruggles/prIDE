@@ -182,7 +182,7 @@ $('#changebackground').click(function() {
 	if(backnum == 4)
 	{
 		$('body').css(
-			'background-image', 'url("../image/background.jpg") no-repeat center top'
+			'background-image', 'url("../image/background.jpg")'
 		);
 		backnum = -1;
 	}
