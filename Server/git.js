@@ -121,7 +121,7 @@ module.exports =
 		{
 			if(token != null)
 			{
-				out = execFileSync("git", ["push", "https://" + token + "@github.com:" + remoteName, branchName], {"cwd": "workspace/" + dir});
+				out = execFileSync("git", ["push", "https://" + token + "@" + remoteName.replace("https://",""), branchName], {"cwd": "workspace/" + dir});
 			}
 		}
 		catch (e)
