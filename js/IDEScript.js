@@ -155,19 +155,19 @@ function reset()
 
 
 $('#changebackground').click(function() {
-	if(backnum = 0)
+	if(backnum == 0)
 	{
 		$('body').css(
 			'background-image', 'url("../image/background2.jpg")'
 		);
 	}
-	if(backnum = 1)
+	if(backnum == 1)
 	{
 		$('body').css(
 			'background-image', 'url("../image/background3.jpg")'
 		);
 	}
-	if(backnum = 2)
+	if(backnum == 2)
 	{
 		$('body').css(
 			'background-image', 'url("../image/background.jpg")'
