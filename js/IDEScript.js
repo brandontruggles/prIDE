@@ -1,6 +1,6 @@
 /* When the user clicks on the button,
    toggle between hiding and showing the dropdown content */
-  var backNum = 0;
+  var backnum = 0;
 function showNewDropdown(id)
 {
 	closedropdowns();
