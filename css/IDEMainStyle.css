@@ -422,6 +422,10 @@ ul.tab li a:focus, .active
 	color:black;
 	
 }
+#githublink:hover
+{
+	color:white;
+}
 #changebackground
 {
 
