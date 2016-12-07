@@ -139,6 +139,8 @@ function Creation()
 				document.getElementById('consoleWindow').innerHTML += "Not Currently in a Project!";
 			}
 	}
+	else if(num == "10")
+		fn.gitaddremote();
 	else {
 		alert("huh");
 	}
@@ -188,4 +190,3 @@ $('#changebackground').click(function() {
 	}
 	backnum = backnum + 1;
 });
-
