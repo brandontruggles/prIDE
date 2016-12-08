@@ -295,8 +295,8 @@ function runServer(portNumber)
 							break;
 						case "git_push":
 							response.type = "Git";//needs to be sent
-							var globalname = git.setName(connectionList[connind.name],dir).toString();
-							var globalemail = git.setEmail(connectionList[connind.email],dir).toString();
+							var globalname = git.setName(connectionList[connind].name,dir).toString();
+							var globalemail = git.setEmail(connectionList[connind].email,dir).toString();
 							console.log(connind.name);
 							console.log(connind.email);
 							console.log(globalname);
