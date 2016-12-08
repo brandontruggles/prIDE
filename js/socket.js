@@ -94,7 +94,6 @@ function Connection()//works
 			sock.onmessage = function(response)
 			{
 				var res = JSON.parse(response.data);
-				console.log(res.type);
 				var contents = res.contents;
 				switch(res.type)
 				{
@@ -254,7 +253,7 @@ function Connection()//works
 						break;
 					case "Git-auth":
 						console.log(contents.Message);
-						document.getElementById("bbtn").onclick = showNewDropdown('gitdd');
+						document.getElementById("bbtn").onclick = function(){showNewDropdown('gitdd');};
 						console.log('Authentication complete');
 						break;
 					default:
