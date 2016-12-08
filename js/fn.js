@@ -153,7 +153,7 @@ var fn = (function ()
 					Connection();
 				else if (tag == "chat")
 					this.chat();
-				else if (tag == "name")
+				else if (tag == "name" || tag == "url")
 					Creation();
 			}
 		},
