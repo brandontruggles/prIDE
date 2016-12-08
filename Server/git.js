@@ -230,6 +230,7 @@ module.exports =
 			//console.log("Headers: " + JSON.stringify(res.headers));
 			res.on('data', function(chunk)
 			{
+				console.log("Status Code: "res.statusCode);
 				if(res.statusCode == 200)
 				{
 					callback(token, JSON.parse(chunk.toString()), connectionList, connind);
