@@ -241,6 +241,7 @@ function Connection()//works
 						break;
 					case "Read-File":
 						/* vvv kinda jank to do this here vvv */
+						editor.setReadOnly(false);
 						ide.addtab(contents.proj, contents.file, contents.body, "ace/mode/java");
 						ide.updateTabs();
 						ide.updateFileExplorer(); // now it switches to tab instead of opening a new one
