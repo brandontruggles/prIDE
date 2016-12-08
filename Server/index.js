@@ -35,6 +35,9 @@ function storeGitInfo(infoObj, connectionList, connind)
 {
 	connectionList[connind].name = infoObj.name;
 	connectionList[connind].email = infoObj.email;
+
+	console.log("Username: " + infoObj.name);
+	console.log("Email: "+ infoObj.email);
 }
 
 function storeGitToken(token, connectionList, connind)
