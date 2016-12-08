@@ -251,22 +251,9 @@ function Connection()//works
 						document.getElementById('consoleWindow').innerHTML += contents.Message;
 						reset();
 						break;
-
-					case "Git-Clone-Made":
-						document.getElementById('consoleWindow').innerHTML += contents.Message;
-						reset();
-						break;
-					case "Git-Commit-Created":
-						document.getElementById('consoleWindow').innerHTML += contents.Message;
-						reset();
-						break;
-					case "Git-Push":
-						document.getElementById('consoleWindow').innerHTML += contents.Message;
-						reset();
-						break;
-					case "Git-pull":
-						document.getElementById('consoleWindow').innerHTML += contents.Message;
-						reset();
+					case "Git-auth":
+						document.getElementById("bbtn").onclick = showNewDropdown('gitdd');
+						console.log('Authentication complete');
 					default:
 						break;
 				}//switch
