@@ -208,20 +208,17 @@ module.exports =
 	requestUserInfo:function(token, callback, connectionList, connind)
 	{
 		console.log(token);
-		var getData = querystring.stringify({
-			"access_token": token
-		});
 		//https://www.github.com/login/oauth/access_token
 		//git push https://token@github.com/brandonrninefive/prIDE.git master
 		var options = {
 		hostname: "api.github.com",
 		port: "443",
-		path: "/user",
+		path: "/user?access_token="+token,
 		method: "GET",
-		headers: {
+/*		headers: {
 			"Accept": "application/json",
 			"Content-Length": Buffer.byteLength(getData)
-			}
+		}*/
 		};
 
 		var req = https.request(options, function(res)
@@ -250,7 +247,7 @@ module.exports =
 			console.log(e.message);
 		});
 
-		req.write(getData);
+		req.write();
 		req.end();
 	}
 };
