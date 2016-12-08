@@ -297,6 +297,8 @@ function runServer(portNumber)
 							response.type = "Git";//needs to be sent
 							var globalname = git.setName(connectionList[connind.name],dir).toString();
 							var globalemail = git.setEmail(connectionList[connind.email],dir).toString();
+							console.log(globalname);
+							console.log(globalemail);
 							var push = git.push(dir, token, params.split(' ')[0], params.split(' ')[1]).toString();
 							response.contents = {"Message": globalname + "\n" + globalemail + "\n" + push};
 							ws.send(JSON.stringify(response));
