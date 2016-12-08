@@ -252,6 +252,7 @@ function Connection()//works
 						reset();
 						break;
 					case "Git-auth":
+						console.log(contents.Message);
 						document.getElementById("bbtn").onclick = showNewDropdown('gitdd');
 						console.log('Authentication complete');
 					default:

@@ -309,6 +309,7 @@ function runServer(portNumber)
 						case "git_auth":
 							response.type = "Git-auth";
 							git.requestToken(params,storeGitToken, connectionList, connind);
+							response.contents = {"Message": "Authentication complete"};
 							ws.send(JSON.stringify(response));
 							break;
 						default:
