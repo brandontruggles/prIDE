@@ -94,6 +94,7 @@ function Connection()//works
 			sock.onmessage = function(response)
 			{
 				var res = JSON.parse(response.data);
+				console.log(res.type);
 				var contents = res.contents;
 				switch(res.type)
 				{
