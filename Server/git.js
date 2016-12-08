@@ -1,8 +1,8 @@
 var execFileSync = require('child_process').execFileSync;
 var querystring = require('querystring');
 var https = require('https');
-module.exports = 
-{	
+module.exports =
+{
 	init:function(dir)
 	{
 		var out = "";
@@ -40,7 +40,7 @@ module.exports =
 			}
 			else
 			{
-				out = execFileSync("git", ["clone", url], {"cwd": "workspace/"}).toString();	
+				out = execFileSync("git", ["clone", url], {"cwd": "workspace/"}).toString();
 			}
 		}
 		catch(e)
@@ -48,7 +48,7 @@ module.exports =
 			out = e.message.toString();
 		}
 		return out;
-	},	
+	},
 	pull:function(dir)
 	{
 		var out = "";
@@ -93,8 +93,8 @@ module.exports =
 		var out = "";
 		try
 		{
-			out = execFileSync("git" ["config", "--global", "user.name", name], {"cwd: workspace/" + dir});
-		}	
+			out = execFileSync("git" ["config", "--global", "user.name", name], {"cwd": "workspace/" + dir});
+		}
 		catch(e)
 		{
 			out = e.message.toString();
@@ -163,7 +163,7 @@ module.exports =
 			"client_secret": "a2bd05f7419968ca3cd47dd64a1eb986db30a08c",
 			"code" : params
 		});
-		//https://www.github.com/login/oauth/access_token	
+		//https://www.github.com/login/oauth/access_token
 		//git push https://token@github.com/brandonrninefive/prIDE.git master
 		var options = {
 		hostname: "github.com",
@@ -176,7 +176,7 @@ module.exports =
 			"Content-Length": Buffer.byteLength(postData)
 			}
 		};
-		
+
 		var req = https.request(options, function(res)
 		{
 			//console.log("Begin of server response:");
@@ -189,7 +189,7 @@ module.exports =
 					token = JSON.parse(chunk.toString()).access_token;
 					callback(token, connectionList, connind);
 				}
-			});	
+			});
 			res.on('end', function()
 			{
 				//console.log("reached end of data.");
@@ -209,7 +209,7 @@ module.exports =
 		var getData = querystring.stringify({
 			"access_token": token
 		});
-		//https://www.github.com/login/oauth/access_token	
+		//https://www.github.com/login/oauth/access_token
 		//git push https://token@github.com/brandonrninefive/prIDE.git master
 		var options = {
 		hostname: "api.github.com",
@@ -222,7 +222,7 @@ module.exports =
 			"Content-Length": Buffer.byteLength(postData)
 			}
 		};
-		
+
 		var req = https.request(options, function(res)
 		{
 			//console.log("Begin of server response:");
@@ -236,7 +236,7 @@ module.exports =
 					//token = JSON.parse(chunk.toString()).access_token;
 					//callback(token, connectionList, connind);
 				}
-			});	
+			});
 			res.on('end', function()
 			{
 				//console.log("reached end of data.");
