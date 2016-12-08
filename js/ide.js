@@ -173,7 +173,6 @@ var ide = (function ()
 
 		updatefiles : function(str,key,l)
 		{
-			l+='&emsp;';
 			//
 			for (var j = 0; j < projects[key].filelist.length; j++)
 			{
@@ -198,11 +197,11 @@ var ide = (function ()
 				}
 				if (t == -1)
 				{
-					str += '<option value="'+projects[key].filelist[j]+'" onclick="ide.opennewtab(\''+key+'\', \''+projects[key].filelist[j]+'\')">'+l+projects[key].filelist[j]+'</option>';
+					str += '<option value="'+projects[key].filelist[j]+'" onclick="ide.opennewtab(\''+key+'\', \''+projects[key].filelist[j]+'\')">&emsp;'+l+projects[key].filelist[j]+'</option>';
 				}
 				else
 				{
-					str += '<option value="'+projects[key].filelist[j]+'" onclick="ide.gototab('+t+')">'+l+projects[key].filelist[j]+'</option>';
+					str += '<option value="'+projects[key].filelist[j]+'" onclick="ide.gototab('+t+')">&emsp;'+l+projects[key].filelist[j]+'</option>';
 				}
 				}
 			}

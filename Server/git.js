@@ -214,7 +214,7 @@ module.exports =
 		hostname: "api.github.com",
 		port: "443",
 		path: "/user?access_token="+token,
-		method: "GET",
+		method: "GET"
 /*		headers: {
 			"Accept": "application/json",
 			"Content-Length": Buffer.byteLength(getData)
@@ -228,7 +228,8 @@ module.exports =
 			//console.log("Headers: " + JSON.stringify(res.headers));
 			res.on('data', function(chunk)
 			{
-				console.log("Status Code: "+res.statusCode);
+				console.log("Status Code: " + res.statusCode);
+				console.log("Chunk: "+chunk.toString());
 				if(res.statusCode == 200)
 				{
 					callback(token, JSON.parse(chunk.toString()), connectionList, connind);
