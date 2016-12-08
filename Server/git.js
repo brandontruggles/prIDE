@@ -207,6 +207,7 @@ module.exports =
 	},
 	requestUserInfo:function(token, callback, connectionList, connind)
 	{
+		console.log(token);
 		var getData = querystring.stringify({
 			"access_token": token
 		});
