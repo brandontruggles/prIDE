@@ -75,6 +75,32 @@ module.exports =
 		}
 		return out;
 	},
+	setEmail:function(email, dir)
+	{
+		var out = "";
+		try
+		{
+			out = execFileSync("git", ["config", "--global", "user.email", email], {"cwd": "workspace/" + dir});
+		}
+		catch(e)
+		{
+			out = e.message.toString();
+		}
+		return out;
+	},
+	setName:function(name, dir)
+	{
+		var out = "";
+		try
+		{
+			out = execFileSync("git" ["config", "--global", "user.name", name], {"cwd: workspace/" + dir});
+		}	
+		catch(e)
+		{
+			out = e.message.toString();
+		}
+		return out;
+	},
 	commit:function(message, dir)
 	{
 		var out = "";
@@ -176,6 +202,53 @@ module.exports =
 		});
 
 		req.write(postData);
+		req.end();
+	},
+	requestUserInfo:function(token, callback, connectionList, connind)
+	{
+		var getData = querystring.stringify({
+			"access_token": token
+		});
+		//https://www.github.com/login/oauth/access_token	
+		//git push https://token@github.com/brandonrninefive/prIDE.git master
+		var options = {
+		hostname: "api.github.com",
+		port: "443",
+		path: "/user",
+		method: "GET",
+		headers: {
+			"Accept": "application/json",
+			"Content-Type": "application/x-www-form-urlencoded",
+			"Content-Length": Buffer.byteLength(postData)
+			}
+		};
+		
+		var req = https.request(options, function(res)
+		{
+			//console.log("Begin of server response:");
+			//console.log("Status: " + res.statusCode);
+			//console.log("Headers: " + JSON.stringify(res.headers));
+			res.on('data', function(chunk)
+			{
+				if(res.statusCode == 200)
+				{
+					callback(token, JSON.parse(chunk.toString()), connectionList, connind);
+					//token = JSON.parse(chunk.toString()).access_token;
+					//callback(token, connectionList, connind);
+				}
+			});	
+			res.on('end', function()
+			{
+				//console.log("reached end of data.");
+			});
+		});
+
+		req.on("error", function(e)
+		{
+			console.log(e.message);
+		});
+
+		req.write(getData);
 		req.end();
 	}
 };

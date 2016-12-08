@@ -31,9 +31,16 @@ function explorerCreator(explorer, proj, curpath, pathing)
 	return;
 }
 
+function storeGitInfo(infoObj, connectionList, connind)
+{
+	connectionList[connind].name = infoObj.name;
+	connectionList[connind].email = infoObj.email;
+}
+
 function storeGitToken(token, connectionList, connind)
 {
 	connectionList[connind].token = token;
+	git.requestUserInfo(token, storeGitInfo, connectionList, connind);
 }
 
 function broadcastResponse(connectionList, responseString)
@@ -111,7 +118,7 @@ function runServer(portNumber)
 								explorerCreator(explorer = [],proj, curpath, pathing=[]);
 								for(var k in explorer)
 									console.log(explorer[k]);
-								connectionList.push({"connection":ws,"nickname":nickname,"token":null});
+								connectionList.push({"connection":ws,"nickname":nickname,"token":null,"name":null,"email":null});
 								response.contents = {"Accepted": true, "Proj":proj, "Files": explorer, "paths": pathing};
 								console.log("Accepted incoming connection from user '"+ nickname  +"'.");
 							}
@@ -287,8 +294,10 @@ function runServer(portNumber)
 							break;
 						case "git_push":
 							response.type = "Git";//needs to be sent
+							var globalname = git.setName(connectionList[connind.name]).toString();
+							var globalemail = git.setemail(connectionList[connind.email]).toString();
 							var push = git.push(dir, token, params.split(' ')[0], params.split(' ')[1]).toString();
-							response.contents = {"Message": push};
+							response.contents = {"Message": globalname + "\n" + globalemail + "\n" + push};
 							ws.send(JSON.stringify(response));
 							console.log(git.push(dir, token, params.split(' ')[0], params.split(' ')[1]).toString());
 							break;
