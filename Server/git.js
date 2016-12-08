@@ -220,7 +220,6 @@ module.exports =
 		method: "GET",
 		headers: {
 			"Accept": "application/json",
-			"Content-Type": "application/x-www-form-urlencoded",
 			"Content-Length": Buffer.byteLength(getData)
 			}
 		};
