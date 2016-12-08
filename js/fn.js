@@ -194,7 +194,10 @@ var fn = (function ()
 		},
 		gitinit : function()
 		{
-			console.log(currfolder);
+			if(!currfolder){
+				document.getElementById('consoleWindow').innerHTML += 'Not Currently in a Project';
+				return;
+			}
 			var message =
 			{
 				"nickname": nickname,

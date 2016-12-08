@@ -135,48 +135,50 @@ var ide = (function ()
 		},
 
 
-		updatefolder : function(str,key)
+		updatefolder : function(str,key,l)
 		{
+				var end = key.split('/')[key.split('/').length-1];
+				l+= '&emsp;';
 				if (projects[key].hidden)
 				{
 					if(currproject == key)
 					{
-						str += '<option id="'+key+'" value="'+key+'" style="color:red" onclick="ide.togglecollapse(\''+key+'\')">+ '+key+'</option>';
+						str += '<option id="'+key+'" value="'+end+'" style="color:red" onclick="ide.togglecollapse(\''+key+'\')">'+l+'+'+end+'</option>';
 					}
 					else if (currfolder == key)
 					{
-						str += '<option id="'+key+'" value="'+key+'" style="color:yellow" onclick="ide.togglecollapse(\''+key+'\')">+ '+key+'</option>';
+						str += '<option id="'+key+'" value="'+end+'" style="color:yellow" onclick="ide.togglecollapse(\''+key+'\')">'+l+'+'+end+'</option>';
 					}
 					else {
-					str += '<option id="'+key+'" value="'+key+'" onclick="ide.togglecollapse(\''+key+'\')">+ '+key+'</option>';
+					str += '<option id="'+key+'" value="'+end+'" onclick="ide.togglecollapse(\''+key+'\')">'+l+'+'+end+'</option>';
 					}
 				}
 			else{
 				if(currproject == key)
 				{
-					str += '<option  id="'+key+'" value="'+key+'" style="color:red" onclick="ide.togglecollapse(\''+key+'\')">- '+key+'</option>';
+					str += '<option  id="'+key+'" value="'+end+'" style="color:red" onclick="ide.togglecollapse(\''+key+'\')">'+l+'-'+end+'</option>';
 				}
 				else if (currfolder == key)
 				{
-					str += '<option  id="'+key+'" value="'+key+'" style="color:yellow" onclick="ide.togglecollapse(\''+key+'\')">- '+key+'</option>';
+					str += '<option  id="'+key+'" value="'+end+'" style="color:yellow" onclick="ide.togglecollapse(\''+key+'\')">'+l+'-'+end+'</option>';
 				}
 				else {
-				str += '<option  id="'+key+'" value="'+key+'" onclick="ide.togglecollapse(\''+key+'\')">- '+key+'</option>';
+				str += '<option  id="'+key+'" value="'+end+'" onclick="ide.togglecollapse(\''+key+'\')">'+l+'-'+end+'</option>';
 				}
-				str = this.updatefiles(str,key);
+				str = this.updatefiles(str,key,l);
 			}
 
 			return str;
 		},
 
-		updatefiles : function(str,key)
+		updatefiles : function(str,key,l)
 		{
 			//
 			for (var j = 0; j < projects[key].filelist.length; j++)
 			{
 				if(projects[key].filelist[j].includes('/'))
 				{
-					str = ide.updatefolder(str, projects[key].path+'/'+projects[key].filelist[j].slice(0,-1));
+					str = ide.updatefolder(str, projects[key].path+'/'+projects[key].filelist[j].slice(0,-1),l);
 					if(projects[projects[key].path+'/'+projects[key].filelist[j].slice(0,-1)].hidden){
 						continue;
 					}
@@ -194,11 +196,11 @@ var ide = (function ()
 				}
 				if (t == -1)
 				{
-					str += '<option value="'+projects[key].filelist[j]+'" onclick="ide.opennewtab(\''+key+'\', \''+projects[key].filelist[j]+'\')">'+projects[key].filelist[j]+'</option>';
+					str += '<option value="'+projects[key].filelist[j]+'" onclick="ide.opennewtab(\''+key+'\', \''+projects[key].filelist[j]+'\')">'+l+projects[key].filelist[j]+'</option>';
 				}
 				else
 				{
-					str += '<option value="'+projects[key].filelist[j]+'" onclick="ide.gototab('+t+')">'+projects[key].filelist[j]+'</option>';
+					str += '<option value="'+projects[key].filelist[j]+'" onclick="ide.gototab('+t+')">'+l+projects[key].filelist[j]+'</option>';
 				}
 				}
 			}
@@ -209,6 +211,7 @@ var ide = (function ()
 		{//needs to be separated into different functions
 			var filelist = document.getElementById('openproj');
 			var str = '';
+			var l = '';
 			for (var key in projects)
 			{
 				if (!projects.hasOwnProperty(key))
@@ -237,7 +240,7 @@ var ide = (function ()
 				else {
 				str += '<option  id="'+key+'" value="'+key+'" onclick="ide.togglecollapse(\''+key+'\')">- '+key+'</option>';
 				}
-				str = this.updatefiles(str,key);
+				str = this.updatefiles(str,key,l);
 
 			}
 			filelist.innerHTML = str;

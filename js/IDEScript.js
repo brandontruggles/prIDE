@@ -108,6 +108,32 @@ function File(button)
 	if(button == "7" || button == "10")
 		document.getElementById('url').style.display = 'block';
 	document.getElementById('name').focus();
+
+	switch (button) {
+		case "1":
+			document.getElementById('name').placeholder = 'Name of new file ex. Hello.java';
+			break;
+		case "2":
+			document.getElementById('name').placeholder = 'Name of new Project Ex. Project1';
+			break;
+		case "3":
+			break;
+		case "4":
+			document.getElementById('name').placeholder = 'Url For Clone';
+			break;
+		case "6":
+			document.getElementById('name').placeholder = 'Commit Message';
+			break;
+		case "7":
+			document.getElementById('name').placeholder = 'Branch Name';
+			break;
+		case "8":
+			document.getElementById('name').placeholder = 'New Folder Name';
+		case "10":
+			document.getElementById('name').placeholder = 'Remote Name';
+		default:
+
+	}
 }
 
 function Creation()
@@ -128,7 +154,6 @@ function Creation()
 		fn.gitcommit();
 	else if (num == "7") {
 		fn.gitpush();
-		document.getElementById('url').style.display = 'none';
 	}
 	else if (num == "8"){
 			if(currproject)
