@@ -173,6 +173,7 @@ var ide = (function ()
 
 		updatefiles : function(str,key,l)
 		{
+			l+='&emsp;';
 			//
 			for (var j = 0; j < projects[key].filelist.length; j++)
 			{
@@ -186,6 +187,7 @@ var ide = (function ()
 				}
 				else{
 				var t = -1;
+
 				for (var k = 0; k < tabs.length; k++)
 				{
 					if (tabs[k].projname == key && tabs[k].filename == projects[key].filelist[j])
