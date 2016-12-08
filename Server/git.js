@@ -93,7 +93,7 @@ module.exports =
 		var out = "";
 		try
 		{
-			out = execFileSync("git" ["config", "--global", "user.name", name], {"cwd": "workspace/" + dir});
+			out = execFileSync("git", ["config", "--global", "user.name", name], {"cwd": "workspace/" + dir});
 		}
 		catch(e)
 		{
@@ -187,7 +187,6 @@ module.exports =
 				if(res.statusCode == 200)
 				{
 					token = JSON.parse(chunk.toString()).access_token;
-					console.log(token);
 					callback(token, connectionList, connind);
 				}
 			});
@@ -207,7 +206,6 @@ module.exports =
 	},
 	requestUserInfo:function(token, callback, connectionList, connind)
 	{
-		console.log(token);
 		//https://www.github.com/login/oauth/access_token
 		//git push https://token@github.com/brandonrninefive/prIDE.git master
 		var options = {
@@ -229,8 +227,7 @@ module.exports =
 			var jsonDoc = "";
 			res.on('data', function(chunk)
 			{
-				console.log("Status Code: " + res.statusCode);
-				console.log("Chunk: "+chunk.toString());
+
 				if(res.statusCode == 200)
 				{
 					jsonDoc += chunk.toString();
@@ -240,7 +237,7 @@ module.exports =
 			});
 			res.on('end', function()
 			{
-				console.log(jsonDoc);
+				//console.log(jsonDoc);
 				callback(JSON.parse(jsonDoc), connectionList, connind);
 				//console.log("reached end of data.");
 			});
