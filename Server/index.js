@@ -310,6 +310,7 @@ function runServer(portNumber)
 							response.type = "Git-auth";
 							git.requestToken(params,storeGitToken, connectionList, connind);
 							response.contents = {"Message": "Authentication complete"};
+							console.log(response.type);
 							ws.send(JSON.stringify(response));
 							break;
 						default:
