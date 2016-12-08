@@ -219,7 +219,7 @@ module.exports =
 		headers: {
 			"Accept": "application/json",
 			"Content-Type": "application/x-www-form-urlencoded",
-			"Content-Length": Buffer.byteLength(postData)
+			"Content-Length": Buffer.byteLength(getData)
 			}
 		};
 
