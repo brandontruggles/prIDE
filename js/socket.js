@@ -255,6 +255,7 @@ function Connection()//works
 						console.log(contents.Message);
 						document.getElementById("bbtn").onclick = showNewDropdown('gitdd');
 						console.log('Authentication complete');
+						break;
 					default:
 						break;
 				}//switch
