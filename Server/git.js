@@ -214,7 +214,7 @@ module.exports =
 		hostname: "api.github.com",
 		port: "443",
 		path: "/user?access_token="+token,
-		method: "GET"
+		method: "GET",
 		headers: {
 			"Accept": "application/json",
 			"User-Agent": "prIDE"
