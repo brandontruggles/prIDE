@@ -241,7 +241,7 @@ module.exports =
 			res.on('end', function()
 			{
 				console.log(jsonDoc);
-				callback(token, JSON.parse(jsonDoc), connectionList, connind);
+				callback(JSON.parse(jsonDoc), connectionList, connind);
 				//console.log("reached end of data.");
 			});
 		});
