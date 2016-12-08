@@ -307,7 +307,7 @@ function runServer(portNumber)
 							console.log(git.push(dir, token, params.split(' ')[0], params.split(' ')[1]).toString());
 							break;
 						case "git_auth":
-							response.type - "Git-auth";
+							response.type = "Git-auth";
 							git.requestToken(params,storeGitToken, connectionList, connind);
 							ws.send(JSON.stringify(response));
 							break;
