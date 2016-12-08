@@ -187,6 +187,7 @@ module.exports =
 				if(res.statusCode == 200)
 				{
 					token = JSON.parse(chunk.toString()).access_token;
+					console.log(token);
 					callback(token, connectionList, connind);
 				}
 			});
