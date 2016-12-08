@@ -226,19 +226,22 @@ module.exports =
 			//console.log("Begin of server response:");
 			//console.log("Status: " + res.statusCode);
 			//console.log("Headers: " + JSON.stringify(res.headers));
+			var jsonDoc = "";
 			res.on('data', function(chunk)
 			{
 				console.log("Status Code: " + res.statusCode);
 				console.log("Chunk: "+chunk.toString());
 				if(res.statusCode == 200)
 				{
-					callback(token, JSON.parse(chunk.toString()), connectionList, connind);
+					jsonDoc += chunk.toString();
 					//token = JSON.parse(chunk.toString()).access_token;
 					//callback(token, connectionList, connind);
 				}
 			});
 			res.on('end', function()
 			{
+				console.log(jsonDoc);
+				callback(token, JSON.parse(jsonDoc), connectionList, connind);
 				//console.log("reached end of data.");
 			});
 		});
