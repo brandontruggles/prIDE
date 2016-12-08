@@ -215,10 +215,10 @@ module.exports =
 		port: "443",
 		path: "/user?access_token="+token,
 		method: "GET"
-/*		headers: {
+		headers: {
 			"Accept": "application/json",
-			"Content-Length": Buffer.byteLength(getData)
-		}*/
+			"User-Agent": "prIDE"
+		}
 		};
 
 		var req = https.request(options, function(res)
