@@ -247,7 +247,6 @@ module.exports =
 			console.log(e.message);
 		});
 
-		req.write();
 		req.end();
 	}
 };
