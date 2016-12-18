@@ -82,8 +82,6 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 								var explorer;
 								var pathing;
 								ideFS.explorerCreator(explorer = [],proj, curpath, pathing=[]);
-								for(var k in explorer)
-									console.log(explorer[k]);
 								connectionList.push({"connection":ws,"nickname":nickname,"token":null,"name":null,"email":null});
 								response.contents = {"Accepted": true, "Proj":proj, "Files": explorer, "paths": pathing};
 								console.log("Accepted incoming connection from user '"+ nickname  +"'.");
@@ -165,10 +163,6 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 								var explorer;
 								var pathing;
 								ideFS.explorerCreator(explorer = [],proj, curpath, pathing=[]);
-								for(var k in explorer)
-									console.log(explorer[k]);
-								for(var k in pathing)
-									console.log(pathing[k]);
 								response.contents = {"Created": true, "Proj":proj, "Files": explorer, "paths": pathing};
 
 							}
