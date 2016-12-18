@@ -3,7 +3,7 @@ var querystring = require('querystring'); //Used to set POST request parameters 
 var https = require('https'); //Used to make HTTPS requests
 
 //Export a JSON object containing helper functions for git and Github functionality
-module.exports =
+var exports = 
 {
 	init:function(dir) //Execute the command "git init" on the server within a specified directory
 	{
@@ -260,6 +260,8 @@ module.exports =
 	storeToken:function(token, connectionList, connind) //Store the Github authentication token for a particular client
 	{
 		connectionList[connind].token = token;
-		this.requestUserInfo(token, this.storeInfo, connectionList, connind);
-	}.bind(this)
+		exports.requestUserInfo(token, exports.storeInfo, connectionList, connind);
+	}
 };
+
+module.exports = exports;

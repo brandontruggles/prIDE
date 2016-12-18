@@ -2,7 +2,7 @@ var fs = require('fs'); //Used to read/write from/to files on the server.
 
 var logs = {};
 
-module.exports = 
+var exports = 
 {
 	incqstate : function (fpath, nick) 
 	{
@@ -83,3 +83,5 @@ module.exports =
 		logs[fpath] = {"changes": [], "str": startContents, nickname: 0};
 	}
 };
+
+module.exports = exports;

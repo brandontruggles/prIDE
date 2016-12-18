@@ -4,7 +4,7 @@ var execFileSync = require('child_process').execFileSync; //Used to execute term
 var configObj = {}; //Object used to store the data read in from server.conf
 
 //Export a json object containing a series of helper functions for file system operations
-module.exports =
+var exports =
 {
 	getConfigObj:function() //Returns the object containing data read from server.conf
 	{
@@ -88,7 +88,7 @@ module.exports =
 	},
 	compile:function(dir) //Compiles all the files within a specified directory (should be changed in the future to only compile one single file)
 	{
-		var files = this.getProjectFiles(dir);
+		var files = exports.getProjectFiles(dir);
 		var flies = [];
 		for (var i = 0; i < files.length; i++)
 		{
@@ -184,9 +184,11 @@ module.exports =
 			}//finds all directories within directory
 			if(newproj.length != 0)
 			{
-				this.explorerCreator(explorer,newproj,curpath+proj[dir]+'/', pathing);
+				exports.explorerCreator(explorer,newproj,curpath+proj[dir]+'/', pathing);
 				newproj = [];
 			}
 		}//completed array
 	}
 };
+
+module.exports = exports;
