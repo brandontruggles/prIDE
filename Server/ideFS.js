@@ -1,13 +1,16 @@
-var fs = require('fs');
-var execFileSync = require('child_process').execFileSync;
-var configObj = {};
+var fs = require('fs'); //Used to read and write from/to files on the server
+var execFileSync = require('child_process').execFileSync; //Used to execute terminal commands on the server
+
+var configObj = {}; //Object used to store the data read in from server.conf
+
+//Export a json object containing a series of helper functions for file system operations
 module.exports =
 {
-	getConfigObj:function()
+	getConfigObj:function() //Returns the object containing data read from server.conf
 	{
 		return configObj;
 	},
-	configExists:function()
+	configExists:function() //Returns whether or not server.conf exists
 	{
 		var exists = true;
 		try
@@ -20,7 +23,7 @@ module.exports =
 		}
 		return exists;
 	},
-	createConfig:function()
+	createConfig:function() //Creates a new server.conf file with the default values
 	{
 		console.log("No server.conf file detected! Generating server.conf...");
 		try
@@ -33,7 +36,7 @@ module.exports =
 			console.log("Failed to generate server.conf! Reason: " + err);
 		}
 	},
-	readConfig:function()
+	readConfig:function() //Reads the data from server.conf
 	{
 		try
 		{
@@ -44,18 +47,7 @@ module.exports =
 			console.log("Failed to read server.conf! Reason: " + err);
 		}
 	},
-	writeConfig:function()
-	{
-		try
-		{
-			fs.writeFileSync("server.conf", JSON.stringify(configObj, null, "\t"));
-		}
-		catch(err)
-		{
-			console.log("Failed to write server.conf! Reason: " + err);
-		}
-	},
-	workspaceExists:function()
+	workspaceExists:function() //Returns whether or not the global workspace directory exists
 	{
 		var exists = true;
 		try
@@ -68,7 +60,7 @@ module.exports =
 		}
 		return exists;
 	},
-	createWorkspace:function()
+	createWorkspace:function() //Creates a new global workspace directory
 	{
 		console.log("No workspace directory detected! Generating workspace directory...");
 		try
@@ -81,34 +73,7 @@ module.exports =
 			console.log("Failed to generate the workspace directory! Reason: " + err);
 		}
 	},
-	keyDirExists:function()
-	{
-		var exists = true;
-		try
-		{
-			fs.accessSync("ssh_keys/");
-		}
-		catch(err)
-		{
-			exists = false;
-		}
-		return exists;
-	},
-	createKeyDir:function()
-	{
-		console.log("No SSH key directory detected! Generating SSH key directory...");
-		try
-		{
-			fs.mkdirSync("ssh_keys/");
-			console.log("Successfully generated a new SSH key directory!");
-		}
-		catch(err)
-		{
-			console.log("Failed to generate the SSH key directory! Reason: " + err);
-		}
-
-	},
-	getProjectFiles:function(dir)
+	getProjectFiles:function(dir) //Returns a list of files contained in a specified directory
 	{
 		var files = null;
 		try
@@ -121,20 +86,7 @@ module.exports =
 		}
 		return files;
 	},
-	newfile:function(filename, dir)
-	{
-		var out = "";
-		try
-		{
-			out = execFileSync("touch", [filename], {"cwd": "workspace/" + dir});
-		}
-		catch (e)
-		{
-			out = e.message.toString();
-		}
-		return out;
-	},
-	compile:function(dir)
+	compile:function(dir) //Compiles all the files within a specified directory (should be changed in the future to only compile one single file)
 	{
 		var files = this.getProjectFiles(dir);
 		var flies = [];
@@ -155,19 +107,11 @@ module.exports =
 			return error.message;
 		}
 	},
-	run:function(prog, args, dir)
+	run:function(prog, args, dir) //Runs a specified file on the server, within a specified directory, and with the specified arguments
 	{
 		prog = prog.replace(".java","");
-		var str = execFileSync("java", ["-cp", "workspace/" + dir, prog]).toString();
+		var str = execFileSync("java", ["-cp", "workspace/" + dir, prog].concat(args)).toString();
 		return str;
-	},
-	listproj:function(user)
-	{
-		execFileSync("curl https://api.github.com/users/" + user + "/repos", writeout);
-		out = fs.readFileSync("stdout.txt", "utf8").toString();
-		var obj = JSON.parse(out);
-
-		return obj;
 	},
 	createFile:function(fileName, dir)
 	{
@@ -182,7 +126,7 @@ module.exports =
 		}
 		return true;
 	},
-	deleteFile:function(fileName)
+	deleteFile:function(fileName, dir) //Deletes the specified file on the server, within a specified directory
 	{
 		if(fs.existsSync("workspace/" + fileName))
 		{
@@ -195,20 +139,7 @@ module.exports =
 		}
 		return true;
 	},
-	updateFile:function(fileName, newText, dir)
-	{
-		if(fs.existsSync("workspace/" + dir + "/" + fileName))
-		{
-			fs.writeFileSync("workspace/" + dir + "/" + fileName, newText);
-		}
-		else
-		{
-			console.log("Failed to write to the file " + fileName + "!");
-			return false;
-		}
-		return true;
-	},
-	createDirectory:function(dir)
+	createDirectory:function(dir) //Creates the specified directory on the server
 	{
 		if(!fs.existsSync("workspace/" + dir))
 		{
@@ -221,7 +152,7 @@ module.exports =
 		}
 		return true;
 	},
-	createProject:function(projectName)
+	createProject:function(projectName) //Creates a new project directory on the server
 	{
 		if(!fs.existsSync(projectName))
 		{
@@ -233,6 +164,29 @@ module.exports =
 			return false;
 		}
 		return true;
-	}
+	},
+	explorerCreator:function(explorer, proj, curpath, pathing) //Used to generate the file explorer for connected clients
+	{
+		var newproj = [];
+		for(var dir in proj)
+		{
+			explorer.push(ideFS.getProjectFiles(curpath+proj[dir]));
+			pathing.push(curpath+proj[dir]);
+			for(var f in explorer[explorer.length-1])
+			{
+				if(fs.lstatSync('workspace/'+curpath+proj[dir]+'/'+explorer[explorer.length-1][f]).isDirectory())
+				{
+					newproj.push(explorer[explorer.length-1][f]);
+					//point to array with folder in it
+					explorer[explorer.length-1][f]+='/';
+				}//if directory
 
+			}//finds all directories within directory
+			if(newproj.length != 0)
+			{
+				this.explorerCreator(explorer,newproj,curpath+proj[dir]+'/', pathing);
+				newproj = [];
+			}
+		}//completed array
+	}
 };

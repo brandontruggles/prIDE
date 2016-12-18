@@ -1,5 +1,5 @@
+var fs = require('fs'); //Used to read/write from/to files on the server.
 
-var fs = require('fs');
 var logs = {};
 
 module.exports = 

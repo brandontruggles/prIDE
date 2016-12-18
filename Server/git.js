@@ -1,9 +1,11 @@
-var execFileSync = require('child_process').execFileSync;
-var querystring = require('querystring');
-var https = require('https');
+var execFileSync = require('child_process').execFileSync; //Used to execute terminal commands on the server
+var querystring = require('querystring'); //Used to set POST request parameters with JSON
+var https = require('https'); //Used to make HTTPS requests
+
+//Export a JSON object containing helper functions for git and Github functionality
 module.exports =
 {
-	init:function(dir)
+	init:function(dir) //Execute the command "git init" on the server within a specified directory
 	{
 		var out = "";
 		try
@@ -16,7 +18,7 @@ module.exports =
 		}
 		return out;
 	},
-	addremote:function(dir, remoteName, url)
+	addremote:function(dir, remoteName, url) //Execute the command "git remote add remoteName" on the server within a specified directory
 	{
 		var out = "";
 		try
@@ -29,7 +31,7 @@ module.exports =
 		}
 		return out;
 	},
-	clone:function(dir, url, token)
+	clone:function(dir, url, token) //Execute the command "glit clone url" on the server within a specified directory, using the Github authentication tokenfrom a particular client 
 	{
 		var out = "";
 		try
@@ -49,7 +51,7 @@ module.exports =
 		}
 		return out;
 	},
-	pull:function(dir)
+	pull:function(dir) //Execute the command "git pull" on the server, within the specified directory
 	{
 		var out = "";
 		try
@@ -62,7 +64,7 @@ module.exports =
 		}
 		return out;
 	},
-	add:function(filename, dir)
+	add:function(filename, dir) //Execute the command "git add filename" on the server, within the specified directory
 	{
 		var out = "";
 		try
@@ -75,7 +77,7 @@ module.exports =
 		}
 		return out;
 	},
-	setEmail:function(email, dir)
+	setEmail:function(email, dir) //Temporarily set the global email for git to the email of a particular user
 	{
 		var out = "";
 		try
@@ -88,7 +90,7 @@ module.exports =
 		}
 		return out;
 	},
-	setName:function(name, dir)
+	setName:function(name, dir) //Temporarily set the global name for git to the name of a particular user
 	{
 		var out = "";
 		try
@@ -101,7 +103,7 @@ module.exports =
 		}
 		return out;
 	},
-	commit:function(message, dir)
+	commit:function(message, dir) //Execute the command "git commit -am message" on the server, within the specified directory
 	{
 		var out = "";
 		try
@@ -114,7 +116,7 @@ module.exports =
 		}
 		return out;
 	},
-	checkout:function(branchName, dir)
+	checkout:function(branchName, dir) //Execute the command "git checkout branchName" on the server, within the specified directory
 	{
 		var out = "";
 		try
@@ -127,7 +129,7 @@ module.exports =
 		}
 		return out;
 	},
-	createBranch:function(branchName, dir)
+	createBranch:function(branchName, dir) //Execute the command "git checkout -b branchName" on the server, within the specified directory
 	{
 		var out = "";
 		try
@@ -140,7 +142,7 @@ module.exports =
 		}
 		return out;
 	},
-	push:function(dir, token, remoteName, branchName)
+	push:function(dir, token, remoteName, branchName) //Execute the command "git push remoteName branchName" on the server, within the specified directory, and with the Github authentication token for a particular client
 	{
 		var out = "";
 		try
@@ -156,7 +158,7 @@ module.exports =
 		}
 		return out;
 	},
-	requestToken:function(params, callback, connectionList, connind)
+	requestToken:function(params, callback, connectionList, connind) //Request a Github authentication token for a specific user after they have logged in on the browser
 	{
 		var postData = querystring.stringify({
 			"client_id": "a0529985d128d88ea4b7",
@@ -204,7 +206,7 @@ module.exports =
 		req.write(postData);
 		req.end();
 	},
-	requestUserInfo:function(token, callback, connectionList, connind)
+	requestUserInfo:function(token, callback, connectionList, connind) //Request the email and name of a user from their Github account using the Github API and their authentication token
 	{
 		//https://www.github.com/login/oauth/access_token
 		//git push https://token@github.com/brandonrninefive/prIDE.git master
@@ -249,5 +251,15 @@ module.exports =
 		});
 
 		req.end();
+	},
+	storeInfo:function(infoObj, connectionList, connind) //Store the name and email of a particular user using the information provided by their Github account
+	{
+		connectionList[connind].name = infoObj.name;
+		connectionList[connind].email = infoObj.email;
+	},
+	storeToken:function(token, connectionList, connind) //Store the Github authentication token for a particular client
+	{
+		connectionList[connind].token = token;
+		git.requestUserInfo(token, this.storeInfo, connectionList, connind);
 	}
 };

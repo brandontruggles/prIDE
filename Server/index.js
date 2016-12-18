@@ -1,50 +1,10 @@
-var rtu = require('./rtu.js');
-var git = require('./git.js');
-var ideFS = require('./ideFS.js');
-var fs = require('fs');
-var WebSocketServer = require('ws').Server;
+var rtu = require('./rtu.js'); //Helper library for real-time updates
+var git = require('./git.js'); //Helper library for git and Github integration
+var ideFS = require('./ideFS.js'); //Helper library for most file-system related functions
+var fs = require('fs'); //Library used for reading files
+var WebSocketServer = require('ws').Server; //Websocket library for creating a server
 
-function explorerCreator(explorer, proj, curpath, pathing)
-{//finished i think working as intended
-	var newproj = [];
-	for(var dir in proj){
-		explorer.push(ideFS.getProjectFiles(curpath+proj[dir]));
-		pathing.push(curpath+proj[dir]);
-		for(var f in explorer[explorer.length-1])
-		{
-			if(fs.lstatSync('workspace/'+curpath+proj[dir]+'/'+explorer[explorer.length-1][f]).isDirectory())
-			{
-				newproj.push(explorer[explorer.length-1][f]);
-				//point to array with folder in it
-				explorer[explorer.length-1][f]+='/';
-			}//if directory
-
-		}//finds all directories within directory
-		if(newproj.length != 0){
-			explorerCreator(explorer,newproj,curpath+proj[dir]+'/', pathing);
-			newproj = [];
-		}
-		else {
-			//return;
-		}
-	}//completed array
-	return;
-}
-
-function storeGitInfo(infoObj, connectionList, connind)
-{
-	connectionList[connind].name = infoObj.name;
-	connectionList[connind].email = infoObj.email;
-
-}
-
-function storeGitToken(token, connectionList, connind)
-{
-	connectionList[connind].token = token;
-	git.requestUserInfo(token, storeGitInfo, connectionList, connind);
-}
-
-function broadcastResponse(connectionList, responseString)
+function broadcastResponse(connectionList, responseString) //Function used to send a message to all connected clients
 {
 	connectionList.forEach(function(conn)
 	{
@@ -52,33 +12,38 @@ function broadcastResponse(connectionList, responseString)
 	});
 }
 
-function runServer(portNumber)
+function runServer(portNumber) //Function that creates a new server on a specified port
 {
 	console.log("Running the IDE server on port " + portNumber + "...");
 	var server = new WebSocketServer({port: portNumber});
-	var connectionList = [];
-	var connind = -1;
+	var connectionList = []; //List of connected clients
+	var connind = -1; //Index of a particular client in the connectionList
 	server.on('connection', function connection(ws)
 	{
 		console.log('New connection attempted!');
 		ws.on('message', function incoming(message)
 		{
 			console.log('received: %s', message);
-			var response = {"type": "", "contents": null};
+			var response = {"type": "", "contents": null}; //The generic template for a response from the server
 			try
 			{
-				var json_message = JSON.parse(message);
-				var nickname = json_message.nickname;
-				var contents = json_message.contents;
-				var file = json_message.file;
-				var dir = json_message.dir;
-				var change = json_message.change;
-				var command = contents.split(' ')[0].toLowerCase();
-				var spaceIndex = contents.indexOf(' ');
-				var params = contents.substring(spaceIndex + 1);				var token = null;
+				var json_message = JSON.parse(message); //It is assumed that all incoming messages will be in JSON format
+				var nickname = json_message.nickname; //Who sent the message
+				var contents = json_message.contents; //The data that the message contained
 
-				var found = false;
-				connectionList.forEach(function(conn)
+				//The following 3 variables should be changed to be contents-specific in the future
+				var file = json_message.file; //The currently open file on the client
+				var dir = json_message.dir; //The directory the currently opened file is contained in on the client
+				var change = json_message.change; //Any changes made to the currently opened file on the client
+				//////////////////////////////////////////////////
+
+				var command = contents.split(' ')[0].toLowerCase(); //The first part of the message is always the type of command
+				var spaceIndex = contents.indexOf(' ');
+				var params = contents.substring(spaceIndex + 1); //Everything after the command is the parameters of the command
+				var token = null; //The Github authentication token for a client (null until set)
+				
+				var found = false; 
+				connectionList.forEach(function(conn) //Search through the list of connections to find which client we're dealing with
 				{
 					if(conn.connection == ws)
 					{
@@ -90,7 +55,7 @@ function runServer(portNumber)
 
 				if(found || command == "connect")
 				{
-					switch(command)
+					switch(command) //Switch statement to run code associated with different server commands (see the list of possible commands to see what each command type does)
 					{
 						case "connect":
 							response.type = "Connection-Accept";
@@ -116,7 +81,7 @@ function runServer(portNumber)
 								var curpath = '';
 								var explorer;
 								var pathing;
-								explorerCreator(explorer = [],proj, curpath, pathing=[]);
+								ideFS.explorerCreator(explorer = [],proj, curpath, pathing=[]);
 								for(var k in explorer)
 									console.log(explorer[k]);
 								connectionList.push({"connection":ws,"nickname":nickname,"token":null,"name":null,"email":null});
@@ -195,16 +160,16 @@ function runServer(portNumber)
 							}
 							else
 							{
-									var proj = fs.readdirSync("workspace/");
-									var curpath = '';
-									var explorer;
-									var pathing;
-									explorerCreator(explorer = [],proj, curpath, pathing=[]);
-									for(var k in explorer)
-										console.log(explorer[k]);
-									for(var k in pathing)
-										console.log(pathing[k]);
-									response.contents = {"Created": true, "Proj":proj, "Files": explorer, "paths": pathing};
+								var proj = fs.readdirSync("workspace/");
+								var curpath = '';
+								var explorer;
+								var pathing;
+								ideFS.explorerCreator(explorer = [],proj, curpath, pathing=[]);
+								for(var k in explorer)
+									console.log(explorer[k]);
+								for(var k in pathing)
+									console.log(pathing[k]);
+								response.contents = {"Created": true, "Proj":proj, "Files": explorer, "paths": pathing};
 
 							}
 							ws.send(JSON.stringify(response));
@@ -297,10 +262,6 @@ function runServer(portNumber)
 							response.type = "Git";//needs to be sent
 							var globalname = git.setName(connectionList[connind].name,dir).toString();
 							var globalemail = git.setEmail(connectionList[connind].email,dir).toString();
-							console.log(connectionList[connind].name);
-							console.log(connectionList[connind].email);
-							console.log(globalname);
-							console.log(globalemail);
 							var push = git.push(dir, token, params.split(' ')[0], params.split(' ')[1]).toString();
 							response.contents = {"Message": globalname + "\n" + globalemail + "\n" + push};
 							ws.send(JSON.stringify(response));
@@ -308,7 +269,7 @@ function runServer(portNumber)
 							break;
 						case "git_auth":
 							response.type = "Git-auth";
-							git.requestToken(params,storeGitToken, connectionList, connind);
+							git.requestToken(params, git.storeToken, connectionList, connind);
 							response.contents = {"Message": "Authentication complete"};
 							ws.send(JSON.stringify(response));
 							break;
@@ -318,7 +279,7 @@ function runServer(portNumber)
 							break;
 					}
 				}
-				else
+				else //People without valid nicknames cannot issue commands other than "connect", which sets their nickname
 				{
 					console.log("The user that issued the given command was unrecognized!");
 				}
@@ -335,31 +296,34 @@ function runServer(portNumber)
 			var found = false;
 			connectionList.forEach(function(conn)
 			{
-				if(conn.connection == ws)
+				if(conn.connection == ws) //Find which client disconnected, and remove them from connectionList
 				{
 					found = true;
 					console.log("User '" + conn.nickname  + "' has disconnected!");
 					connectionList.splice(connectionList.indexOf(conn), 1);
 				}
 			});
-			if(!found)
+			if(!found) //The client that disconnected never got added to the connectionList (they never provided a valid nickname)
 			{
 				console.log("An unknown client disconnected!");
 			}
 		});
 	});
 }
+//End of runServer function
 
-if(!ideFS.configExists())
+//Actual code that creates the server is from here on down
+
+if(!ideFS.configExists()) //Create a server.conf file (to store certain server settings) if one does not already exist
 {
 	ideFS.createConfig();
 }
 
-ideFS.readConfig();
+ideFS.readConfig(); //Read certain settings from the server.conf file and store them in memory
 
-if(!ideFS.workspaceExists())
+if(!ideFS.workspaceExists()) //Create a workspace folder (which will contain all projects created on the server) if one does not already exist
 {
 	ideFS.createWorkspace();
 }
 
-runServer(ideFS.getConfigObj().port);
+runServer(ideFS.getConfigObj().port); //Run the server
