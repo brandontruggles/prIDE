@@ -260,6 +260,6 @@ module.exports =
 	storeToken:function(token, connectionList, connind) //Store the Github authentication token for a particular client
 	{
 		connectionList[connind].token = token;
-		git.requestUserInfo(token, this.storeInfo, connectionList, connind);
+		this.requestUserInfo(token, this.storeInfo, connectionList, connind);
 	}
 };
