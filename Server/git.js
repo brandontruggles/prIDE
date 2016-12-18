@@ -38,7 +38,7 @@ var exports =
 		{
 			if(token != null)
 			{
-				out = execFileSync("git", ["clone", "https://" + token + "@github.com:" + url], {"cwd": "workspace/"}).toString();
+				out = execFileSync("git", ["clone", "https://" + token + "@github.com:" + url.replace("https://","")], {"cwd": "workspace/"}).toString();
 			}
 			else
 			{
