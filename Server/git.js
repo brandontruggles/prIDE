@@ -259,6 +259,7 @@ module.exports =
 	},
 	storeToken:function(token, connectionList, connind) //Store the Github authentication token for a particular client
 	{
+		console.log(this);
 		connectionList[connind].token = token;
 		this.requestUserInfo(token, this.storeInfo, connectionList, connind);
 	}
