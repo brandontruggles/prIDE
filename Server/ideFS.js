@@ -170,7 +170,7 @@ module.exports =
 		var newproj = [];
 		for(var dir in proj)
 		{
-			explorer.push(ideFS.getProjectFiles(curpath+proj[dir]));
+			explorer.push(this.getProjectFiles(curpath+proj[dir]));
 			pathing.push(curpath+proj[dir]);
 			for(var f in explorer[explorer.length-1])
 			{
