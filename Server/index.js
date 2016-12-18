@@ -232,7 +232,7 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 							break;
 						case "git_clone":
 							response.type = "Git";
-							var clone = git.clone(params,token).toString();
+							var clone = git.clone(dir,params,token).toString();
 							response.contents = {"Message": clone};
 							ws.send(JSON.stringify(response));
 							console.log(clone);
