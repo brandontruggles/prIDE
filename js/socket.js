@@ -9,7 +9,8 @@ var paths = {};
 var projects = {};
 
 function Connection()//works
-{
+{	
+	//create editor
 	editor = ace.edit("codespace");
 	editor.setTheme("ace/theme/monokai");
 	editor.getSession().setMode("ace/mode/java");
@@ -51,6 +52,7 @@ function Connection()//works
 	});
 	   */
 	editor.resize();
+	//checking login determines if nickname is taken or not
 	nickname = document.getElementById('nick').value;
 	var port = document.getElementById('port').value;
 	var ip = document.getElementById('ip').value;
@@ -67,22 +69,22 @@ function Connection()//works
  				sock = new WebSocket('ws://'+ip+":"+port);
   			}
 
-			if(document.getElementById('wrong_port'))
+			if(document.getElementById('wrong_port'))//wrong port
 			{
 				document.getElementById('error').style.display = 'none';
 				document.getElementById('error').innerHTML = "";
 			}
 
-			sock.onerror = function()
+			sock.onerror = function()//for wrong ip or port
 			{
 				document.getElementById('wrong_port').textContent = 'Invalid Server Name!';
 			};
-			sock.onclose = function()
+			sock.onclose = function()//if server dies 
 			{
 				if(document.getElementById('Loader').style.display != 'block')
 					document.getElementById('consoleWindow').innerHTML += "Lost Connection to Server!";
 			};
-			sock.onopen = function()
+			sock.onopen = function()//Connected
 			{
 				var connect =
 				{
@@ -91,17 +93,17 @@ function Connection()//works
 				};
 				sock.send(JSON.stringify(connect));
 			};
-			sock.onmessage = function(response)
+			sock.onmessage = function(response)//Sending Messages to the Server
 			{
 				var res = JSON.parse(response.data);
 				var contents = res.contents;
 				switch(res.type)
 				{
-					case "Console":
+					case "Console"://Sending Console Messages to Server
 						console.log(contents);
 						document.getElementById('consoleWindow').innerHTML += contents;
 						break;
-					case "Connection-Accept":
+					case "Connection-Accept"://Connected to Server
 						if(contents.Accepted)
 						{
 							document.getElementById('Loader').style.display = 'none';
@@ -113,20 +115,20 @@ function Connection()//works
 
 							ide.updateFileExplorer();
 						}
-						else
+						else//Error for Connection
 						{
 							document.getElementById('wrong_port').innerHTML = contents.Reason;
 						}
 						// pre-load some files
 						break;
-					case "RTU-Broadcast":
+					case "RTU-Broadcast": //RTU 
 						if (res.nickname == nickname)
 						{
 							break;
 						}
 						rtu.rcv(res.dir, res.file, contents);
 						break;
-					case "Compile-Running-Status":
+					case "Compile-Running-Status": //Message if compiled correctly
 						if(contents.output[0] == null)
 						{
 							document.getElementById('consoleWindow').innerHTML += 'Successfully Compiled\n';
@@ -139,7 +141,7 @@ function Connection()//works
 					case "Code-Running-Status":
 						document.getElementById('consoleWindow').innerHTML += contents.output;
 						break;//needs code
-					case "Message-Broadcast":
+					case "Message-Broadcast":// Recieves message for Chat
 						document.getElementById('chatWindow').innerHTML += contents+"\n";
 						break;
 					case "Project-Created-Status":
