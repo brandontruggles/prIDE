@@ -35,9 +35,9 @@ To connect to the server as a  user, simply connect to an instance of our front-
 
 ## Feature To-Do List
 
-- [] Re-design the front-end using React.js.
-- [] Implement read-only links for inviting others to view code changes in real-time.
-- [] Allow users to compile and run different languages.
-- [] Create a dedicated mobile client using React Native.
-- [] Create a dedicated desktop client using Electron.
-- [] Add functionality to install external libraries on the host server.
+- [ ] Re-design the front-end using React.js.
+- [ ] Implement read-only links for inviting others to view code changes in real-time.
+- [ ] Allow users to compile and run different languages.
+- [ ] Create a dedicated mobile client using React Native.
+- [ ] Create a dedicated desktop client using Electron.
+- [ ] Add functionality to install external libraries on the host server.
