@@ -1,0 +1,33 @@
+{
+  "name": "pride-online-ide-frontend",
+  "version": "1.0.0",
+  "description": "ReactJS made frontend for online IDE, prIDE",
+  "main": "frontend/index.js",
+  "scripts": {
+    "watch": "watchify frontend/app.js -t babelify -o frontend/build/bundle.js --debug --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brandonrninefive/prIDE.git"
+  },
+  "keywords": [
+    "frontend",
+    "ReactJS"
+  ],
+  "author": "Jarel Pellew, Brandon Ruggles, John Moreira, Alec Brion, Sebastian",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/brandonrninefive/prIDE/issues"
+  },
+  "homepage": "https://github.com/brandonrninefive/prIDE#readme",
+  "dependencies": {
+    "ace-builds": "^1.2.6",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.23.0",
+    "babelify": "^7.3.0",
+    "browserify": "^14.1.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "watchify": "^3.9.0"
+  }
+}
