@@ -4,7 +4,7 @@
   "description": "A websocket server and file system manager for the online IDE, prIDE.",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js & node ../index.html"
+    "test": "node index.js"
   },
   "keywords": [
     "Websocket",
