@@ -1,7 +1,7 @@
 Server/node_modules
 Server/server.conf
+FrontEnd/node_modules
 test/
-bower_components/
 workspace/
 server.conf
 .htaccess
