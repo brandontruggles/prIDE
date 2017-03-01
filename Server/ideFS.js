@@ -141,11 +141,11 @@ var exports =
 		{
 			var ret = execFileSync("javac", flies, {stdio: ['pipe', 'pipe', 'pipe']}).toString();
 		}
-		else if (langflag="cpp" || langflag="c")
+		else if (langflag=="cpp" || langflag=="c")
 		{
 			var ret = execFileSync("gcc", flies, {stdio: ['pipe', 'pipe', 'pipe']}).toString();
 		}
-		else if (langflag="py")
+		else if (langflag=="py")
 		{																					var ret = execFileSync("python -m py_compile", flies, {stdio: ['pipe', 'pipe', 'pipe']}).toString();
 		}
 	return ret;
@@ -154,7 +154,7 @@ var exports =
 	{
 		return error.message;
 	}
-}
+},
 	run:function(prog, args, dir) //Runs a specified file on the server, within a specified directory, and with the specified arguments
 	{
 		prog = prog.replace(".java","");
