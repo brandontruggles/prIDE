@@ -4,12 +4,14 @@ var path = require('path');
 var app = express();
 
 
-app.get('/*', function(req,res){
-  res.sendFile(path.join(__dirname,'../', 'index.html'));
+app.use('/image',express.static(__dirname+'/image'));
+app.use('/css', express.static(__dirname+'/css'));
+app.use('/js', express.static(__dirname+'/js'));
+app.use('/node_modules', express.static(__dirname+'/node_modules'));
+app.get('/', function(req,res){
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.use(express.static(path.join(__dirname,'css')));
-app.use(express.static(path.join(__dirname,'js')));
 
 app.listen(9000, 'localhost', function (err){ 
   if(err){
