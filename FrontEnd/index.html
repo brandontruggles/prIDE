@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="css/IDEMainStyle.css">
+			<title> prIDE </title>
+			<meta charset="utf-8">
+	</head>
+	<body>
+
+		<div class="w3-container w3-center w3-animate-opacity" id="Loader"/>
+			<a href="http://45.55.218.73/">
+			<img id="logo" src="image/pridefull.png" alt="Logo">
+			</a>
+			<input type="text" class="firstInput" id="nick" placeholder="Nickname" autofocus onkeydown="fn.chatkeydown(this)" required><br>
+			<input type="text" class="firstInput" id="ip" placeholder="IP Address" onkeydown="fn.chatkeydown(this)" value="45.55.218.73"><br>
+			<input type="text" class="firstInput" id="port" placeholder="Port:8080" value="8080" onkeydown="fn.chatkeydown(this)" required><br>
+			<input type="button" id="firstSubmit" value="Submit" onclick="Connection()">
+			<br><br>
+			<br><span id="wrong_port"></span>
+			<input type="button" id="changebackground" value="Background">
+			<a href="https://github.com/brandonrninefive/prIDE" id="githublink">prIDE on GitHub</a>
+
+		</div>
+
+		<div class="main-container" id="main-container" style="display:none">
+			<!-- Buttons go in here -->
+			<!-- Dropdowns go in here -->
+			<div class="dropdown">
+				<button class="btn" id="rbtn" onclick="showNewDropdown('filedd')">File</button>
+				<div id="filedd" class="dropdowncontent">
+					<a href="#" id = "1" onclick="File(this.id)">New File</a>
+					<a href="#" id = "2" onclick="File(this.id)">New Project</a>
+					<a href="#" id = "8" onclick="File(this.id)">New Folder</a>
+				</div>
+			</div>
+			<button class="btn" id="obtn">Edit</button>
+			<!--  <button onclick="showEditDropdown()" class="dropbtn">Edit</button>
+		  	<div id="editDropdown" class="dropdown-content">
+		  	<a href="#">Cut</a>
+		  	<a href="#">Copy</a>
+		  	<a href="#">Paste</a>
+		  	</div>
+		  	</div> -->
+
+			<button class="btn" id="ybtn">View </button>
+			<div class="dropdown">
+				<button class="btn" id="gbtn" onclick="showNewDropdown('builddd')">Build</button>
+				<div id="builddd" class="dropdowncontent">
+					<a href="#" onclick="fn.compile()">Compile</a>
+					<a href="#" onclick="fn.run()">Run</a>
+				</div>
+			</div>
+			<div class="dropdown">
+				<button class="btn" id="bbtn" onclick="fn.gitauth()">Git</button>
+				<div id="gitdd" class="dropdowncontent">
+					<a href="#" id = "4" onclick="File(this.id)">Clone</a>
+					<a href="#" id = "5" onclick="fn.gitadd()">Add</a>
+					<a href="#" id = "6" onclick="File(this.id)">Commit</a>
+					<a href="#" id = "7" onclick="File(this.id)">Push</a>
+					<!--<a href="#" id = "8" onclick="fn.gitauth()">Login</a>-->
+					<a href="#" id = "9" onclick="fn.gitinit()">Init</a>
+					<a href="#" id = "10" onclick="File(this.id)">Add Remote</a>
+				</div>
+			</div>
+			<div class="dropdown">
+				<button class="btn" id="vbtn" onclick="showNewDropdown('settingsdd')">Settings</button>
+				<div id="settingsdd" class="dropdowncontent">
+					<a href="#" id = "changebackground2">Change Background</a>
+				</div>
+			</div>
+
+			<a href="https://glaad.nationbuilder.com/donate" target="_blank"><button class="btn" id="glaadbtn">Donate to GLAAD!</button></a>
+			<a href="http://45.55.218.73/">
+			<img id="logotwo" src="image/pridefull3.png" alt="Logo2">
+			</a>
+
+			<br>
+			<!--<div id="bar" style="display:none">
+				<input type="text" id="name" placeholder="Name">
+				<input type="button" value="Enter" onclick="Creation()">
+				<input type="hidden" id="pushed">
+			 </div>-->
+			 <div id="error" style="display:none">
+			 </div>
+		  	<br>
+				<div id="bar" style="display:none">
+				<input type="text" id="name" placeholder="File/Project Name" onkeydown="fn.chatkeydown(this)">
+				<input type="text" id="url" placeholder="Url" onkeydown="fn.chatkeydown(this)" style="display:none">
+				<input type="button" value="Enter" id="enter" onclick="Creation()">
+				<input type="hidden" id="pushed">
+				<br>
+			 </div>
+		  	<ul class="tab" id="tabs">
+				  <li><div class="tablinks"></div></li>
+		  	</ul>
+
+		  <!--<div style="display: inline-block;">-->
+
+		  <div style="display: flex;">
+			  <div style="flex: 1;">
+				  <select id='openproj' name="file" size="21" multiple style="width: 100%;">
+				  </select>
+			  </div>
+
+			  <div style="margin: auto; flex: 4;">
+				  <div id="codespace">
+				  </div>
+			  </div>
+
+			  <div style="flex: 1; margin-left: 20px;">
+				  <textarea placeholder="Chat Window" id="chatWindow" rows="21" cols="25" style="width: 100%;" readonly></textarea>
+				  <input placeholder="Chat here" id="chat" onkeydown="fn.chatkeydown(this)" style="width: 100%" />
+			  </div>
+
+		  </div>
+
+		  <br>
+			 <div>
+			<textarea placeholder="Console" id="consoleWindow" rows="12" cols="140" style="width: 99%;" readonly></textarea>
+			</div>
+			<div>
+			<input type="text" placeholder="Commands here" id="commandArea" onkeydown="fn.chatkeydown(this)" style="width: 99%" />
+			</div>
+			 <!--<div id="bar" style="display:none">
+				<input type="text" id="name" placeholder="File/Project Name" onkeydown="fn.chatkeydown(this)">
+				<br>
+				<input type="button" value="Enter" id="enter" onclick="Creation()">
+				<input type="hidden" id="pushed">
+			 </div>-->
+		  <!--<button onclick="openConsole(event)" class="consolebtn" id="console">Console </button> -->
+		  <!--
+		   <button onclick="message()" class="submitbtn" id="submit">Submit </button>
+		  -->
+		</div>
+	</body>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="js/IDEScript.js"></script>
+	<script src="js/ide.js"></script>
+	<script src="js/rtu.js"></script>
+	<script src="js/fn.js"></script>
+	<script src="js/key.js"></script>
+	<script src="js/socket.js"></script>
+	<script src="node_modules/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+
+</html>
