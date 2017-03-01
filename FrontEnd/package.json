@@ -2,9 +2,10 @@
   "name": "pride-online-ide-frontend",
   "version": "1.0.0",
   "description": "ReactJS made frontend for online IDE, prIDE",
-  "main": "frontend/index.js",
+  "main": "FrontEnd/index.js",
   "scripts": {
-    "watch": "watchify frontend/app.js -t babelify -o frontend/build/bundle.js --debug --verbose"
+    "watch": "watchify app.js -t babelify -o build/bundle.js --debug --verbose",
+    "start": "node frontendServer.js"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,9 @@
     "babel-preset-react": "^6.23.0",
     "babelify": "^7.3.0",
     "browserify": "^14.1.0",
+    "express": "^4.14.1",
+    "opn": "^4.0.2",
+    "path": "^0.12.7",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "watchify": "^3.9.0"
