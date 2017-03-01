@@ -86,7 +86,7 @@ var exports =
 		}
 		return files;
 	},
-	compile:function(dir) //Compiles all the files within a specified directory (should be changed in the future to only compile one single file)
+/*	compile:function(dir) //Compiles all the files within a specified directory (should be changed in the future to only compile one single file)
 	{
 		var files = exports.getProjectFiles(dir);
 		var flies = [];
@@ -106,7 +106,55 @@ var exports =
 		{
 			return error.message;
 		}
-	},
+	},*/
+	compile:function(dir) //Compiles all the files within a specified directory (should be changed in the future to only compile one single file)
+	{
+	var files = exports.getProjectFiles(dir);
+	var flies = [];
+	var langflag; //flag to determine which compiler to use
+	for (var i = 0; i < files.length; i++)
+	{
+		if (files[i].substr(files[i].length - 5) == ".java")
+		{
+			flies.push("workspace/" + dir + "/" + files[i]);
+			langflag = "java";
+		}
+		else if (files[i].substr(files[i].length - 4) == ".cpp")
+		{					
+			flies.push("workspace/" + dir + "/" + files[i]);
+			langflag = "cpp";
+		}							
+		else if (files[i].substr(files[i].length - 2) == ".c")
+		{	
+			flies.push("workspace/" + dir + "/" + files[i]);
+			langflag = "c";			
+		}							
+		else if (files[i].substr(files[i].length - 4) == ".py")			
+		{	
+			flies.push("workspace/" + dir + "/" + files[i]);
+			langflag = "py";
+		}
+	}
+	try
+	{
+		if (langflag=="java")
+		{
+			var ret = execFileSync("javac", flies, {stdio: ['pipe', 'pipe', 'pipe']}).toString();
+		}
+		else if (langflag="cpp" || langflag="c")
+		{
+			var ret = execFileSync("gcc", flies, {stdio: ['pipe', 'pipe', 'pipe']}).toString();
+		}
+		else if (langflag="py")
+		{																					var ret = execFileSync("python -m py_compile", flies, {stdio: ['pipe', 'pipe', 'pipe']}).toString();
+		}
+	return ret;
+	}
+	catch (error)
+	{
+		return error.message;
+	}
+}
 	run:function(prog, args, dir) //Runs a specified file on the server, within a specified directory, and with the specified arguments
 	{
 		prog = prog.replace(".java","");
