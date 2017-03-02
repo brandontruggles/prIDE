@@ -163,16 +163,35 @@ var exports =
 	},
 	createFile:function(fileName, dir)
 	{
-		if(!fs.existsSync("workspace/" + dir + "/" + fileName))
+
+		switch(filename.substr(filename.length - 5))
 		{
-			fs.writeFileSync("workspace/" + dir + "/" + fileName,"public class " + fileName.replace(".java", "") + "\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}");
+			case ".java":
+				if(!fs.existsSync("workspace/" + dir + "/" + fileName))
+				{
+					fs.writeFileSync("workspace/" + dir + "/" + fileName,"public class " + fileName.replace(".java", "") + "\n{\n}");
+				}
+				else
+				{
+					console.log("Failed to create a file with the name '" + fileName + "' within the current project because a file with that name already exists!");
+					return false;
+				}
+				return true;
+				break;
+			
+			default:
+				if(!fs.existsSync("workspace/" + dir + "/" + fileName))
+				{
+					fs.writeFileSync("workspace/" + dir + "/" +fileName)
+				}
+				else
+				{
+					console.log("Failed to create a file with the name '" + fileName + "' within the current project because a file with that name already exists!");
+					return false;
+				}
+				return true;
+				break;
 		}
-		else
-		{
-			console.log("Failed to create a file with the name '" + fileName + "' within the current project because a file with that name already exists!");
-			return false;
-		}
-		return true;
 	},
 	deleteFile:function(fileName, dir) //Deletes the specified file on the server, within a specified directory
 	{
