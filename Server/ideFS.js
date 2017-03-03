@@ -163,13 +163,13 @@ var exports =
 },
 	run:function(prog, args, dir) //Runs a specified file on the server, within a specified directory, and with the specified arguments
 	{
-		if (prog.substr(prog.length - 5 == ".java")
+		if (prog.substr(prog.length - 5) == ".java")
 		{
 			prog = prog.replace(".java","");
 			var str = execFileSync("java", ["-cp", "workspace/" + dir, prog].concat(args)).toString();
 			return str;
 		}
-		else if (prog.substr(prog.length - 4 == ".cpp")
+		else if (prog.substr(prog.length - 4) == ".cpp")
 		{
 			prog.replace(".cpp","");
 			var str = execFileSync("./", ["workspace/" + dir, prog].concat(args)).toString();
