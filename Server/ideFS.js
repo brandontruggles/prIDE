@@ -127,7 +127,8 @@ var exports =
 		else if (files[i].substr(files[i].length - 2) == ".c")
 		{	
 			flies.push("workspace/" + dir + "/" + files[i]);
-			langflag = "c";			
+			langflag = "c";		
+
 		}							
 		else if (files[i].substr(files[i].length - 4) == ".py")			
 		{	
@@ -137,16 +138,21 @@ var exports =
 	}
 	try
 	{
-		if (langflag=="java")
+		if (langflag == "java")
 		{
 			var ret = execFileSync("javac", flies, {stdio: ['pipe', 'pipe', 'pipe']}).toString();
 		}
-		else if (langflag=="cpp" || langflag=="c")
+		else if (langflag == "cpp")
 		{
-			var ret = execFileSync("gcc", flies, {stdio: ['pipe', 'pipe', 'pipe']}).toString();
+			var ret = execFileSync("gpp -o " + flies.substr(flies.length - 4), flies, {stdio: ['pipe', 'pipe', 'pipe']}).toString();
 		}
-		else if (langflag=="py")
-		{																					var ret = execFileSync("python -m py_compile", flies, {stdio: ['pipe', 'pipe', 'pipe']}).toString();
+		else if (langflag == "c")
+		{
+			var ret = execFileSync("gpp -o " + flies.substr(flies.length - 2), flies, {stdio: ['pipe', 'pipe', 'pipe']}).toString();
+		}
+		else if (langflag == "py")
+		{															
+			var ret = execFileSync("python -m py_compile", flies, {stdio: ['pipe', 'pipe', 'pipe']}).toString();
 		}
 	return ret;
 	}
@@ -157,9 +163,19 @@ var exports =
 },
 	run:function(prog, args, dir) //Runs a specified file on the server, within a specified directory, and with the specified arguments
 	{
-		prog = prog.replace(".java","");
-		var str = execFileSync("java", ["-cp", "workspace/" + dir, prog].concat(args)).toString();
-		return str;
+		if (prog.substr(prog.length - 5 == ".java")
+		{
+			prog = prog.replace(".java","");
+			var str = execFileSync("java", ["-cp", "workspace/" + dir, prog].concat(args)).toString();
+			return str;
+		}
+		else if (prog.substr(prog.length - 4 == ".cpp")
+		{
+			prog.replace(".cpp","");
+			var str = execFileSync("./", ["workspace/" + dir, prog].concat(args)).toString();
+			return str;
+
+		}
 	},
 	createFile:function(fileName, dir)
 	{
