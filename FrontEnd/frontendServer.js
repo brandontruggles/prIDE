@@ -1,8 +1,13 @@
 var express = require('express');
 var opn = require('opn');
 var path = require('path');
+var conf = require('./js/conf.js');
 var app = express();
 
+if(!conf.configExists())
+  conf.createConfig();
+
+conf.readConfig();
 
 app.use('/image',express.static(__dirname+'/image'));
 app.use('/css', express.static(__dirname+'/css'));
@@ -13,10 +18,10 @@ app.get('/', function(req,res){
 });
 
 
-app.listen(9001, '0.0.0.0', function (err){ 
+app.listen(conf.getConfig().port, conf.getConfig().ip, function (err){ 
   if(err){
     return console.error(err);
   }
-  console.log('listening at http://localhost:9001');
-  opn('http://localhost:9001');
+  console.log('listening at http://'+conf.getConfig().ip+':'+conf.getConfig().port);
+  opn('http://'+conf.getConfig().ip+':'+conf.getConfig().port);
 })
