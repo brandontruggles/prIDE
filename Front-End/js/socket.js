@@ -168,7 +168,7 @@ function Connection()//works
 
 							if (currfile.endsWith(".java"))
 							{
-								ide.addtab(currproject, currfile, "public class "+currfile.substr(0,currfile.length-5)+"\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}\n", "ace/mode/java");
+								ide.addtab(currproject, currfile, "public class "+currfile.substr(0,currfile.length-5)+"\n{\n}", "ace/mode/java");
 							}
 							else
 							{

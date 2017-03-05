@@ -1,7 +1,4 @@
-Server/node_modules
-Server/server.conf
-FrontEnd/node_modules
-test/
-workspace/
+node_modules/
+Workspace/
 server.conf
-.htaccess
+express.conf

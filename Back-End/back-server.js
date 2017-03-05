@@ -1,8 +1,13 @@
-var rtu = require('./rtu.js'); //Helper library for real-time updates
-var git = require('./git.js'); //Helper library for git and Github integration
-var ideFS = require('./ideFS.js'); //Helper library for most file-system related functions
+var rtu = require('./helpers/rtu.js'); //Helper library for real-time updates
+var git = require('./helpers/git.js'); //Helper library for git and Github integration
+var ideFS = require('./helpers/ideFS.js'); //Helper library for most file-system related functions
 var fs = require('fs'); //Library used for reading files
 var WebSocketServer = require('ws').Server; //Websocket library for creating a server
+var path = require('path'); //Used for resolving file paths
+
+global.appRoot = path.resolve(__dirname + "/.."); //Define the root project directory as a global variable
+
+console.log(global.appRoot);
 
 function broadcastResponse(connectionList, responseString) //Function used to send a message to all connected clients
 {
@@ -77,7 +82,7 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 							}
 							if(response.contents == null)
 							{
-								var proj = fs.readdirSync("workspace/");
+								var proj = fs.readdirSync(global.appRoot + "/Workspace/");
 								var curpath = '';
 								var explorer;
 								var pathing;
@@ -97,7 +102,7 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 						case "run":
 							response.type = "Code-Running-Status";
 							console.log("Running code...");
-							var str = ideFS.run(file, "some args", dir);
+							var str = ideFS.run(file, args, dir);
 							console.log(str);
 							response.contents = {"output": str};
 							ws.send(JSON.stringify(response));
@@ -110,7 +115,7 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 							break;
 						case "newproject":
 							response.type = "Project-Created-Status";
-							if(!ideFS.createProject("workspace/" + params))
+							if(!ideFS.createProject(global.appRoot + "/Workspace/" + params))
 							{
 								response.contents = {"Created": false, "Reason": "Failed to create a new project with the name '" + params + "'! That project name is already taken."};
 							}
@@ -158,7 +163,7 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 							}
 							else
 							{
-								var proj = fs.readdirSync("workspace/");
+								var proj = fs.readdirSync(global.appRoot + "/Workspace/");
 								var curpath = '';
 								var explorer;
 								var pathing;
@@ -205,7 +210,7 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 							break;
 						case "readfile":
 							response.type = "Read-File";
-							var str = fs.readFileSync("workspace/" + dir + "/" + params, "utf8").toString();
+							var str = fs.readFileSync(global.appRoot + "/Workspace/" + dir + "/" + params, "utf8").toString();
 							response.contents = {"body": str, "proj": dir, "file": params};
 							ws.send(JSON.stringify(response));
 							rtu.readfile(nickname, dir + "/" + params, str);
@@ -315,7 +320,7 @@ if(!ideFS.configExists()) //Create a server.conf file (to store certain server s
 
 ideFS.readConfig(); //Read certain settings from the server.conf file and store them in memory
 
-if(!ideFS.workspaceExists()) //Create a workspace folder (which will contain all projects created on the server) if one does not already exist
+if(!ideFS.workspaceExists()) //Create a Workspace folder (which will contain all projects created on the server) if one does not already exist
 {
 	ideFS.createWorkspace();
 }

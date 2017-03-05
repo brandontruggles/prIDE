@@ -4,6 +4,8 @@ var path = require('path');
 var conf = require('./js/conf.js');
 var app = express();
 
+global.appRoot = path.resolve(__dirname + "/..");
+
 if(!conf.configExists())
   conf.createConfig();
 

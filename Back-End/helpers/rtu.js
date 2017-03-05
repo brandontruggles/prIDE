@@ -56,7 +56,7 @@ var exports =
 		}
 
 		console.log(logs[file].str);
-		fs.writeFileSync("workspace/" + file, logs[file].str); // save to file
+		fs.writeFileSync(global.appRoot + "/Workspace/" + file, logs[file].str); // save to file
 	},
 	enQ : function (fpath, change) 
 	{
