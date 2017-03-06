@@ -92,24 +92,28 @@ var exports =
 		while(extensionIndex > -1 && prog.charAt(extensionIndex) != ".")
 			extensionIndex--;
 		extensionIndex++; //The file extension starts one position after the last dot in the file name
-		var extension = prog.substring(extensionIndex, prog.length);
+		var extension = prog.substring(extensionIndex);
 		var str = "";
+		var splitArgs = args.split(" ");
+		if(args == "")
+			splitArgs = [];
 
 		switch(extension)
 		{
 			case "java":
-				str = execFileSync("javac", [global.appRoot + "/Workspace/" + prog].concat(args), {stdio: ['pipe', 'pipe', 'pipe']}).toString();
+				str = execFileSync("javac", [global.appRoot + "/Workspace/" +dir + "/" +  prog].concat(splitArgs), {stdio: ['pipe', 'pipe', 'pipe']}).toString();
 				break;
 			case "c":
-				str = execFileSync("gcc", [global.appRoot + "/Workspace/" + prog, "-o", global.appRoot + "/Workspace/" + prog.replace("." + extension, "")].concat(args), {stdio: ['pipe', 'pipe', 'pipe']}).toString();
+				str = execFileSync("gcc", [global.appRoot + "/Workspace/" + dir + "/" + prog, "-o", global.appRoot + "/Workspace/" + dir + "/" + prog.replace("." + extension, "")].concat(splitArgs), {stdio: ['pipe', 'pipe', 'pipe']}).toString();
 				break;
 			case "cpp":
-				str = execFileSync("g++", [global.appRoot + "/Workspace/" + prog, "-o", global.appRoot + "/Workspace/" + prog.replace("." + extension, "")].concat(args), {stdio: ['pipe', 'pipe', 'pipe']}).toString();
+				str = execFileSync("g++", [global.appRoot + "/Workspace/" + dir + "/" + prog, "-o", global.appRoot + "/Workspace/" + dir + "/" + prog.replace("." + extension, ""), args].concat(splitArgs), {stdio: ['pipe', 'pipe', 'pipe']}).toString();
 				break;
 			default:
 				str = "File extension not recognized! Unable to compile!";
 				break;	
-		}		
+		}	
+		console.log(prog);	
 		return str;
 	},
 	run:function(prog, args, dir) //Runs a specified file on the server, within a specified directory, and with the specified arguments
@@ -121,24 +125,29 @@ var exports =
 		var extension = prog.substring(extensionIndex, prog.length);
 		prog = prog.replace("." + extension, "");
 		var str = "";
+		var splitArgs = args.split(" ");
+		if(args == "")
+			splitArgs = [];
+
 		switch(extension)
 		{
 			case "java":
-				str = execFileSync("java", ["-cp", global.appRoot + "/Workspace/" + dir, prog].concat(args)).toString();	
+				str = execFileSync("java", ["-cp", global.appRoot + "/Workspace/" + dir, prog].concat(splitArgs)).toString();	
 				break;
 			case "c":
-				str = execFileSync(global.appRoot + "/Workspace/" + dir, [prog].concat(args)).toString();
+				str = execFileSync(global.appRoot + "/Workspace/" + dir, [prog].concat(splitArgs)).toString();
 				break;
 			case "cpp":
-				str = execFileSync(global.appRoot + "/Workspace/" + dir, [prog].concat(args)).toString();
+				str = execFileSync(global.appRoot + "/Workspace/" + dir, [prog].concat(splitArgs)).toString();
 				break;
 			case "python":
-				str = execFileSync("python", [global.appRoot + "/Workspace/" + dir, prog].concat(args)).toString();
+				str = execFileSync("python", [global.appRoot + "/Workspace/" + dir, prog].concat(splitArgs)).toString();
 				break;
 			default:
 				str = "File extension not recognized! Unable to execute the program!";
 				break;
 		}
+		console.log(str);
 		return str;
 	},
 	createFile:function(fileName, dir)

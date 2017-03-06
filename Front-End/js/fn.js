@@ -42,6 +42,7 @@ var fn = (function ()
 			{
 				"nickname": nickname,
 				"dir": projects[currfolder].path,
+				"file": currfile,
 				"contents": "compile"
 			};
 			sock.send(JSON.stringify(message));

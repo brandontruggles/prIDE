@@ -45,6 +45,10 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 				var command = contents.split(' ')[0].toLowerCase(); //The first part of the message is always the type of command
 				var spaceIndex = contents.indexOf(' ');
 				var params = contents.substring(spaceIndex + 1); //Everything after the command is the parameters of the command
+
+				if(spaceIndex == -1)
+					params = "";
+
 				var token = null; //The Github authentication token for a client (null until set)
 				
 				var found = false; 
@@ -96,13 +100,13 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 							case "compile":
 							response.type = "Compile-Running-Status";
 							console.log("Received command to compile!");
-							response.contents = {"output": ideFS.compile(dir)};
+							response.contents = {"output": ideFS.compile(file, params, dir)};
 							ws.send(JSON.stringify(response));
 							break;
 						case "run":
 							response.type = "Code-Running-Status";
 							console.log("Running code...");
-							var str = ideFS.run(file, args, dir);
+							var str = ideFS.run(file, params, dir);
 							console.log(str);
 							response.contents = {"output": str};
 							ws.send(JSON.stringify(response));
