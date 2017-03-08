@@ -104,7 +104,7 @@ var exports =
 				str = execFileSync("javac", [global.appRoot + "/Workspace/" +dir + "/" +  prog].concat(splitArgs), {stdio: ['pipe', 'pipe', 'pipe']}).toString();
 				break;
 			case "c":
-				str = execFileSync("gcc", [global.appRoot + "/Workspace/" + dir + "/" + prog, "-o", global.appRoot + "/Workspace/" + dir + "/" + prog.replace("." + extension, "")].concat(splitArgs), {stdio: ['pipe', 'pipe', 'pipe']}).toString();
+				str = execFileSync("gcc", ["-o", global.appRoot + "/Workspace/" + dir + "/" + prog, global.appRoot + "/Workspace/" + dir + "/" + prog.replace("." + extension, "")].concat(splitArgs), {stdio: ['pipe', 'pipe', 'pipe']}).toString();
 				break;
 			case "cpp":
 				str = execFileSync("g++", [global.appRoot + "/Workspace/" + dir + "/" + prog, "-o", global.appRoot + "/Workspace/" + dir + "/" + prog.replace("." + extension, ""), args].concat(splitArgs), {stdio: ['pipe', 'pipe', 'pipe']}).toString();
