@@ -107,7 +107,7 @@ var exports =
 				str = execFileSync("gcc", ["-o", global.appRoot + "/Workspace/" + dir + "/" + prog, global.appRoot + "/Workspace/" + dir + "/" + prog.replace("." + extension, "")].concat(splitArgs), {stdio: ['pipe', 'pipe', 'pipe']}).toString();
 				break;
 			case "cpp":
-				str = execFileSync("g++", [global.appRoot + "/Workspace/" + dir + "/" + prog, "-o", global.appRoot + "/Workspace/" + dir + "/" + prog.replace("." + extension, ""), args].concat(splitArgs), {stdio: ['pipe', 'pipe', 'pipe']}).toString();
+				str = execFileSync("g++", ["-o", global.appRoot + "/Workspace/" + dir + "/" + prog,  global.appRoot + "/Workspace/" + dir + "/" + prog.replace("." + extension, ""), args].concat(splitArgs), {stdio: ['pipe', 'pipe', 'pipe']}).toString();
 				break;
 			default:
 				str = "File extension not recognized! Unable to compile!";
