@@ -88,7 +88,7 @@ var exports =
 	},
 	compile:function(prog, args, dir) //Compiles all the files within a specified directory (should be changed in the future to only compile one single file)
 	{
-		var extensionIndex = prog.length - 1;
+		var extensionIndex = (prog.length) - 1;
 		while(extensionIndex > -1 && prog.charAt(extensionIndex) != ".")
 			extensionIndex--;
 		extensionIndex++; //The file extension starts one position after the last dot in the file name
