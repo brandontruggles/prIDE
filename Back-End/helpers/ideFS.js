@@ -136,14 +136,14 @@ var exports =
 				break;
 			case "c":
 				str = execFileSync(global.appRoot + "/Workspace/" + dir + "/" +  prog,[].concat(splitArgs)).toString();
-				str.concat("\n");
+				str = str.concat("\n");
 				break;
 			case "cpp":
 				str = execFileSync(global.appRoot + "/Workspace/" + dir + "/" +  prog,[].concat(splitArgs)).toString();
-				str.concat("\n");
+				str = str.concat("\n");
 				break;
 			case "python":
-				str = execFileSync("python", [global.appRoot + "/Workspace/" + dir, prog].concat(splitArgs)).toString();
+				str = execFileSync("python", [global.appRoot + "/Workspace/" + dir + "/" + prog.concat(".", extenstion)].concat(splitArgs)).toString();
 				break;
 			default:
 				str = "File extension not recognized! Unable to execute the program!";
