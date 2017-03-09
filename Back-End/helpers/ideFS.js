@@ -143,7 +143,7 @@ var exports =
 				str = str.concat("\n");
 				break;
 			case "py":
-				str = execFileSync("python", [global.appRoot + "/Workspace/" + dir + "/" + prog.concat(".", extenstion)].concat(splitArgs)).toString();
+				str = execFileSync("python", [global.appRoot + "/Workspace/" + dir + "/" + prog + ".py"].concat(splitArgs)).toString();
 				break;
 			default:
 				str = "File extension not recognized! Unable to execute the program!";
