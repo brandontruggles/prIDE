@@ -142,7 +142,7 @@ var exports =
 				str = execFileSync(global.appRoot + "/Workspace/" + dir + "/" +  prog,[].concat(splitArgs)).toString();
 				str = str.concat("\n");
 				break;
-			case "python":
+			case "py":
 				str = execFileSync("python", [global.appRoot + "/Workspace/" + dir + "/" + prog.concat(".", extenstion)].concat(splitArgs)).toString();
 				break;
 			default:
@@ -172,7 +172,7 @@ var exports =
 			case "cpp":
 				fileContents = "int main(int argc, char **argv)\n{\n\treturn 0;\n}";
 				break;
-			case "python":
+			case "py":
 				fileContents = "print 'Hello World!'";
 				break;
 			default:
