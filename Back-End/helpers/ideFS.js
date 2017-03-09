@@ -135,10 +135,10 @@ var exports =
 				str = execFileSync("java", ["-cp", global.appRoot + "/Workspace/" + dir, prog].concat(splitArgs)).toString();	
 				break;
 			case "c":
-				str = execFileSync("./", [global.appRoot + "/Workspace/" + dir, prog].concat(splitArgs)).toString();
+				str = execFileSync(global.appRoot + "/Workspace/" + dir, prog.concat(splitArgs)).toString();
 				break;
 			case "cpp":
-				str = execFileSync("./", [global.appRoot + "/Workspace/" + dir, prog].concat(splitArgs)).toString();
+				str = execFileSync(global.appRoot + "/Workspace/" + dir, prog.concat(splitArgs)).toString();
 				break;
 			case "python":
 				str = execFileSync("python", [global.appRoot + "/Workspace/" + dir, prog].concat(splitArgs)).toString();
