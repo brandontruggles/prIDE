@@ -111,6 +111,7 @@ var exports =
 				break;
 			default:
 				str = "File extension not recognized! Unable to compile!";
+				str = str.concat("\n").
 				break;	
 		}	
 		console.log(prog);	
