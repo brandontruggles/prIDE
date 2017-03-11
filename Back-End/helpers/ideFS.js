@@ -119,11 +119,7 @@ var exports =
 	},
 	run:function(prog, args, dir) //Runs a specified file on the server, within a specified directory, and with the specified arguments
 	{
-		var extensionIndex = prog.length - 1;
-		while(extensionIndex > -1 && prog.charAt(extensionIndex) != ".")
-			extensionIndex--;
-		extensionIndex++; //The file extension starts one position after the last dot in the file name
-		var extension = prog.substring(extensionIndex, prog.length);
+		var extension = prog.substr(prog.lastIndexOf('.')+1);
 		prog = prog.replace("." + extension, "");
 		var str = "";
 		var splitArgs = args.split(" ");
@@ -155,26 +151,21 @@ var exports =
 	},
 	createFile:function(fileName, dir)
 	{
-		var extensionIndex = fileName.length - 1;
-		while(extensionIndex > -1 && fileName.charAt(extensionIndex) != ".")
-			extensionIndex--;
-		extensionIndex++; //The file extension starts one position after the last dot in the file name
-		var extension = fileName.substring(extensionIndex, fileName.length);
+		var extension = fileName.substr(fileName.lastIndexOf('.')+1);
 		var fileContents = "";
-
 		switch(extension)
 		{
 			case "java":
-				fileContents = "public class " + fileName.replace("." + extension, "") + "\n{\n}";
+				fileContents = "java\npublic class " + fileName.replace("." + extension, "") + "\n{\n}";
 				break;
 			case "c":
-				fileContents = "int main(int argc, char **argv)\n{\n\treturn 0;\n}";
+				fileContents = "c_cpp\nint main(int argc, char **argv)\n{\n\treturn 0;\n}";
 				break;
 			case "cpp":
-				fileContents = "int main(int argc, char **argv)\n{\n\treturn 0;\n}";
+				fileContents = "c_cpp\nint main(int argc, char **argv)\n{\n\treturn 0;\n}";
 				break;
 			case "py":
-				fileContents = "print 'Hello World!'";
+				fileContents = "python\nprint 'Hello World!'";
 				break;
 			default:
 				break;
@@ -182,7 +173,7 @@ var exports =
 		if(!fs.existsSync(global.appRoot + "/Workspace/" + dir + "/" + fileName))
 		{
 			fs.writeFileSync(global.appRoot + "/Workspace/" + dir + "/" + fileName, fileContents);
-			return true;
+			return fileContents;
 		}
 
 		console.log("Failed to create a file with the name '" + fileName + "' within the current project because a file with that name already exists!");

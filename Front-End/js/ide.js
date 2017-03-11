@@ -47,6 +47,7 @@ var ide = (function ()
 				filename: file,
 				doc: ace.createEditSession(body, mode)
 			});
+      editor.setReadOnly(false);
 		},
 		findtab : function (dir, file)
 		{
@@ -68,6 +69,8 @@ var ide = (function ()
 				"contents": "readfile " + file
 			};
 			sock.send(JSON.stringify(message));
+      editor.setReadOnly(false);
+
 			return;
 		},
 		closetab : function (index)
@@ -80,6 +83,7 @@ var ide = (function ()
 				tabs = [];
 				currfile = '';
 				editor.setSession(ace.createEditSession('', "ace/mode/java"));
+        editor.setReadOnly(true);
 				this.updateTabs();
 				this.updateFileExplorer();
 				return; // temporary to prevent errors
@@ -95,6 +99,7 @@ var ide = (function ()
 				currfile = tabs[curtab].filename;
 
 				editor.setSession(tabs[curtab].doc);
+      //  editor.
 			}
 			this.updateTabs();
 			this.updateFileExplorer();

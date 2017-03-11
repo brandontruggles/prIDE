@@ -2,6 +2,7 @@ var express = require('express');
 var opn = require('opn');
 var path = require('path');
 var conf = require('./js/conf.js');
+var nodemailer = require('nodemailer');
 var app = express();
 
 global.appRoot = path.resolve(__dirname + "/..");
@@ -27,3 +28,4 @@ app.listen(conf.getConfig().port, conf.getConfig().ip, function (err){
   console.log('listening at http://'+conf.getConfig().ip+':'+conf.getConfig().port);
   opn('http://'+conf.getConfig().ip+':'+conf.getConfig().port);
 })
+

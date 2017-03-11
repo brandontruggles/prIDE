@@ -165,15 +165,19 @@ function Connection()//works
 						{
 							currfile = name;
 							projects[currfolder].filelist.push(currfile);
-
-							if (currfile.endsWith(".java"))
+              ide.addtab(currproject, currfile, contents.Content, "ace/mode/"+contents.fileType);
+							/*if (currfile.endsWith(".java"))
 							{
 								ide.addtab(currproject, currfile, "public class "+currfile.substr(0,currfile.length-5)+"\n{\n}", "ace/mode/java");
 							}
-							else
+							else if (currfile.endsWith(".py"))
 							{
-								ide.addtab(currproject, currfile, "", "ace/mode/text");
+								ide.addtab(currproject, currfile, "print ", "ace/mode/py");
 							}
+              else
+              {
+                ide.addtab(currproject,currfile, "", "ace/mode/"+currfile.substr(currfile.lastIndexOf('.')+1));
+              }*/
 
 							ide.updateTabs();
 							ide.updateFileExplorer();
@@ -224,6 +228,7 @@ function Connection()//works
 						if(contents.Opened)
 						{
 							projects[contents.Dir] = {"hidden": false, "filelist": contents.Files, "path": ''};//work in progress
+              //editor.setReadOnly(false);
 							ide.updateFileExplorer();
 						}
 						else
@@ -243,8 +248,8 @@ function Connection()//works
 						break;
 					case "Read-File":
 						/* vvv kinda jank to do this here vvv */
-						editor.setReadOnly(false);
-						ide.addtab(contents.proj, contents.file, contents.body, "ace/mode/java");
+						//editor.setReadOnly(false);
+						ide.addtab(contents.proj, contents.file, contents.body, "ace/mode/java" );
 						ide.updateTabs();
 						ide.updateFileExplorer(); // now it switches to tab instead of opening a new one
 						ide.gotolasttab();

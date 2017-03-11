@@ -132,15 +132,16 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 							break;
 						case "newfile":
 							response.type = "File-Created-Status";
-							if(!ideFS.createFile(params, dir))
+              var newf = ideFS.createFile(params,dir);
+							if(!newf)
 							{
 								response.contents = {"Created": false, "Reason": "Failed to create a new file with the name '" + params + "'! That file already exists in the current project."};
 							}
 							else
 							{
-								response.contents = {"Created": true};
-								var startContents = "public class " + params.replace(".java", "") + "\n{\n\tpublic static void main(String[] args)\n\t{\n\t\t// Edit this class as you please\n\t\tSystem.out.println(\"Hello World!\");\n\t}\n}"
-								rtu.newfile(dir + "/" + params, startContents);
+                console.log("Trying to create a File type" + newf.substr(0,newf.indexOf("\n")));
+								response.contents = {"Created": true, "fileType": newf.substr(0,newf.indexOf("\n")),"Content": newf.substr(newf.indexOf("\n")+1)};
+								//rtu.newfile(dir + "/" + params, startContents);
 							}
 							ws.send(JSON.stringify(response));
 							break;
