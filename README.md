@@ -26,7 +26,7 @@ Why is it called prIDE? While brainstorming names for the project, we decided th
 
 ## Running prIDE
 
-The easiest way to run prIDE is to navigate to the root `prIDE/` directory and type the command `npm run start`. This will automatically launch the Express server for the front-end, as well as the websocket server for the back-end. 
+The easiest way to run prIDE is to navigate to the root `prIDE/` directory and type the command `npm start`. This will automatically launch the Express server for the front-end, as well as the websocket server for the back-end. 
 
 Each server can also be run independently, although this isn't recommended since there isn't much reason to do so. To run the front-end Express server independently, you can navigate to the `prIDE/Front-End` directory and type the command `node front-server.js`. To run the back-end websocket server independently, you can navigate to the `prIDE/Back-End` directory and type the command `node back-server.js`.
 
