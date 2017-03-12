@@ -28,7 +28,7 @@ Why is it called prIDE? While brainstorming names for the project, we decided th
 
 The easiest way to run prIDE is to navigate to the root `prIDE/` directory and type the command `npm run start`. This will automatically launch the Express server for the front-end, as well as the websocket server for the back-end. 
 
-Each server can also be run independently, although this isn't recommended since there isn't much reason to do so. To run the front-end Express server independently, you can navigate to the `prIDE/Front-End` directory and type the command `node front-server.js`. To run the back-end websocket server independently, you can navigate to the `prIDE/Server` directory and type the command `node back-server.js`.
+Each server can also be run independently, although this isn't recommended since there isn't much reason to do so. To run the front-end Express server independently, you can navigate to the `prIDE/Front-End` directory and type the command `node front-server.js`. To run the back-end websocket server independently, you can navigate to the `prIDE/Back-End` directory and type the command `node back-server.js`.
 
 ## Using prIDE
 
@@ -46,7 +46,7 @@ When prIDE is started for the first time, two new config files will be generated
 
 - [ ] Re-design the front-end using React.js.
 - [ ] Implement read-only links for inviting others to view code changes in real-time.
-- [ ] Allow users to compile and run different languages (add support for adding more through settings).
+- [x] Allow users to compile and run different languages.
 - [ ] Create a dedicated mobile client using React Native.
 - [ ] Create a dedicated desktop client using Electron.
 - [ ] Add functionality to install external libraries on the host server.
