@@ -139,9 +139,8 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 							}
 							else
 							{
-                console.log("Trying to create a File type" + newf.substr(0,newf.indexOf("\n")));
-								response.contents = {"Created": true, "fileType": newf.substr(0,newf.indexOf("\n")),"Content": newf.substr(newf.indexOf("\n")+1)};
-								//rtu.newfile(dir + "/" + params, startContents);
+								response.contents = {"Created": true, "Content": newf};
+								rtu.newfile(dir + "/" + params, newf);
 							}
 							ws.send(JSON.stringify(response));
 							break;

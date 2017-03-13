@@ -7,10 +7,11 @@ var name;
 var editor;
 var paths = {};
 var projects = {};
-
+var modelist;
 function Connection()//works
 {	
 	//create editor
+  modelist = ace.require('ace/ext/modelist');
 	editor = ace.edit("codespace");
 	editor.setTheme("ace/theme/monokai");
 	editor.getSession().setMode("ace/mode/java");
@@ -165,20 +166,7 @@ function Connection()//works
 						{
 							currfile = name;
 							projects[currfolder].filelist.push(currfile);
-              ide.addtab(currproject, currfile, contents.Content, "ace/mode/"+contents.fileType);
-							/*if (currfile.endsWith(".java"))
-							{
-								ide.addtab(currproject, currfile, "public class "+currfile.substr(0,currfile.length-5)+"\n{\n}", "ace/mode/java");
-							}
-							else if (currfile.endsWith(".py"))
-							{
-								ide.addtab(currproject, currfile, "print ", "ace/mode/py");
-							}
-              else
-              {
-                ide.addtab(currproject,currfile, "", "ace/mode/"+currfile.substr(currfile.lastIndexOf('.')+1));
-              }*/
-
+              ide.addtab(currproject, currfile, contents.Content, modelist.getModeForPath(currfile).mode);
 							ide.updateTabs();
 							ide.updateFileExplorer();
 
@@ -249,7 +237,7 @@ function Connection()//works
 					case "Read-File":
 						/* vvv kinda jank to do this here vvv */
 						//editor.setReadOnly(false);
-						ide.addtab(contents.proj, contents.file, contents.body, "ace/mode/java" );
+						ide.addtab(contents.proj, contents.file, contents.body, modelist.getModeForPath(contents.file).mode);
 						ide.updateTabs();
 						ide.updateFileExplorer(); // now it switches to tab instead of opening a new one
 						ide.gotolasttab();

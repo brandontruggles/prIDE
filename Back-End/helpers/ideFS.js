@@ -88,11 +88,7 @@ var exports =
 	},
 	compile:function(prog, args, dir) //Compiles all the files within a specified directory (should be changed in the future to only compile one single file)
 	{
-		var extensionIndex = (prog.length) - 1;
-		while(extensionIndex > -1 && prog.charAt(extensionIndex) != ".")
-			extensionIndex--;
-		extensionIndex++; //The file extension starts one position after the last dot in the file name
-		var extension = prog.substring(extensionIndex);
+		var extension = prog.subst(prog.lastIndexOf('.')+1);
 		var str = "";
 		var splitArgs = args.split(" ");
 		if(args == "")
@@ -156,16 +152,16 @@ var exports =
 		switch(extension)
 		{
 			case "java":
-				fileContents = "java\npublic class " + fileName.replace("." + extension, "") + "\n{\n}";
+				fileContents = "public class " + fileName.replace("." + extension, "") + "\n{\n}";
 				break;
 			case "c":
-				fileContents = "c_cpp\nint main(int argc, char **argv)\n{\n\treturn 0;\n}";
+				fileContents = "int main(int argc, char **argv)\n{\n\treturn 0;\n}";
 				break;
 			case "cpp":
-				fileContents = "c_cpp\nint main(int argc, char **argv)\n{\n\treturn 0;\n}";
+				fileContents = "int main(int argc, char **argv)\n{\n\treturn 0;\n}";
 				break;
 			case "py":
-				fileContents = "python\nprint 'Hello World!'";
+				fileContents = "print 'Hello World!'";
 				break;
 			default:
 				break;
