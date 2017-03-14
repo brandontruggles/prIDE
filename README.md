@@ -36,11 +36,11 @@ To connect to the server as a user, simply open an instance of the front-end fro
 
 Upon connecting to a prIDE server through the front-end, you will be able to create a new project using the top navigation bar, or open an existing project on the server through the navigation pane on the left side of the screen. Once a project is open, you can then open a file within the project using the same navigation pane, or create a new file within the project using the top navigation bar. Once a file is opened, its contents will appear in the main code window for editing. Changes to any file will be saved on the server and pushed to all other users viewing that file in real-time.
 
-On the host server, prIDE projects are simply represented as named directories found within the `prIDE/workspace/` directory. The `prIDE/workspace/` directory is automatically generated if it does not exist at the time that prIDE is started. The files within projects on a prIDE server are stored in the named directory corresponding to their project. Currently, the only way to delete a project or its files from prIDE is to have the server admin log onto the host server and delete the files manually.
+On the host server, prIDE projects are simply represented as named directories found within the `prIDE/Workspace/` directory. The `prIDE/Workspace/` directory is automatically generated if it does not exist at the time that prIDE is started. The files within projects on a prIDE server are stored in the named directory corresponding to their project. Currently, the only way to delete a project or its files from prIDE is to have the server admin log onto the host server and delete the files manually.
 
 ## Configuring prIDE
 
-When prIDE is started for the first time, two new config files will be generated within the root `prIDE/` directory named `front-server.conf` and `back-server.conf`. These two config files are read by prIDE during startup, and allow the server admin to modify different server settings such as the default ports for the front-end and back-end servers, as well as the maximum number of allowed clients on the back-end server, using simple JSON syntax. 
+When prIDE is started for the first time, two new config files will be generated within the root `prIDE/` directory named `front-server.conf` and `back-server.conf`. These two config files are read by prIDE during startup, and allow the server admin to modify different server settings such as the default ports for the front-end and back-end servers, as well as the maximum number of allowed clients on the back-end server, using simple JSON syntax. The default port for the front-end server is `80`, while the default port for the back-end server is `8080`. 
 
 ## Feature To-Do List
 
