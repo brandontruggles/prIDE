@@ -26,6 +26,11 @@ app.listen(conf.getConfig().port, conf.getConfig().ip, function (err){
     return console.error(err);
   }
   console.log('listening at http://'+conf.getConfig().ip+':'+conf.getConfig().port);
-  opn('http://'+conf.getConfig().ip+':'+conf.getConfig().port);
+  try{
+    opn('http://'+conf.getConfig().ip+':'+conf.getConfig().port);
+  }
+  catch (err){
+    console.log("Can't open Browser beacause its on a server without a Frontend");
+  }
 })
 

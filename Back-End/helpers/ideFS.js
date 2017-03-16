@@ -88,7 +88,7 @@ var exports =
 	},
 	compile:function(prog, args, dir) //Compiles all the files within a specified directory (should be changed in the future to only compile one single file)
 	{
-		var extension = prog.subst(prog.lastIndexOf('.')+1);
+		var extension = prog.substr(prog.lastIndexOf('.')+1);
 		var str = "";
 		var splitArgs = args.split(" ");
 		if(args == "")

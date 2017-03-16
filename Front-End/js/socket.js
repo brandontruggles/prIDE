@@ -301,9 +301,11 @@ function createSolution(contents)
 	var count = 0;
 	for(var i = 0; i < contents.Proj.length; i++)
 	{
-			projects[contents.Proj[i]] = {"hidden": true, "filelist": [], "path": contents.paths[count]};
-			projects[contents.Proj[i]].filelist = contents.Files[count];
-
+    if(!projects[contents.Proj[i]])
+    {
+		  projects[contents.Proj[i]] = {"hidden": true, "filelist": [], "path": contents.paths[count]};
+		}
+    projects[contents.Proj[i]].filelist = contents.Files[count];
 		count = solutionexplorer(count,contents.Proj[i], contents);
 		count++;
 	}
@@ -317,7 +319,10 @@ function solutionexplorer(count,projname,contents)
 		if(projects[projname].filelist[k].includes("/"))
 		{
 			count++;
-			projects[contents.paths[count]] = {"hidden": true, "filelist": [],"path": contents.paths[count]};
+      if(!projects[contents.paths[count]])
+      {
+        projects[contents.paths[count]] = {"hidden": true, "filelist": [],"path": contents.paths[count]};
+      }
 			projects[contents.paths[count]].filelist = contents.Files[count];
 			count = solutionexplorer(count,contents.paths[count], contents);
 		}
