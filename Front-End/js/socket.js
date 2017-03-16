@@ -148,8 +148,16 @@ function Connection()//works
 					case "Project-Created-Status":
 						if(contents.Created)
 						{
-							projects[name] = {"hidden": false, "filelist": [], "path": name};//work in progress
-							setproj(name);
+              if(contents.nick == nickname)
+              {
+                projects[name] = {"hidden": false, "filelist": [], "path": name};//work in progress
+							  setproj(name);
+              }
+              else
+              {
+                document.getElementById('consoleWindow').innerHTML += contents.nick+" added Project: "+ contents.name+'\n';
+                projects[contents.name] = {"hidden": true, "filelist": [], "path": contents.name};
+              }
 							ide.updateFileExplorer();
 
 							reset();
@@ -164,13 +172,23 @@ function Connection()//works
 						var numOfFiles = 0;
 						if(contents.Created)
 						{
+              if(contents.nick == nickname)
+              {
 							currfile = name;
 							projects[currfolder].filelist.push(currfile);
               ide.addtab(currproject, currfile, contents.Content, modelist.getModeForPath(currfile).mode);
 							ide.updateTabs();
+
 							ide.updateFileExplorer();
 
 							ide.gotolasttab();
+              }
+              else
+              {
+                projects[contents.path].filelist.push(contents.file);
+                document.getElementById('consoleWindow').innerHTML += contents.nick+" Created File: "+contents.file+" in the "+contents.path+" directory\n";
+							ide.updateFileExplorer();
+              }
 							reset();
 						}
 						else
@@ -200,9 +218,11 @@ function Connection()//works
 						if(contents.Created)
 						{
 							//adding to project
+              if(contents.nick == nickname)
+                setproj(name);
+              else
+                document.getElementById('consoleWindow').innerHTML += contents.nick+" Created Directory: "+contents.dir+'\n';
 							createSolution(contents);
-							setproj(name);
-							console.log(name);
 							ide.updateFileExplorer();
 
 							reset();

@@ -125,24 +125,26 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 							}
 							else
 							{
-									response.contents = {"Created": true, "Folder": false};
+									response.contents = {"Created": true, "Folder": false, "name": params, "nick": nickname};
 
 							}
-							ws.send(JSON.stringify(response));
+              broadcastResponse(connectionList, JSON.stringify(response));
+							//ws.send(JSON.stringify(response));
 							break;
 						case "newfile":
 							response.type = "File-Created-Status";
               var newf = ideFS.createFile(params,dir);
-							if(!newf)
+							if(typeof(newf) == 'boolean')
 							{
 								response.contents = {"Created": false, "Reason": "Failed to create a new file with the name '" + params + "'! That file already exists in the current project."};
 							}
 							else
 							{
-								response.contents = {"Created": true, "Content": newf};
+								response.contents = {"Created": true, "Content": newf,"nick":nickname, "path": dir, "file": params};
 								rtu.newfile(dir + "/" + params, newf);
 							}
-							ws.send(JSON.stringify(response));
+              broadcastResponse(connectionList, JSON.stringify(response));
+							//ws.send(JSON.stringify(response));
 							break;
 						case "deletefile":
 							response.type = "File-Deleted-Status";
@@ -172,10 +174,11 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 								var explorer;
 								var pathing;
 								ideFS.explorerCreator(explorer = [],proj, curpath, pathing=[]);
-								response.contents = {"Created": true, "Proj":proj, "Files": explorer, "paths": pathing};
+								response.contents = {"Created": true, "Proj":proj, "Files": explorer, "paths": pathing, "dir": params, "nick": nickname};
 
 							}
-							ws.send(JSON.stringify(response));
+              broadcastResponse(connectionList, JSON.stringify(response));
+							//ws.send(JSON.stringify(response));
 							break;
 						case "openfile":
 							response.type = "File-Open-Response";

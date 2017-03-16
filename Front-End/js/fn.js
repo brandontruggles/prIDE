@@ -160,11 +160,11 @@ var fn = (function ()
 		},
 		newdir : function ()
 		{
-			name = document.getElementById('name').value;
+			name = projects[currfolder].path+"/"+document.getElementById('name').value;
 			var message =
 			{
 				"nickname": nickname,
-				"contents": "newdir "+projects[currfolder].path+"/"+name
+				"contents": "newdir "+name
 			};
 
 
