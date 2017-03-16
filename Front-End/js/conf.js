@@ -24,7 +24,7 @@ var exports =
     console.log("No front-server.conf file detected! Generating front-server.conf...");
     try
     {
-      fs.writeFileSync(global.appRoot + "/front-server.conf", "{\n\t\"ip\": \"0.0.0.0\", \n\t\"port\" : 8000\n}");
+      fs.writeFileSync(global.appRoot + "/front-server.conf", "{\n\t\"ip\": \"0.0.0.0\", \n\t\"port\" : 80\n}");
     }
     catch(err)
     {
