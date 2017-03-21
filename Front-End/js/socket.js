@@ -132,7 +132,16 @@ function Connection()//works
 					case "Compile-Running-Status": //Message if compiled correctly
 						if(contents.output[0] == null)
 						{
-							document.getElementById('consoleWindow').innerHTML += 'Successfully Compiled\n';
+              if(contents.nick == nickname)
+							  document.getElementById('consoleWindow').innerHTML += 'Successfully Compiled\n';
+              else
+                document.getElementById('consoleWindow').innerHTML += contents.nick+' has compiled '+contents.file;
+
+              if(contents.file.substr(contents.file.lastIndexOf('.')+1) == 'java')
+                projects[contents.dir].filelist.push(contents.file.substr(0, contents.file.lastIndexOf('.'))+".class");
+              else
+                projects[contents.dir].filelist.push(contents.file.substr(0, contents.file.lastIndexOf('.')));
+              ide.updateFileExplorer();
 						}
 						else
 						{

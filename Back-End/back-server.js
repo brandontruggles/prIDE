@@ -5,6 +5,7 @@ var fs = require('fs'); //Library used for reading files
 var WebSocketServer = require('ws').Server; //Websocket library for creating a server
 var path = require('path'); //Used for resolving file paths
 
+var Explorer = {};
 global.appRoot = path.resolve(__dirname + "/.."); //Define the root project directory as a global variable
 
 console.log(global.appRoot);
@@ -90,6 +91,7 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 								var curpath = '';
 								var explorer;
 								var pathing;
+                //Explorer = ideFS.explorerCreator();
 								ideFS.explorerCreator(explorer = [],proj, curpath, pathing=[]);
 								connectionList.push({"connection":ws,"nickname":nickname,"token":null,"name":null,"email":null});
 								response.contents = {"Accepted": true, "Proj":proj, "Files": explorer, "paths": pathing};
@@ -100,8 +102,9 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 							case "compile":
 							response.type = "Compile-Running-Status";
 							console.log("Received command to compile!");
-							response.contents = {"output": ideFS.compile(file, params, dir)};
-							ws.send(JSON.stringify(response));
+							response.contents = {"nick": nickname, "output": ideFS.compile(file, params, dir), "file" : file, "dir" : dir};
+							//ws.send(JSON.stringify(response));
+              broadcastResponse(connectionList, JSON.stringify(response));
 							break;
 						case "run":
 							response.type = "Code-Running-Status";

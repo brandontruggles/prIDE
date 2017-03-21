@@ -2,11 +2,17 @@ var express = require('express');
 var opn = require('opn');
 var path = require('path');
 var conf = require('./js/conf.js');
-var nodemailer = require('nodemailer');
+//var https = require('https');
+//var nodemailer = require('nodemailer');
 var app = express();
+//var fs = require('fs');
 
 global.appRoot = path.resolve(__dirname + "/..");
 
+/*var options = {
+  key: fs.readFileSync(path.join(__dirname,'key.pem')),
+  cert: fs.readFileSync(path.join(__dirname,'cert.pem'))
+};*/
 if(!conf.configExists())
   conf.createConfig();
 
@@ -21,7 +27,9 @@ app.get('/', function(req,res){
 });
 
 
+//https.createServer(options,app)
 app.listen(conf.getConfig().port, conf.getConfig().ip, function (err){ 
+
   if(err){
     return console.error(err);
   }
@@ -33,4 +41,3 @@ app.listen(conf.getConfig().port, conf.getConfig().ip, function (err){
     console.log("Can't open Browser beacause its on a server without a Frontend");
   }
 })
-
