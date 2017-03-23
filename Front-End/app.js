@@ -1,16 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
+import Main from './components/main.component';
 
-
-import Navbar from './components/navbar.component'
-
-import Login from './components/login.component'
 class App extends React.Component {
-  render () {
+  render() {
+    const main = () => (<Main/>);
     return (
-      <Login />
-    );
-  
+	<Router>
+		<div>
+			<Route exact path="/" component={main}/>
+		</div>
+	</Router>
+    );  
   }
 
 }

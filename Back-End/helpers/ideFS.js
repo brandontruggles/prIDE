@@ -28,7 +28,7 @@ var exports =
 		console.log("No back-server.conf file detected! Generating server.conf...");
 		try
 		{
-			fs.writeFileSync(global.appRoot + "/back-server.conf", "{\n\t\"port\": 8080,\n\t\"max_clients\": 8\n}");
+			fs.writeFileSync(global.appRoot + "/back-server.conf", "{\n\t\"port\": 9000,\n\t\"max_clients\": 8\n}");
 			console.log("Successfully generated back-server.conf!");
 		}
 		catch(err)

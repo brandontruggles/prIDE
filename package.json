@@ -4,8 +4,8 @@
   "description": "An online IDE with GitHub inegration and collaboration tools for peers including real-time code updates between users and a built-in chat system.",
   "main": "Server/index.js",
   "scripts": {
-    "watch": "watchify Front-End/app.js -t babelify -o Front-End/build/bundle.js --debug --verbose",
-    "start": "node Front-End/front-server.js & node Back-End/back-server.js"
+    "test": "watchify Front-End/app.js -t babelify -o Front-End/build/bundle.js --debug --verbose & nodemon --watch Front-End/ Front-End/front-server.js test.html & reload -b --dir Front-End --start-page test.html & node Back-End/back-server.js",
+    "start": "node Front-End/front-server.js index.html & node Back-End/back-server.js"
   },
   "repository": {
     "type": "git",
@@ -30,21 +30,22 @@
     "classnames": "^2.2.5",
     "express": "^4.14.1",
     "fs": "0.0.1-security",
-    "https": "^1.0.0",
+    "http": "0.0.0",
     "nodemailer": "^3.1.5",
     "opn": "^4.0.2",
     "path": "^0.12.7",
-    "public-ip": "^2.3.3",
     "querystring": "^0.2.0",
     "react": "^15.4.2",
     "react-bootstrap": "^0.30.7",
     "react-dom": "^15.4.2",
-    "react-router": "^4.0.0",
+    "react-router-dom": "^4.0.0",
     "ws": "^1.1.1"
   },
   "devDependencies": {
     "babelify": "^7.3.0",
     "browserify": "^14.1.0",
+    "nodemon": "^1.11.0",
+    "reload": "^1.1.1",
     "watchify": "^3.9.0"
   }
 }

@@ -40,7 +40,7 @@ On the host server, prIDE projects are simply represented as named directories f
 
 ## Configuring prIDE
 
-When prIDE is started for the first time, two new config files will be generated within the root `prIDE/` directory named `front-server.conf` and `back-server.conf`. These two config files are read by prIDE during startup, and allow the server admin to modify different server settings such as the default ports for the front-end and back-end servers, as well as the maximum number of allowed clients on the back-end server, using simple JSON syntax. The default port for the front-end server is `80`, while the default port for the back-end server is `8080`. 
+When prIDE is started for the first time, two new config files will be generated within the root `prIDE/` directory named `front-server.conf` and `back-server.conf`. These two config files are read by prIDE during startup, and allow the server admin to modify different server settings such as the default ports for the front-end and back-end servers, as well as the maximum number of allowed clients on the back-end server, using simple JSON syntax. The default port for the front-end server is `80`, while the default port for the back-end server is `9000`. 
 
 ## Feature To-Do List
 
