@@ -9,7 +9,10 @@ class IDE extends React.Component {
   render(){
     return(
       <div>
+		<div>
 		<Navbar/>
+		<img id="prideLogo" src="image/pridefull.png" alt="prIDE Logo"/>
+		</div>
 		<Grid>
 			<Row>
 				<Col xs={4}>
