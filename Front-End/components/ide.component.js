@@ -13,7 +13,7 @@ class IDE extends React.Component {
 		<Navigationbar/>
 		<Grid>
 			<Row>
-				<Col xs={1} style={{height:"400px"}}>
+				<Col xs={2} style={{height:"400px"}}>
 					<SolutionExplorer/>
 				</Col>
 				<Col xs={4}>
