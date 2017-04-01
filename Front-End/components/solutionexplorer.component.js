@@ -13,11 +13,9 @@ class SolutionExplorer extends React.Component {
   render(){
 	
     return(
-      <div>
-	<ResponsiveFixedDataTable width={200} rowsCount={1} rowHeight={200} headerHeight={50}>
-		<Column align={"center"} header={"Solution Explorer"} width={200} minWidth={200} maxWidth={500} cell={<Cell>This is a test cell.</Cell>}/>
-	</ResponsiveFixedDataTable>		
-      </div>		
+	<ResponsiveFixedDataTable headerHeight={50} rowsCount={10} rowHeight={50}>
+        	<Column header={"Solution Explorer"} cell={<Cell>Basic content</Cell>} width={200}/>
+        </ResponsiveFixedDataTable>
     );
   }
 }

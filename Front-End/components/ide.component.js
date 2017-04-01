@@ -1,6 +1,6 @@
 import React from 'react';
 import {Grid, Row, Col, Button, FormGroup, FormControl} from 'react-bootstrap';
-//import Navigationbar from './navigationbar.component';
+import Navigationbar from './navigationbar.component';
 import SolutionExplorer from './solutionexplorer.component';
 class IDE extends React.Component {
   constructor(props){
@@ -10,12 +10,10 @@ class IDE extends React.Component {
   render(){
     return(
       <div>
-		<div>
-		
-		</div>
+		<Navigationbar/>
 		<Grid>
 			<Row>
-				<Col xs={4}>
+				<Col xs={1} style={{height:"400px"}}>
 					<SolutionExplorer/>
 				</Col>
 				<Col xs={4}>
