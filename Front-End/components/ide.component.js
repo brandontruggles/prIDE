@@ -1,6 +1,6 @@
 import React from 'react';
 import {Grid, Row, Col, Button, FormGroup, FormControl} from 'react-bootstrap';
-import Navbar from './navbar.component';
+import Navigationbar from './navigationbar.component';
 class IDE extends React.Component {
   constructor(props){
 	super(props);
@@ -10,8 +10,7 @@ class IDE extends React.Component {
     return(
       <div>
 		<div>
-		<Navbar/>
-		<img id="prideLogo" src="image/pridefull.png" alt="prIDE Logo"/>
+		<Navigationbar/>
 		</div>
 		<Grid>
 			<Row>
