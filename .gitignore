@@ -1,5 +1,6 @@
 node_modules/
 Workspace/
+Front-End/build/
 back-server.conf
 front-server.conf
 reload*
