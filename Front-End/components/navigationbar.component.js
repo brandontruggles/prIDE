@@ -62,7 +62,11 @@ class Navigationbar extends React.Component {
             <MenuItem onClick={this.EnterInput.bind(this,"dir")}>New Directory</MenuItem>
             <MenuItem onClick={this.EnterInput.bind(this,"proj")}>New Project</MenuItem>
           </NavDropdown>
-        <NavDropdown title="Edit" id="edit">/*add Stuff later*/</NavDropdown>
+          <NavDropdown title="Edit" id="edit">
+	    <MenuItem>Cut</MenuItem>
+            <MenuItem>Copy</MenuItem>
+            <MenuItem>Paste</MenuItem>	
+	  </NavDropdown>
 
           <NavDropdown title="Build" id="build">
             <MenuItem onClick={this.props.build.bind(this,"compile")}>Compile</MenuItem>
@@ -76,7 +80,9 @@ class Navigationbar extends React.Component {
             <MenuItem>Push</MenuItem>
           </NavDropdown>
         
-        <NavDropdown title="Settings" id="settings">/*add Stuff Later*/</NavDropdown>
+        <NavDropdown title="Settings" id="settings">
+		<MenuItem>Editor Theme</MenuItem>
+	</NavDropdown>
           </Nav>
           {this.inputBox}
         </Navbar.Collapse>
