@@ -182,37 +182,37 @@ class Main extends React.Component {
   }
 	
   /*File, Proj, Dir Creator*/
-  create(name, type){
-	var message = {
-		"nickname": this.nickname
-	};
-	switch(type)
-	{
-		case "proj":
-			message["contents"] = "newproject " + name;
-			break;
-		case "dir":
-			message["contents"] = "newproject " + name;
-			break;
-		case "file":
-			message["dir"] = curdir;
-			message["contents"] = "newfile " + name;
-			break;
-	}
-
-	this.webSocket.send(JSON.stringify(message));
-  } 
-  
-  build(type){
-	var message = {
-		"nickname": this.nickname,
-		"file": curfile,
-		"dir": curdir,
-		"contents": type
-	};
-
-	this.webSocket.send(JSON.stringify(message));
-  }
+  create(name, type)
+  {
+    var message = {
+      "nickname": this.nickname
+    }
+    switch(type)
+    {
+      case "proj":
+        message["contents"] = "newproject " + name;
+        break;
+      case "dir":
+        message["contents"] = "newproject " + name;
+        break;
+      case "file":
+        message["dir"] = curdir;
+        message["contents"] = "newfile " + name;
+        break
+    }
+      this.webSocket.send(JSON.stringify(message));
+   } 
+    build(type)
+    {
+        var message = {
+            "nickname": this.nickname,
+            "file": this.state.curfile,
+            "dir": this.state.curdir,
+            "contents": type
+        }
+        
+        this.webSocket.send(JSON.stringify(message));
+    }
 
   render(){
     var currComponent = <Login attemptLogin={this.attemptLogin} errorMessage={this.state.errorMessage}/>;
