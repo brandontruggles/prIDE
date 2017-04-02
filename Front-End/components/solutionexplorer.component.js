@@ -10,8 +10,8 @@ class SolutionExplorer extends React.Component {
 	};
 	
   }
+  
   render(){
-	
     return(
 	<ResponsiveFixedDataTable headerHeight={50} rowsCount={10} rowHeight={50}>
         	<Column header={"Solution Explorer"} cell={<Cell>Basic content</Cell>} width={200}/>
