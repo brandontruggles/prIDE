@@ -214,9 +214,18 @@ var exports =
 		}
 		return true;
 	},
-	explorerCreator:function(explorer, proj, curpath, pathing) //Used to generate the file explorer for connected clients
+	explorerCreator:function(explorer, curpath) //Used to generate the file explorer for connected clients
 	{
-		var newproj = [];
+        explorer[curpath] = this.getProjectFiles(curpath);
+        for(var f in explorer[curpath])
+        {
+            if(fs.lstatSync(global.appRoot + '/Workspace'+curpath+explorer[curpath][f]).isDirectory())
+            {
+                explorer[curpath][f] += '/';
+                exports.explorerCreator(explorer,curpath+explorer[curpath][f]);
+            }
+        }
+        /*
 		for(var dir in proj)
 		{
 			explorer.push(this.getProjectFiles(curpath+proj[dir]));
@@ -237,6 +246,7 @@ var exports =
 				newproj = [];
 			}
 		}//completed array
+        */
 	}
 };
 

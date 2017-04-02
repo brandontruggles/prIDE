@@ -12,23 +12,42 @@ class Navigationbar extends React.Component {
       value:''
     };
     this.EnterInput = this.EnterInput.bind(this);
-    this.inputBox;
+    this.inputBox = '';
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
-  EnterInput(type)
+  
+  handleChange(event)/*Stores value from input box*/
+  {
+    this.setState({value: event.target.value});
+  }
+  handleSubmit()/*Submit for New Proj, Dir, and File*/
+  {
+    this.props.Create(this.state.value, this.state.nType);
+    this.setState({inputing:false,nType:'',value:''});
+  }
+  EnterInput(type)/*adds input box and sumbit button*/
   {
     this.setState({inputing:true, nType:type});
   }
-  componentDidUpdate(prevProps, prevState)
+  componentDidUpdate(prevProps, prevState)/*here for later*/
   {
-    if(prevState.inputing && !this.state.inputing)
-      alert(this.state.value);
-      /*websocket code*/
     
+    //console.log("Current input state: "+this.state.inputing);
+  }
+  componentWillReceiveProps(nextProps)/*Error checking*/
+  {
+    if(nextProps.errorMessage != null)
+      alert(nextProps.errorMessage);
   }
   render(){
     if(this.state.inputing)
     {
-      this.inputBox = <div><input type="text" placeholder="enter new name" value={this.state.value} onChange={(e) => this.setState({value: e})} /><input type="submit" value="Submit" /></div>
+      this.inputBox = <div><input type="text" placeholder="enter new name"  value={this.state.value} onChange={this.handleChange} /><input type="button" onClick={this.handleSubmit.bind(this,this.inputBox.value)} value="Submit" /></div>
+    }
+    else
+    {
+      this.inputBox = '';
     }
     return(
       <Navbar>

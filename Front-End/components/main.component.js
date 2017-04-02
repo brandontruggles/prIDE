@@ -6,7 +6,10 @@ class Main extends React.Component {
 	super(props);
 	this.state = {
 		connected:false,
-		errorMessage: null
+		errorMessage: null,
+    curproj:'',
+    curdir:'',
+    curfile:''
 	};
 	this.webSocket = null;
 	this.attemptLogin = this.attemptLogin.bind(this);
@@ -14,6 +17,8 @@ class Main extends React.Component {
 	this.onWebSocketMessage = this.onWebSocketMessage.bind(this);
 	this.onWebSocketError = this.onWebSocketError.bind(this);
 	this.onWebSocketClose = this.onWebSocketClose.bind(this);
+  /*File, Proj, Dir, Creator*/
+  this.Create = this.Create.bind(this);
   }
 
   attemptReconnect(){
@@ -40,17 +45,96 @@ class Main extends React.Component {
 	var contents = res.contents;
 	switch(res.type)
 	{	
-		case "Connection-Accept"://Connected to Server
-		if(contents.Accepted)
-		{
-			this.setState({connected:true});			
-		}
-		else//Error for Connection
-		{
-			this.setState({errorMessage:contents.Reason});
-		}
+
+        case "Connection-Accept"://Connected to Server
+            if(contents.Accepted)
+		    {
+			    this.setState({connected:true});			
+		    }
+		    else//Error for Connection
+		    {
+			    this.setState({errorMessage:contents.Reason});
+		    }
 		break;
-	}
+    /*File, Proj, Dir, Created*/
+        case "Project-Created-Status":
+        if(contents.Created)
+        {
+            if(contents.nick == this.nickname)
+            {
+            /*needs to be connected to terminal component*/
+            }
+            else
+            {
+            /*Need to be connected to terminal and explorer*/
+            }
+        }
+        else
+        {
+            this.setState({errorMessage:contents.Reason});
+        }
+        break;
+        case "Directory-Created-Status":
+        if(contents.Created)
+        {
+            if(contents.nick == this.nickname)
+            {
+            alert("I just Created a Directory");
+            /*needs to be connected to terminal component*/
+            }
+            else
+            {
+            alert("Some just Created a Directory");
+            }
+        }
+        else
+        {
+            this.setState({errorMessage:contents.Reason});
+        }
+        break;
+        case "File-Created-Status":/*needs connection to solutionexplorer and terminal*/
+        if(contents.Created)
+        {
+            if(contents.nick == this.nickname)
+            {
+            alert("I just Created a File");
+            /*needs to be connected to terminal component*/
+        }
+            else
+            {
+                alert("Some just Created a File");
+            }
+        }
+        else
+        {
+            this.setState({errorMessage:contents.Reason});
+        }
+        break;
+        /*Chat and Console Messages*/
+        case "Console":
+            /*add Message to Terminal component*/
+            break;
+        case "Message-Broadcast":
+            /*add Message to Chat component*/
+            break;
+        /*Git cases*/
+        case "Git":
+            /*add Message to Terminal component*/
+            break;
+        case "Git-auth":
+            /*Do something*/
+            break;
+        /*add rest of cases*/
+        /*Build and Compile*/
+        case "Compile-Running-Status":
+            /*add stuff for Terminal component*/
+            break;
+        case "Code-Running-Status":
+            /*add stuff for Terminal component*/
+            break;
+        default:
+            break;
+	  }
   }
 
   onWebSocketError(error){
@@ -80,11 +164,31 @@ class Main extends React.Component {
 		this.webSocket.onclose = this.onWebSocketClose;
 	}
   }	
-  
+  /*File, Proj, Dir Creator*/
+  Create(name, type)
+  {
+    var message = {
+      "nickname": this.nickname
+    }
+    switch(type)
+    {
+      case "proj":
+        message["contents"] = "newproject " + name;
+        break;
+      case "dir":
+        message["contents"] = "newproject " + name;
+        break;
+      case "file":
+        message["dir"] = curdir;
+        message["contents"] = "newfile " + name;
+        break
+    }
+      this.webSocket.send(JSON.stringify(message));
+   } 
   render(){
     var currComponent = <Login attemptLogin={this.attemptLogin} errorMessage={this.state.errorMessage}/>;
     if(this.state.connected)
-	currComponent = <IDE/>;
+	currComponent = <IDE Create={this.Create} errorMessage={this.state.errorMessage}/>;
     return(
 	<div>
 		{currComponent}

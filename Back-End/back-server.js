@@ -5,7 +5,7 @@ var fs = require('fs'); //Library used for reading files
 var WebSocketServer = require('ws').Server; //Websocket library for creating a server
 var path = require('path'); //Used for resolving file paths
 
-var Explorer = {};
+var explorer = {};
 global.appRoot = path.resolve(__dirname + "/.."); //Define the root project directory as a global variable
 
 console.log(global.appRoot);
@@ -87,12 +87,8 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 							}
 							if(response.contents == null)
 							{
-								var proj = fs.readdirSync(global.appRoot + "/Workspace/");
-								var curpath = '';
-								var explorer;
-								var pathing;
-                //Explorer = ideFS.explorerCreator();
-								ideFS.explorerCreator(explorer = [],proj, curpath, pathing=[]);
+								var curpath = '/';
+								ideFS.explorerCreator(explorer = {}, curpath);
 								connectionList.push({"connection":ws,"nickname":nickname,"token":null,"name":null,"email":null});
 								response.contents = {"Accepted": true, "Proj":proj, "Files": explorer, "paths": pathing};
 								console.log("Accepted incoming connection from user '"+ nickname  +"'.");
