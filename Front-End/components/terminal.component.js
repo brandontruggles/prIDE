@@ -8,33 +8,27 @@ class Terminal extends React.Component
     {
         super(props);
         this.state = {
-            log:[],
-            value:''
+            log:[]
         }
-        this.handleChange = this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-    }
-    handleChange(event)
-    {
-        this.setState({value: event.target.value});
     }
     handleSubmit(event)
     {
-       /* event.preventDefault();*/
-        this.props.message('terminal',this.state.value);
+        event.preventDefault();
+        this.props.message('terminal',this.command.value);
         /*this will need something later*/
-        this.setState({value:''});
+        this.command.value='';
     }
 
     render()
     {
         
         return (
-            <div>
-                <textarea placeholder="Terminal" id="terminalWindow" readOnly></textarea>
+            <form onSubmit={this.handleSubmit}>
+                <FormControl componentClass="textarea" placeholder="Terminal box" readOnly />
                 <br />
-                <input placeholder="Command" id="terminal" value={this.state.value} onChange={this.handleChange}  />
-            </div>
+                <FormControl type="text" placeholder="command" ref={(input) => {this.command = ReactDOM.findDOMNode(input);}}/>
+            </form>
         )
 
     }

@@ -20,7 +20,8 @@ class Main extends React.Component {
   	
 	/*File, Proj, Dir, Creator*/
    	this.create = this.create.bind(this);
-    	this.build = this.build.bind(this);
+   	this.build = this.build.bind(this);
+    this.message = this.message.bind(this);
   }
 
   attemptReconnect(){
@@ -213,6 +214,14 @@ class Main extends React.Component {
         
         this.webSocket.send(JSON.stringify(message));
     }
+
+    message(type, value)
+    {
+        var message = {
+            "nickname": this.nickname,
+            "contents": "message "+value
+        }
+        this.webSocket.send(JSON.stringify(message));
 
   render(){
     var currComponent = <Login attemptLogin={this.attemptLogin} errorMessage={this.state.errorMessage}/>;

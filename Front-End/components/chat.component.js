@@ -1,29 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import {FormControl, FromGroup} from 'react-bootstrap';
 
 class Chat extends React.Component{
     constructor(props)
     {
         super(props);
         this.state = {
-            log:[],
-            value:''
+            log:[]
         }
         
-        this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    handleChange(event)
-    {
-        this.setState({value: event.target.value});
-    }
 
-    handleSubmit()
+    handleSubmit(event)
     {
-        this.props.message('chat',this.state.value);
+        event.preventDefault();
+        this.props.message('chat',this.chat.value);
         /*this will need something later*/
-        this.setState({value:''});
+        this.chat.value='';
     }
     
 
@@ -31,11 +26,11 @@ class Chat extends React.Component{
     {
         
         return(
-            <div>
-                <textarea placeholder="Chat Window" id="chatWindow" readOnly></textarea>
+            <form onSubmit={this.handleSubmit}>
+                <FormControl componentClass="textarea" placeholder="Chat box" ref={(input) => {this.chatBox = ReactDOM.findDOMNode(input);}} readOnly />
                 <br />
-                <input placeholder="Message" id="chat"  value={this.state.value} onChange={this.handleChange}  />
-            </div>
+                <FormControl type="text" placeholder="Message" ref={(input) => {this.chat = ReactDOM.findDOMNode(input);}}/>
+            </form>
 
 
         )
