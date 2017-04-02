@@ -7,9 +7,10 @@ class Main extends React.Component {
 	this.state = {
 		connected:false,
 		errorMessage: null,
-    		curproj:'',
-    		curdir:'',
-    		curfile:''
+    	curproj:'',
+        chat:'',
+    	curdir:'',
+    	curfile:''
 	};
 	this.webSocket = null;
 	this.attemptLogin = this.attemptLogin.bind(this);
@@ -117,6 +118,7 @@ class Main extends React.Component {
 		    /*add Message to Terminal component*/
 		    break;
 		case "Message-Broadcast":
+            this.setState({chat:contents}); 
 		    /*add Message to Chat component*/
 		    break;
 		/*Git cases*/
@@ -209,11 +211,11 @@ class Main extends React.Component {
             "contents": "message "+value
         }
         this.webSocket.send(JSON.stringify(message));
-
+    }
   render(){
     var currComponent = <Login attemptLogin={this.attemptLogin} errorMessage={this.state.errorMessage}/>;
     if(this.state.connected)
-	currComponent = <IDE create={this.create} build={this.build} errorMessage={this.state.errorMessage}/>;
+	currComponent = <IDE  chat={this.state.chat} message={this.message} create={this.create} build={this.build} errorMessage={this.state.errorMessage}/>;
     return(
 	<div>
 		{currComponent}

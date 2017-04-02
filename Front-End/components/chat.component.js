@@ -7,12 +7,19 @@ class Chat extends React.Component{
     {
         super(props);
         this.state = {
-            log:[]
+            log:'hilo'
         }
         
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-
+    
+    componentWillReceiveProps(nextProps)
+    {
+        if(nextProps.chat != null)
+        {
+            this.setState({log:this.state.log+nextProps.chat+'\n'});
+        }
+    }
     handleSubmit(event)
     {
         event.preventDefault();
@@ -27,7 +34,7 @@ class Chat extends React.Component{
         
         return(
             <form onSubmit={this.handleSubmit}>
-                <FormControl componentClass="textarea" placeholder="Chat box" ref={(input) => {this.chatBox = ReactDOM.findDOMNode(input);}} readOnly />
+                <FormControl componentClass="textarea" placeholder="Chat box" ref={(input) => {this.state.log = ReactDOM.findDOMNode(input);}} readOnly />
                 <br />
                 <FormControl type="text" placeholder="Message" ref={(input) => {this.chat = ReactDOM.findDOMNode(input);}}/>
             </form>

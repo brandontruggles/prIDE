@@ -24,7 +24,6 @@ var fn = (function ()
 		},
 		setproj : function (name)
 		{
-			console.log("gets here");
 			currproject = name;
 			var curdir = document.getElementById(name);
 			curdir.style.backgroundColor = "#FDFF47";
