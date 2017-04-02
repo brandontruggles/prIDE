@@ -44,19 +44,19 @@ class Login extends React.Component {
       <div>
 		<Grid className="loginGrid">
 			<Row>
-				<Col xs={4} xsOffset={4} >
+				<Col xs={4} xsOffset={4} md={6} mdOffset={3}>
 					<form onSubmit={this.handleSubmit}>
 						<img id="prideLogo" src="image/pridefull.png" alt="prIDE Logo"/>
-						<p>An open source collaborative IDE for the modern age.</p>
+						<p id="motto" >An open source collaborative IDE for the modern age.</p>
 						<FormGroup controlId="loginGroup">
 							{this.nicknameBox}						
 							{this.loginButton}
 						</FormGroup>
 						<p className="errorText">{this.props.errorMessage}</p>
 					</form>
-					<a className="loginLink" href="https://github.com/brandonrninefive/prIDE" target="_blank"><img src="image/GitHub-Mark-64px.png" alt="GitHub Logo"/><br/>prIDE on GitHub</a>
+					<a className="loginLink" href="https://github.com/brandonrninefive/prIDE" target="_blank"><img id="githubLogo" src="image/githubLogo.png" alt="GitHub Logo"/><br/>prIDE on GitHub</a>
 					<br/>						
-					<a className="loginLink" href="https://glaad.nationbuilder.com/donate" target="_blank"><img src="image/Glaad_Purple.png" alt="Glaad Logo" width="128" height="64"/><br/>Donate to Glaad</a>
+					<a className="loginLink" href="https://glaad.nationbuilder.com/donate" target="_blank"><img id="glaadLogo" src="image/Glaad_Purple.png" alt="Glaad Logo" width="128" height="64"/><br/>Donate to Glaad</a>
 				</Col>
 			</Row>
 		</Grid>
