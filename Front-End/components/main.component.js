@@ -25,18 +25,11 @@ class Main extends React.Component {
 
   attemptReconnect(){
 	console.log("Attempting to reconnect to the server...");
-	try
-	{
-		this.webSocket = new WebSocket("ws://0.0.0.0:9000");
-		this.webSocket.onopen = this.onWebSocketOpen;
-		this.webSocket.onmessage = this.onWebSocketMessage;
-		this.webSocket.onerror = this.onWebSocketError;
-		this.webSocket.onclose = this.onWebSocketClose;	
-	}
-	catch(e)
-	{
-		this.setState({errorMessage: e.message});
-	}
+	this.webSocket = new WebSocket("ws://0.0.0.0:9000");
+	this.webSocket.onopen = this.onWebSocketOpen;
+	this.webSocket.onmessage = this.onWebSocketMessage;
+	this.webSocket.onerror = this.onWebSocketError;
+	this.webSocket.onclose = this.onWebSocketClose;	
   }
 
   onWebSocketOpen(){
@@ -146,7 +139,8 @@ class Main extends React.Component {
   }
 
   onWebSocketError(error){
-	console.log("WebSocket error: " + error);
+	console.log("WebSocket error: " + error.message);
+	this.setState({errorMessage: error.message});
   }
 
   onWebSocketClose(){
@@ -166,18 +160,11 @@ class Main extends React.Component {
 	{
 		console.log("Nickname: " + nickname);
 		console.log("Attempting login...");
-		try
-		{
-			this.webSocket = new WebSocket("ws://0.0.0.0:9000");
-			this.webSocket.onopen = this.onWebSocketOpen;
-			this.webSocket.onmessage = this.onWebSocketMessage;
-			this.webSocket.onerror = this.onWebSocketError;
-			this.webSocket.onclose = this.onWebSocketClose;
-		}
-		catch(e)
-		{
-			this.setState({errorMessage: e.message});
-		}
+		this.webSocket = new WebSocket("ws://0.0.0.0:9000");
+		this.webSocket.onopen = this.onWebSocketOpen;
+		this.webSocket.onmessage = this.onWebSocketMessage;
+		this.webSocket.onerror = this.onWebSocketError;
+		this.webSocket.onclose = this.onWebSocketClose;
 	}
   }
 	
