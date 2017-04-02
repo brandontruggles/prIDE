@@ -10,7 +10,7 @@ class IDE extends React.Component {
   render(){
     return(
       <div>
-		<Navigationbar Create={this.props.Create} errorMessage={this.props.ErrorMessage}/>
+		<Navigationbar create={this.props.create} build={this.props.build} errorMessage={this.props.ErrorMessage}/>
 		<Grid>
 			<Row>
 				<Col xs={2} style={{height:"400px"}}>

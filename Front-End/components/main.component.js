@@ -17,8 +17,9 @@ class Main extends React.Component {
 	this.onWebSocketMessage = this.onWebSocketMessage.bind(this);
 	this.onWebSocketError = this.onWebSocketError.bind(this);
 	this.onWebSocketClose = this.onWebSocketClose.bind(this);
-  /*File, Proj, Dir, Creator*/
-  this.Create = this.Create.bind(this);
+    /*File, Proj, Dir, Creator*/
+    this.create = this.create.bind(this);
+    this.build = this.build.bind(this);
   }
 
   attemptReconnect(){
@@ -165,7 +166,7 @@ class Main extends React.Component {
 	}
   }	
   /*File, Proj, Dir Creator*/
-  Create(name, type)
+  create(name, type)
   {
     var message = {
       "nickname": this.nickname
@@ -185,10 +186,21 @@ class Main extends React.Component {
     }
       this.webSocket.send(JSON.stringify(message));
    } 
+    build(type)
+    {
+        var message = {
+            "nickname": this.nickname,
+            "file": curfile,
+            "dir": curdir,
+            "contents": type
+        }
+        
+        this.webSocket.send(JSON.stringify(message));
+    }
   render(){
     var currComponent = <Login attemptLogin={this.attemptLogin} errorMessage={this.state.errorMessage}/>;
     if(this.state.connected)
-	currComponent = <IDE Create={this.Create} errorMessage={this.state.errorMessage}/>;
+	currComponent = <IDE create={this.create} build={this.build} errorMessage={this.state.errorMessage}/>;
     return(
 	<div>
 		{currComponent}
