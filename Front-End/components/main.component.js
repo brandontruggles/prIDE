@@ -190,8 +190,8 @@ class Main extends React.Component {
     {
         var message = {
             "nickname": this.nickname,
-            "file": curfile,
-            "dir": curdir,
+            "file": this.state.curfile,
+            "dir": this.state.curdir,
             "contents": type
         }
         

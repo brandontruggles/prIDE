@@ -2,6 +2,8 @@ import React from 'react';
 import {Grid, Row, Col, Button, FormGroup, FormControl} from 'react-bootstrap';
 import Navigationbar from './navigationbar.component';
 import SolutionExplorer from './solutionexplorer.component';
+import Terminal from './terminal.component';
+import Chat from './chat.component';
 class IDE extends React.Component {
   constructor(props){
 	super(props);
@@ -20,10 +22,11 @@ class IDE extends React.Component {
 
 				</Col>
 				<Col xs={4}>
-
+                    <Chat/>
 				</Col>
 			</Row>
 		</Grid>
+        <Terminal/>
       </div>
     );
   }

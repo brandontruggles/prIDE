@@ -1,4 +1,4 @@
-import REact from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 
 
@@ -31,9 +31,16 @@ class Chat extends React.Component{
     {
         
         return(
-            
+            <div>
+                <textarea placeholder="Chat Window" id="chatWindow" readOnly></textarea>
+                <br />
+                <input placeholder="Message" id="chat"  value={this.state.value} onChange={this.handleChange}  />
+            </div>
+
 
         )
     }
 
 }
+
+export default Chat
