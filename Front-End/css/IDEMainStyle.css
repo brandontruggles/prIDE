@@ -51,7 +51,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f6f8', end
 	color: red;
 }
 
-@media screen and (max-width: 992px){
+@media screen and (max-width: 1367px){
 #prideLogo
 {
 	margin: 0 auto;
@@ -67,7 +67,7 @@ height:64px;
 }
 }
 
-@media screen and (min-width: 993px){
+@media screen and (min-width: 1368px){
 #prideLogo
 {
 	margin: 0 auto;
