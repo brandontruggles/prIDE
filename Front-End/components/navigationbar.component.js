@@ -33,7 +33,6 @@ class Navigationbar extends React.Component {
   componentDidUpdate(prevProps, prevState)/*here for later*/
   {
     
-    //console.log("Current input state: "+this.state.inputing);
   }
   componentWillReceiveProps(nextProps)/*Error checking*/
   {
@@ -66,8 +65,8 @@ class Navigationbar extends React.Component {
         <NavDropdown title="Edit" id="edit">/*add Stuff later*/</NavDropdown>
 
           <NavDropdown title="Build" id="build">
-            <MenuItem onClick={this.props.build("compile")>Compile</MenuItem>
-            <MenuItem onClick={this.props.build("run")>Run</MenuItem>
+            <MenuItem onClick={this.props.build("compile")}>Compile</MenuItem>
+            <MenuItem onClick={this.props.build("run")}>Run</MenuItem>
           </NavDropdown>
           
           <NavDropdown title="Git" id="git">
