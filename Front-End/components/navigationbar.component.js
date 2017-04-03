@@ -38,7 +38,7 @@ class Navigationbar extends React.Component {
   render(){
     if(this.state.isInput)
     {
-      this.inputBox = <form onSubmit={this.handleSubmit}><FormControl type="text" placeholder="enter new name" ref={(input) => {this.inputer = ReactDOM.findDOMNode(input);}} autoFocus />< Button type="submit">Submit</Button></form>
+      this.inputBox = <form className="formSheet" onSubmit={this.handleSubmit}><FormControl id="newInput" type="text" placeholder="enter new name" ref={(input) => {this.inputer = ReactDOM.findDOMNode(input);}} autoFocus />< Button type="submit">Submit</Button></form>
     }
     else
     {
@@ -52,7 +52,7 @@ class Navigationbar extends React.Component {
           </Navbar.Brand>
         </Navbar.Header>
         <Navbar.Collapse>
-          <Nav>
+          <Nav id="navButtons">
           <NavDropdown title="File" id="New">
             <MenuItem onClick={this.EnterInput.bind(this,"file")}>New File</MenuItem>
             <MenuItem onClick={this.EnterInput.bind(this,"dir")}>New Directory</MenuItem>

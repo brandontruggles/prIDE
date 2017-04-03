@@ -20,7 +20,7 @@ class IDE extends React.Component {
 					<SolutionExplorer/>
 				</Col>
 				<Col xs={8}>
-					<CodeWindow/>
+					<CodeWindow aceMode={this.props.aceMode} />
 				</Col>
 				<Col xs={2}>
                     			<Chat chatMessage={this.props.chatMessage} message={this.props.message}/>

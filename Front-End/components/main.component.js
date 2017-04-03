@@ -11,7 +11,8 @@ class Main extends React.Component {
     	curproj:'',
         chatMessage: null,
     	curdir:'',
-    	curfile:''
+    	curfile:'',
+        aceMode:'text'
 	}; 
 	this.webSocket = null;
 	this.attemptLogin = this.attemptLogin.bind(this);
@@ -217,7 +218,7 @@ class Main extends React.Component {
   render(){
     var currComponent = <Login attemptLogin={this.attemptLogin} errorMessage={this.state.errorMessage} url={this.props.url}/>;
     if(this.state.connected)
-	currComponent = <IDE  chatMessage={this.state.chatMessage} terminalMessage={this.state.terminalMessage} message={this.message} create={this.create} build={this.build} errorMessage={this.state.errorMessage}/>;
+	currComponent = <IDE  aceMode={this.state.aceMode} chatMessage={this.state.chatMessage} terminalMessage={this.state.terminalMessage} message={this.message} create={this.create} build={this.build} errorMessage={this.state.errorMessage}/>;
     return(
 	<div>
 		{currComponent}
