@@ -11,7 +11,7 @@ class Main extends React.Component {
         chat:'',
     	curdir:'',
     	curfile:''
-	};
+	}; 
 	this.webSocket = null;
 	this.attemptLogin = this.attemptLogin.bind(this);
 	this.onWebSocketOpen = this.onWebSocketOpen.bind(this);
@@ -22,12 +22,12 @@ class Main extends React.Component {
 	/*File, Proj, Dir, Creator*/
    	this.create = this.create.bind(this);
    	this.build = this.build.bind(this);
-    this.message = this.message.bind(this);
+    	this.message = this.message.bind(this);
   }
 
   attemptReconnect(){
-	console.log("Attempting to reconnect to the server...");
-	this.webSocket = new WebSocket("ws://0.0.0.0:9000");
+	console.log("Attempting to reconnect to the server " + this.props.url + ":" + this.props.port  + "...");
+	this.webSocket = new WebSocket("ws://" + this.props.url + ":" + this.props.port);
 	this.webSocket.onopen = this.onWebSocketOpen;
 	this.webSocket.onmessage = this.onWebSocketMessage;
 	this.webSocket.onerror = this.onWebSocketError;
@@ -162,8 +162,8 @@ class Main extends React.Component {
 	else
 	{
 		console.log("Nickname: " + nickname);
-		console.log("Attempting login...");
-		this.webSocket = new WebSocket("ws://0.0.0.0:9000");
+		console.log("Attempting login to host " + this.props.url + ":" + this.props.port + "...");
+		this.webSocket = new WebSocket("ws://" + this.props.url + ":" + this.props.port);
 		this.webSocket.onopen = this.onWebSocketOpen;
 		this.webSocket.onmessage = this.onWebSocketMessage;
 		this.webSocket.onerror = this.onWebSocketError;
@@ -213,7 +213,7 @@ class Main extends React.Component {
         this.webSocket.send(JSON.stringify(message));
     }
   render(){
-    var currComponent = <Login attemptLogin={this.attemptLogin} errorMessage={this.state.errorMessage}/>;
+    var currComponent = <Login attemptLogin={this.attemptLogin} errorMessage={this.state.errorMessage} url={this.props.url}/>;
     if(this.state.connected)
 	currComponent = <IDE  chat={this.state.chat} message={this.message} create={this.create} build={this.build} errorMessage={this.state.errorMessage}/>;
     return(

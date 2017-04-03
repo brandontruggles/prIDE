@@ -10,14 +10,14 @@ class Login extends React.Component {
 	this.handleSubmit = this.handleSubmit.bind(this);
 	this.login = this.login.bind(this);
 	this.loginButton = <FormControl type="submit" value="Log In"/>;
-	this.nicknameBox = <FormControl autoFocus type="text" placeholder="Nickname" ref={(input) => {this.nicknameInput = ReactDOM.findDOMNode(input);}}/>; 
+	this.nicknameBox = <FormControl autoFocus type="text" placeholder="Nickname" ref={(input) => {this.nicknameInput = ReactDOM.findDOMNode(input);}}/>
   }
   handleSubmit(event){
 	event.preventDefault();
 	this.setState({loggingIn:true});
   }
-  login(nickname){
-	this.props.attemptLogin(nickname);	
+  login(nickname, hostname){
+	this.props.attemptLogin(nickname, hostname);	
   }
   componentWillReceiveProps(nextProps){
 	if(nextProps.errorMessage != null)
@@ -25,7 +25,7 @@ class Login extends React.Component {
   }
   componentDidUpdate(prevProps, prevState){
 	if(!prevState.loggingIn && this.state.loggingIn)
-		this.login(this.nicknameInput.value);
+		this.login(this.nicknameInput.value, this.props.url);
   }
   render(){
 	
@@ -49,7 +49,7 @@ class Login extends React.Component {
 						<img id="prideLogo" src="image/pridefull.png" alt="prIDE Logo"/>
 						<p id="motto" >An open source collaborative IDE for the modern age.</p>
 						<FormGroup controlId="loginGroup">
-							{this.nicknameBox}						
+							{this.nicknameBox}				
 							{this.loginButton}
 						</FormGroup>
 						<p className="errorText">{this.props.errorMessage}</p>
