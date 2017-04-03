@@ -1,34 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Navbar, Button, NavDropdown, MenuItem, Nav } from 'react-bootstrap';
+import { Navbar, Button, NavDropdown, MenuItem, Nav, FormControl} from 'react-bootstrap';
 
 class Navigationbar extends React.Component {
   constructor(props)
   {
     super(props);
     this.state = {
-      inputing:false,
-      nType:'',
-      value:''
+      isInput:false,
+      nType:''
     };
     this.EnterInput = this.EnterInput.bind(this);
     this.inputBox = '';
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
   }
   
-  handleChange(event)/*Stores value from input box*/
+  handleSubmit(event)/*Submit for New Proj, Dir, and File*/
   {
-    this.setState({value: event.target.value});
-  }
-  handleSubmit()/*Submit for New Proj, Dir, and File*/
-  {
-    this.props.Create(this.state.value, this.state.nType);
-    this.setState({inputing:false,nType:'',value:''});
+    event.preventDefault();
+    this.props.create(this.inputer.value, this.state.nType);
+    this.setState({isInput:false,nType:''});
+    this.inputer.value='';
   }
   EnterInput(type)/*adds input box and sumbit button*/
   {
-    this.setState({inputing:true, nType:type});
+    this.setState({isInput:true, nType:type});
   }
   componentDidUpdate(prevProps, prevState)/*here for later*/
   {
@@ -40,9 +36,9 @@ class Navigationbar extends React.Component {
       alert(nextProps.errorMessage);
   }
   render(){
-    if(this.state.inputing)
+    if(this.state.isInput)
     {
-      this.inputBox = <div><input type="text" placeholder="enter new name"  value={this.state.value} onChange={this.handleChange} /><input type="button" onClick={this.handleSubmit.bind(this,this.inputBox.value)} value="Submit" /></div>
+      this.inputBox = <form onSubmit={this.handleSubmit}><FormControl type="text" placeholder="enter new name" ref={(input) => {this.inputer = ReactDOM.findDOMNode(input);}} autoFocus />< Button type="submit">Submit</Button></form>
     }
     else
     {

@@ -23,11 +23,11 @@ class IDE extends React.Component {
 					<CodeWindow/>
 				</Col>
 				<Col xs={2}>
-                    			<Chat chat={this.props.chat} message={this.props.message}/>
+                    			<Chat chatMessage={this.props.chatMessage} message={this.props.message}/>
 				</Col>
 			</Row>
 		</Grid>
-        <Terminal/>
+        <Terminal message={this.props.message} terminalMessage={this.props.terminalMessage} />
       </div>
     );
   }

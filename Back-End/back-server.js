@@ -124,8 +124,7 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 							}
 							else
 							{
-									response.contents = {"Created": true, "Folder": false, "name": params, "nick": nickname};
-
+							    response.contents = {"Created": true, "Folder": false, "name": params, "nick": nickname};
 							}
               broadcastResponse(connectionList, JSON.stringify(response));
 							//ws.send(JSON.stringify(response));

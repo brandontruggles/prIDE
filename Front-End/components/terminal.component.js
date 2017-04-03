@@ -8,9 +8,17 @@ class Terminal extends React.Component
     {
         super(props);
         this.state = {
-            log:[]
+            log:''
         }
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+    
+    componentWillReceiveProps(nextProps)
+    {
+        if(nextProps.terminalMessage != null)
+        {
+            this.setState({log:this.state.log+nextProps.terminalMessage+'\n'});
+        }
     }
     handleSubmit(event)
     {
@@ -25,7 +33,7 @@ class Terminal extends React.Component
         
         return (
             <form onSubmit={this.handleSubmit}>
-                <FormControl componentClass="textarea" placeholder="Terminal box" readOnly />
+                <FormControl componentClass="textarea" placeholder="Terminal box" value={this.state.log}readOnly />
                 <br />
                 <FormControl type="text" placeholder="command" ref={(input) => {this.command = ReactDOM.findDOMNode(input);}}/>
             </form>

@@ -7,8 +7,9 @@ class Main extends React.Component {
 	this.state = {
 		connected:false,
 		errorMessage: null,
+        terminalMessage: null,
     	curproj:'',
-        chat:'',
+        chatMessage: null,
     	curdir:'',
     	curfile:''
 	}; 
@@ -66,10 +67,11 @@ class Main extends React.Component {
 			    if(contents.nick == this.nickname)
 			    {
 			    /*needs to be connected to terminal component*/
+                this.setState({terminalMessage:"Project: '"+contents.name+"' created."});
 			    }
 			    else
 			    {
-			    /*Need to be connected to terminal and explorer*/
+                    this.setState({terminalMessage:contents.nick+" Just Created Project: '"+contents.name+"'"});
 			    }
 			}
 			else
@@ -82,12 +84,13 @@ class Main extends React.Component {
 			{
 			    if(contents.nick == this.nickname)
 			    {
-			    alert("I just Created a Directory");
 			    /*needs to be connected to terminal component*/
+                    this.setState({terminalMessage:"Directory: '"+contents.name+"' created."});
+                    
 			    }
 			    else
 			    {
-			    alert("Some just Created a Directory");
+                    this.setState({terminalMessage:contents.nick+" Just Created Directory: '"+contents.name+"'"});
 			    }
 			}
 			else
@@ -100,12 +103,13 @@ class Main extends React.Component {
 			{
 			    if(contents.nick == this.nickname)
 			    {
-			    alert("I just Created a File");
 			    /*needs to be connected to terminal component*/
-			}
+
+                    this.setState({terminalMessage:"File: '"+contents.name+"' created."});
+			    }
 			    else
 			    {
-				alert("Some just Created a File");
+                    this.setState({terminalMessage:contents.nick+" Just Created File: '"+contents.name+"'"});
 			    }
 			}
 			else
@@ -118,8 +122,7 @@ class Main extends React.Component {
 		    /*add Message to Terminal component*/
 		    break;
 		case "Message-Broadcast":
-            this.setState({chat:contents}); 
-		    /*add Message to Chat component*/
+            this.setState({chatMessage:contents}); 
 		    break;
 		/*Git cases*/
 		case "Git":
@@ -128,13 +131,12 @@ class Main extends React.Component {
 		case "Git-auth":
 		    /*Do something*/
 		    break;
-		/*add rest of cases*/
 		/*Build and Compile*/
 		case "Compile-Running-Status":
 		    /*add stuff for Terminal component*/
 		    break;
 		case "Code-Running-Status":
-		    /*add stuff for Terminal component*/
+            this.setState({terminalMessage:contents.output});
 		    break;
 		default:
 		    break;
@@ -215,7 +217,7 @@ class Main extends React.Component {
   render(){
     var currComponent = <Login attemptLogin={this.attemptLogin} errorMessage={this.state.errorMessage} url={this.props.url}/>;
     if(this.state.connected)
-	currComponent = <IDE  chat={this.state.chat} message={this.message} create={this.create} build={this.build} errorMessage={this.state.errorMessage}/>;
+	currComponent = <IDE  chatMessage={this.state.chatMessage} terminalMessage={this.state.terminalMessage} message={this.message} create={this.create} build={this.build} errorMessage={this.state.errorMessage}/>;
     return(
 	<div>
 		{currComponent}
