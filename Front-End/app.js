@@ -9,7 +9,6 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(this.port);
     const main = () => (<Main url={location.hostname} port={this.port}/>);
     return (
 	<Router>
