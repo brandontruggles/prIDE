@@ -17,7 +17,7 @@ class CodeWindow extends React.Component {
   
   render(){
     return(
-	<AceEditor mode="text" theme="github" keyboardHandler="vim" width={"800px"}/>
+	<AceEditor mode="text" theme="github" keyboardHandler="vim" width={"100%"}/>
     );
   }
 }
