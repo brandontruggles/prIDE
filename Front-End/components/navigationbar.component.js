@@ -48,46 +48,43 @@ class Navigationbar extends React.Component {
       <Navbar>
         <Navbar.Header>
           <Navbar.Brand>
-	      
+	      <img src="image/pridefull.png" alt="prIDE Logo"/>
           </Navbar.Brand>
-	<NavItem eventKey={1} href="https://github.com/brandonrninefive/prIDE" src="image/githubmini.png">
-		<img id="prideLogoMini" src="image/pridefull.png" alt="prIDE Logo"/>
-	</NavItem>
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav id="navButtons">
-          <NavDropdown title="File" id="New">
-            <MenuItem onClick={this.EnterInput.bind(this,"file")}>New File</MenuItem>
-            <MenuItem onClick={this.EnterInput.bind(this,"dir")}>New Directory</MenuItem>
-            <MenuItem onClick={this.EnterInput.bind(this,"proj")}>New Project</MenuItem>
+          <NavDropdown title="File" id="file">
+            <MenuItem id="file" onClick={this.EnterInput.bind(this,"file")}>New File</MenuItem>
+            <MenuItem id="file" onClick={this.EnterInput.bind(this,"dir")}>New Directory</MenuItem>
+            <MenuItem id="file" onClick={this.EnterInput.bind(this,"proj")}>New Project</MenuItem>
           </NavDropdown>
           <NavDropdown title="Edit" id="edit">
-	    <MenuItem>Cut</MenuItem>
-            <MenuItem>Copy</MenuItem>
-            <MenuItem>Paste</MenuItem>	
+	    <MenuItem id="edit">Cut</MenuItem>
+            <MenuItem id="edit">Copy</MenuItem>
+            <MenuItem id="edit">Paste</MenuItem>	
 	  </NavDropdown>
 
           <NavDropdown title="Build" id="build">
-            <MenuItem onClick={this.props.build.bind(this,"compile")}>Compile</MenuItem>
-            <MenuItem onClick={this.props.build.bind(this,"run")}>Run</MenuItem>
+            <MenuItem id="build" onClick={this.props.build.bind(this,"compile")}>Compile</MenuItem>
+            <MenuItem id="build" onClick={this.props.build.bind(this,"run")}>Run</MenuItem>
           </NavDropdown>
           
           <NavDropdown title="Git" id="git">
-            <MenuItem>Init</MenuItem>
-            <MenuItem>Add</MenuItem>
-            <MenuItem>Commit</MenuItem>
-            <MenuItem>Push</MenuItem>
+            <MenuItem id="git">Init</MenuItem>
+            <MenuItem id="git">Add</MenuItem>
+            <MenuItem id="git">Commit</MenuItem>
+            <MenuItem id="git">Push</MenuItem>
           </NavDropdown>
         
         <NavDropdown title="Settings" id="settings">
-		<MenuItem>Editor Theme</MenuItem>
+		<MenuItem id="settings">Editor Theme</MenuItem>
 	</NavDropdown>
           </Nav>
 	<Nav pullRight>
 		<NavItem eventKey={1} href="https://github.com/brandonrninefive/prIDE" src="image/githubmini.png">
 			<img id="githubmini" src="image/githubmini.png" alt="GitHub Logo"/>
 		</NavItem>
-		<NavItem eventKey={1} href="https://github.com/brandonrninefive/prIDE" src="image/githubmini.png">
+		<NavItem eventKey={1} href="https://glaad.nationbuilder.com" src="image/githubmini.png">
 			<img id="glaadmini" src="image/Glaad_Purple.png" alt="Glaad Logo"/>
 		</NavItem>
 	</Nav>

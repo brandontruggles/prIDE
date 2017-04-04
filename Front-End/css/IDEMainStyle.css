@@ -167,6 +167,28 @@ height: 80px;
 }
 }
 
+#file
+{
+	color:red;
+}
+#edit
+{
+	color:orange;
+}
+#build
+{
+
+	color:green;
+}
+#git
+{
+	color:blue;
+}
+#settings
+{
+	color:violet;
+}
+
 .loginLink
 {
 	color: #333;
