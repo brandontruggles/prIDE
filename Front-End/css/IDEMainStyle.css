@@ -92,10 +92,62 @@ height:128px;
 {
 font-size:22px;
 }
+
+@media screen and (max-width: 1368px){
+#terminal
+{
+	margin-top:10px;
+	height:100px;
+}
+#command
+{
+	margin-top:5px;
+}
+#chatbox
+{
+height: 440px;
+}
+#messagebox
+{
+height: 60px;
+}
+}
+
+@media screen and (min-width: 1369px){
+#terminal
+{
+	margin-top:10px;
+	height:200px;
+}
+#command
+{
+	margin-top:5px;
+}
+#codewindow
+{
+	height:600px;
+}
+#solutionexplorer
+{
+	height:600px;
+}
+#chatbox
+{
+height: 520px;
+}
+#messagebox
+{
+height: 80px;
+}
+}
+/*#solutionexplorer
+{
+height: 400px;
+}*/
 .loginLink
 {
 	color: #333;
-font-size:22px;
+	font-size:22px;
 }
 }
 

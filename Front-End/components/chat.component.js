@@ -33,9 +33,8 @@ class Chat extends React.Component{
     {
         return(
             <form onSubmit={this.handleSubmit}>
-                <FormControl componentClass="textarea" placeholder="Chat box" value={this.state.log} ref={(input) => {this.chatBox = ReactDOM.findDOMNode(input);}} readOnly />
-                <br />
-                <FormControl type="text" placeholder="Message" ref={(input) => {this.chat = ReactDOM.findDOMNode(input);}}/>
+                <FormControl id="chatbox" componentClass="textarea" placeholder="Chat box" value={this.state.log} ref={(input) => {this.chatBox = ReactDOM.findDOMNode(input);}} readOnly />
+                <FormControl id="messagebox" type="text" placeholder="Message" ref={(input) => {this.chat = ReactDOM.findDOMNode(input);}}/>
             </form>
 
 

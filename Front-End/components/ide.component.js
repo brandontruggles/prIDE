@@ -14,20 +14,25 @@ class IDE extends React.Component {
     return(
       <div>
 		<Navigationbar create={this.props.create} build={this.props.build} errorMessage={this.props.ErrorMessage}/>
-		<Grid>
+		<Grid fluid={true}>
 			<Row>
-				<Col xs={2} style={{height:"400px"}}>
+				<Col id="solutionexplorer" xs={2} md={2}>
 					<SolutionExplorer files={this.props.files}/>
 				</Col>
-				<Col xs={8}>
+				<Col id="codewindow" xs={8} md={8}>
 					<CodeWindow aceMode={this.props.aceMode} />
 				</Col>
-				<Col xs={2}>
+				<Col xs={2} md={2}>
                     			<Chat chatMessage={this.props.chatMessage} message={this.props.message}/>
 				</Col>
 			</Row>
+			<Row>
+				<Col xs={8} xsOffset={2}>
+					<Terminal message={this.props.message} terminalMessage={this.props.terminalMessage} />
+				</Col>
+			</Row>
 		</Grid>
-        <Terminal message={this.props.message} terminalMessage={this.props.terminalMessage} />
+        
       </div>
     );
   }

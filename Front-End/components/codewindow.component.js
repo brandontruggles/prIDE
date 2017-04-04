@@ -31,7 +31,7 @@ class CodeWindow extends React.Component {
   
   render(){
     return(
-	<AceEditor mode={this.state.mode} theme={this.state.theme} keyboardHandler={this.state.keyboardHandler} width={"100%"}/>
+	<AceEditor mode={this.state.mode} theme={this.state.theme} keyboardHandler={this.state.keyboardHandler} height={"100%"} width={"100%"}/>
     );
   }
 }
