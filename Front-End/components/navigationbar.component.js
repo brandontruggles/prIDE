@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Navbar, Button, NavDropdown, MenuItem, Nav, FormControl} from 'react-bootstrap';
+import { Navbar, Button, NavDropdown, MenuItem, Nav, FormControl, NavItem} from 'react-bootstrap';
 
 class Navigationbar extends React.Component {
   constructor(props)
@@ -48,7 +48,7 @@ class Navigationbar extends React.Component {
       <Navbar>
         <Navbar.Header>
           <Navbar.Brand>
-            <a href="#">prIDE</a>
+	      <img src="image/pridefull.png" alt="prIDE Logo"/>
           </Navbar.Brand>
         </Navbar.Header>
         <Navbar.Collapse>
@@ -80,6 +80,14 @@ class Navigationbar extends React.Component {
 		<MenuItem>Editor Theme</MenuItem>
 	</NavDropdown>
           </Nav>
+	<Nav pullRight>
+		<NavItem eventKey={1} href="https://github.com/brandonrninefive/prIDE" src="image/githubmini.png">
+			<img id="githubmini" src="image/githubmini.png" alt="GitHub Logo"/>
+		</NavItem>
+		<NavItem eventKey={1} href="https://github.com/brandonrninefive/prIDE" src="image/githubmini.png">
+			<img id="glaadmini" src="image/Glaad_Purple.png" alt="Glaad Logo"/>
+		</NavItem>
+	</Nav>
           {this.inputBox}
         </Navbar.Collapse>
       </Navbar>

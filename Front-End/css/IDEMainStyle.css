@@ -58,7 +58,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f6f8', end
 	width:227px;
 	height:90px;
 }
-
+#prideLogoMini
+{
+	width:45px;
+	height:13px;
+}
 #githubLogo
 {
 	margin: 0 auto;
@@ -99,13 +103,27 @@ height: 60px;
 	width:340px;
 	height:135px;
 }
+#prideLogoMini
+{
+	width:45px;
+	height:13px;
+}
 #githubLogo
 {
 	margin: 0 auto;
 	width:120px;
 	height:120px;
 }
-
+#githubmini
+{
+	width:26px;
+	height:26px;
+}
+#glaadmini
+{
+	width:52px;
+	height:26px;
+}
 #glaadLogo
 {
 	margin: 0 auto;
