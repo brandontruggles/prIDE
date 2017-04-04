@@ -17,7 +17,7 @@ class IDE extends React.Component {
 		<Grid>
 			<Row>
 				<Col xs={2} style={{height:"400px"}}>
-					<SolutionExplorer/>
+					<SolutionExplorer files={this.props.files}/>
 				</Col>
 				<Col xs={8}>
 					<CodeWindow aceMode={this.props.aceMode} />

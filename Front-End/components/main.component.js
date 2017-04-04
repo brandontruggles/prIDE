@@ -5,11 +5,12 @@ class Main extends React.Component {
   constructor(props){
 	super(props);
 	this.state = {
-		connected:false,
-		errorMessage: null,
+	connected:false,
+	errorMessage: null,
         terminalMessage: null,
-    	curproj:'',
         chatMessage: null,
+	files:{},
+	curproj:'',
     	curdir:'',
     	curfile:'',
         aceMode:'text'
@@ -54,7 +55,7 @@ class Main extends React.Component {
 		case "Connection-Accept"://Connected to Server
 			if(contents.Accepted)
 		    	{
-			    this.setState({connected:true});			
+			    this.setState({connected:true, files:contents.Files});			
 			}
 			else//Error for Connection
 			{
@@ -218,7 +219,7 @@ class Main extends React.Component {
   render(){
     var currComponent = <Login attemptLogin={this.attemptLogin} errorMessage={this.state.errorMessage} url={this.props.url}/>;
     if(this.state.connected)
-	currComponent = <IDE  aceMode={this.state.aceMode} chatMessage={this.state.chatMessage} terminalMessage={this.state.terminalMessage} message={this.message} create={this.create} build={this.build} errorMessage={this.state.errorMessage}/>;
+	currComponent = <IDE files={this.state.files} aceMode={this.state.aceMode} chatMessage={this.state.chatMessage} terminalMessage={this.state.terminalMessage} message={this.message} create={this.create} build={this.build} errorMessage={this.state.errorMessage}/>;
     return(
 	<div>
 		{currComponent}
