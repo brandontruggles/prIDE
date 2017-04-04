@@ -65,35 +65,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f6f8', end
 width:64px;
 height:64px;
 }
-}
-
-@media screen and (min-width: 1368px){
-#prideLogo
-{
-	margin: 0 auto;
-	width:340px;
-	height:135px;
-}
-#githubLogo
-{
-	margin: 0 auto;
-width:120px;
-height:120px;
-}
-
-#glaadLogo
-{
-	margin: 0 auto;
-width:256px;
-height:128px;
-}
-
-#motto
-{
-font-size:22px;
-}
-
-@media screen and (max-width: 1368px){
 #terminal
 {
 	margin-top:10px;
@@ -111,9 +82,36 @@ height: 440px;
 {
 height: 60px;
 }
+#codewindow
+{
+	height:500px;
+}
+#solutionexplorer
+{
+	height:500px;
+}
 }
 
-@media screen and (min-width: 1369px){
+@media screen and (min-width: 1368px){
+#prideLogo
+{
+	margin: 0 auto;
+	width:340px;
+	height:135px;
+}
+#githubLogo
+{
+	margin: 0 auto;
+	width:120px;
+	height:120px;
+}
+
+#glaadLogo
+{
+	margin: 0 auto;
+	width:256px;
+	height:128px;
+}
 #terminal
 {
 	margin-top:10px;
@@ -140,16 +138,19 @@ height: 520px;
 height: 80px;
 }
 }
-/*#solutionexplorer
-{
-height: 400px;
-}*/
+
 .loginLink
 {
 	color: #333;
 	font-size:22px;
 }
 }
+
+#motto
+{
+font-size:22px;
+}
+
 
 @keyframes fadein {
     from { opacity: 0; }
