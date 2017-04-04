@@ -48,8 +48,11 @@ class Navigationbar extends React.Component {
       <Navbar>
         <Navbar.Header>
           <Navbar.Brand>
-	      <img src="image/pridefull.png" alt="prIDE Logo"/>
+	      
           </Navbar.Brand>
+	<NavItem eventKey={1} href="https://github.com/brandonrninefive/prIDE" src="image/githubmini.png">
+		<img id="prideLogoMini" src="image/pridefull.png" alt="prIDE Logo"/>
+	</NavItem>
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav id="navButtons">
