@@ -1,6 +1,8 @@
 import React from 'react';
 import Login from './login.component';
 import IDE from './ide.component';
+import $ from 'jquery';
+
 class Main extends React.Component {
   constructor(props){
 	super(props);
@@ -26,6 +28,7 @@ class Main extends React.Component {
    	this.create = this.create.bind(this);
    	this.build = this.build.bind(this);
     	this.message = this.message.bind(this);
+	this.changeBackground = this.changeBackground.bind(this);
   }
 
   attemptReconnect(){
@@ -216,10 +219,16 @@ class Main extends React.Component {
         }
         this.webSocket.send(JSON.stringify(message));
     }
+    changeBackground()
+	{
+		$('#settings').click(function() {
+			$('body').css('background-image', 'url("../image/background3.jpg")');
+});
+	}
   render(){
     var currComponent = <Login attemptLogin={this.attemptLogin} errorMessage={this.state.errorMessage} url={this.props.url}/>;
     if(this.state.connected)
-	currComponent = <IDE files={this.state.files} aceMode={this.state.aceMode} chatMessage={this.state.chatMessage} terminalMessage={this.state.terminalMessage} message={this.message} create={this.create} build={this.build} errorMessage={this.state.errorMessage}/>;
+	currComponent = <IDE files={this.state.files} aceMode={this.state.aceMode} chatMessage={this.state.chatMessage} terminalMessage={this.state.terminalMessage} message={this.message} create={this.create} build={this.build} changeBackground={this.changeBackground} errorMessage={this.state.errorMessage}/>;
     return(
 	<div>
 		{currComponent}

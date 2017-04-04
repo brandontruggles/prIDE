@@ -5,6 +5,7 @@ import SolutionExplorer from './solutionexplorer.component';
 import CodeWindow from './codewindow.component';
 import Terminal from './terminal.component';
 import Chat from './chat.component';
+import $ from 'jquery';
 class IDE extends React.Component {
   constructor(props){
 	super(props);
@@ -12,8 +13,8 @@ class IDE extends React.Component {
  
   render(){
     return(
-      <div>
-		<Navigationbar create={this.props.create} build={this.props.build} errorMessage={this.props.ErrorMessage}/>
+      <div id="MainIDE">
+		<Navigationbar create={this.props.create} build={this.props.build} errorMessage={this.props.ErrorMessage} changeBackground={this.props.changeBackground}/>
 		<Grid fluid={true}>
 			<Row>
 				<Col id="solutionexplorer" xs={2} md={2}>
@@ -38,3 +39,4 @@ class IDE extends React.Component {
   }
 }
 export default IDE
+
