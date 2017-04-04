@@ -7,13 +7,12 @@ class Main extends React.Component {
   constructor(props){
 	super(props);
 	this.state = {
-	connected:false,
-	errorMessage: null,
+	    connected:false,
+	    errorMessage: null,
         terminalMessage: null,
         chatMessage: null,
-	files:{},
-	curproj:'',
-    	curdir:'',
+	    files:{},
+    	curdir:'/',
     	curfile:'',
         aceMode:'text'
 	}; 
@@ -27,7 +26,7 @@ class Main extends React.Component {
 	/*File, Proj, Dir, Creator*/
    	this.create = this.create.bind(this);
    	this.build = this.build.bind(this);
-    	this.message = this.message.bind(this);
+    this.message = this.message.bind(this);
 	this.changeBackground = this.changeBackground.bind(this);
   }
 
@@ -72,16 +71,16 @@ class Main extends React.Component {
 			    if(contents.nick == this.nickname)
 			    {
 			    /*needs to be connected to terminal component*/
-                this.setState({terminalMessage:"Project: '"+contents.name+"' created."});
+                this.setState({terminalMessage:"Project: '"+contents.name+"' created.", files:contents.Files});
 			    }
 			    else
 			    {
-                    this.setState({terminalMessage:contents.nick+" Just Created Project: '"+contents.name+"'"});
+                    this.setState({terminalMessage:contents.nick+" Just Created Project: '"+contents.name+"'", files:contents.Files});
 			    }
 			}
 			else
 			{
-			    this.setState({errorMessage:contents.Reason});
+			    this.setState({terminalMessage:contents.Reason});
 			}
 			break;
 		case "Directory-Created-Status":
@@ -90,17 +89,17 @@ class Main extends React.Component {
 			    if(contents.nick == this.nickname)
 			    {
 			    /*needs to be connected to terminal component*/
-                    this.setState({terminalMessage:"Directory: '"+contents.name+"' created."});
+                    this.setState({terminalMessage:"Directory: '"+contents.dir+"' created.", files:contents.Files});
                     
 			    }
 			    else
 			    {
-                    this.setState({terminalMessage:contents.nick+" Just Created Directory: '"+contents.name+"'"});
+                    this.setState({terminalMessage:contents.nick+" Just Created Directory: '"+contents.dir+"'", files:contents.Files});
 			    }
 			}
 			else
 			{
-			    this.setState({errorMessage:contents.Reason});
+			    this.setState({terminalMessage:contents.Reason});
 			}
 			break;
 		case "File-Created-Status":/*needs connection to solutionexplorer and terminal*/
@@ -110,16 +109,16 @@ class Main extends React.Component {
 			    {
 			    /*needs to be connected to terminal component*/
 
-                    this.setState({terminalMessage:"File: '"+contents.name+"' created."});
+                    this.setState({terminalMessage:"File: '"+contents.name+"' created.", files:contents.Files});
 			    }
 			    else
 			    {
-                    this.setState({terminalMessage:contents.nick+" Just Created File: '"+contents.name+"'"});
+                    this.setState({terminalMessage:contents.nick+" Just Created File: '"+contents.name+"'", files:contents.Files});
 			    }
 			}
 			else
 			{
-			    this.setState({errorMessage:contents.Reason});
+			    this.setState({terminalMessage:contents.Reason});
 			}
 			break;
 		/*Chat and Console Messages*/
@@ -190,10 +189,10 @@ class Main extends React.Component {
         message["contents"] = "newproject " + name;
         break;
       case "dir":
-        message["contents"] = "newproject " + name;
+        message["contents"] = "newdir " + this.state.curdir+name;
         break;
       case "file":
-        message["dir"] = curdir;
+        message["dir"] = this.state.curdir;
         message["contents"] = "newfile " + name;
         break
     }
