@@ -10,10 +10,11 @@ class SolutionExplorer extends React.Component {
 	this.state = {
 		path:"/"
 	};
+	this.renderCounter = 0;
 	this.goBack = this.goBack.bind(this);
 	this.appendToPath = this.appendToPath.bind(this);
 	this.generateExplorerCell = this.generateExplorerCell.bind(this);	
-	this.header = <Cell>Solution Explorer<br/><a href="#" onClick={this.goBack}>Back</a></Cell>;
+	this.header = <Cell>Solution Explorer<br/><FormControl readOnly type="text" value={this.state.path} placeholder="Current Path"/><br/><a href="#" onClick={this.goBack}>Back</a></Cell>;
   }
 
   goBack(){
@@ -34,7 +35,6 @@ class SolutionExplorer extends React.Component {
   }
 
   generateExplorerCell(props){
-	console.log("ran");
 	var cell = null;
 	var type = "file";
 	var cellItem = this.props.files[this.state.path][props.rowIndex];
@@ -42,19 +42,22 @@ class SolutionExplorer extends React.Component {
 	{
 		if(cellItem.charAt(cellItem.length - 1) == "/")
 			type = "dir";
-		cell = <ExplorerCell contents={cellItem} type={type} appendToPath={this.appendToPath}></ExplorerCell>;
+		cell = <ExplorerCell contents={cellItem} type={type} path={this.state.path} appendToPath={this.appendToPath} openFile={this.props.openFile}></ExplorerCell>;
 	}
 	return cell;
   }
 
   componentWillUpdate(nextProps, nextState){
-		
+	if(this.renderCounter == 0) //We pass a changing dummy prop to the data table Column so that it always re-render when we re-render
+		this.renderCounter = 1;
+	else
+		this.renderCounter = 0;		
   }
   
   render(){
     return(
-	<ResponsiveFixedDataTable headerHeight={50} rowsCount={10} rowHeight={50}>
-		<Column allowCellsRecycling={true} header={this.header}  cell={this.generateExplorerCell} width={200}/>
+	<ResponsiveFixedDataTable counter={this.renderCounter} headerHeight={100} rowsCount={10} rowHeight={50}>
+		<Column allowCellsRecycling={true} header={this.header} cell={this.generateExplorerCell} width={200}/>
         </ResponsiveFixedDataTable>
     );
   }

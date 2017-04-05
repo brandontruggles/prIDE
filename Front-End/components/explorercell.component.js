@@ -12,6 +12,8 @@ class ExplorerCell extends React.Component {
   handleClick(){
 	if(this.props.contents.charAt(this.props.contents.length - 1) == "/")
 		this.props.appendToPath(this.props.contents);
+	else
+		this.props.openFile(this.props.path + this.props.contents);
   }
   
   render(){
