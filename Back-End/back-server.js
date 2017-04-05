@@ -4,8 +4,7 @@ var ideFS = require('./helpers/ideFS.js'); //Helper library for most file-system
 var fs = require('fs'); //Library used for reading files
 var WebSocketServer = require('ws').Server; //Websocket library for creating a server
 var path = require('path'); //Used for resolving file paths
-
-var explorer = {};
+var explorer = {}; //Solution Explorer
 global.appRoot = path.resolve(__dirname + "/.."); //Define the root project directory as a global variable
 
 console.log(global.appRoot);
@@ -87,10 +86,9 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 							}
 							if(response.contents == null)
 							{
-								var curpath = '/';
-								ideFS.explorerCreator(explorer = {}, curpath);
+								ideFS.explorerCreator(explorer = {}, '/');
 								connectionList.push({"connection":ws,"nickname":nickname,"token":null,"name":null,"email":null});
-								response.contents = {"Accepted": true, "Proj":proj, "Files": explorer, "paths": pathing};
+								response.contents = {"Accepted": true, "Files": explorer};
 								console.log("Accepted incoming connection from user '"+ nickname  +"'.");
 							}
 							ws.send(JSON.stringify(response));
@@ -124,21 +122,23 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 							}
 							else
 							{
-							    response.contents = {"Created": true, "Folder": false, "name": params, "nick": nickname};
+                                ideFS.explorerNew(explorer,'/',params);
+							    response.contents = {"Created": true, "Files":explorer, "name": params,"nick": nickname};
 							}
               broadcastResponse(connectionList, JSON.stringify(response));
 							//ws.send(JSON.stringify(response));
 							break;
 						case "newfile":
 							response.type = "File-Created-Status";
-              var newf = ideFS.createFile(params,dir);
+                            var newf = ideFS.createFile(params,dir);
 							if(typeof(newf) == 'boolean')
 							{
 								response.contents = {"Created": false, "Reason": "Failed to create a new file with the name '" + params + "'! That file already exists in the current project."};
 							}
 							else
 							{
-								response.contents = {"Created": true, "Content": newf,"nick":nickname, "path": dir, "file": params};
+                                ideFS.explorerNew(explorer, dir, params);
+								response.contents = {"Created": true, "Content": newf,"nick":nickname, "path": dir, "name": params, "Files":explorer};
 								rtu.newfile(dir + "/" + params, newf);
 							}
               broadcastResponse(connectionList, JSON.stringify(response));
@@ -167,12 +167,13 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 							}
 							else
 							{
-								var proj = fs.readdirSync(global.appRoot + "/Workspace/");
-								var curpath = '';
-								var explorer;
-								var pathing;
-								ideFS.explorerCreator(explorer = [],proj, curpath, pathing=[]);
-								response.contents = {"Created": true, "Proj":proj, "Files": explorer, "paths": pathing, "dir": params, "nick": nickname};
+                                var split = params.split('/');
+                                var dirName = split[split.length-1];
+                                split.pop();
+                                var path = "/"+split.join("/");
+                                console.log("New Path after joining: " + path);
+                                ideFS.explorerNew(explorer, path, dirName);
+								response.contents = {"Created": true, "Files": explorer,  "dir": params+'/', "nick": nickname};
 
 							}
               broadcastResponse(connectionList, JSON.stringify(response));

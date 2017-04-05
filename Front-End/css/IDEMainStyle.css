@@ -26,8 +26,14 @@ background: radial-gradient(ellipse at center, rgba(242,246,248,1) 0%, rgba(216,
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f6f8', endColorstr='#e0eff9', GradientType=1 );
 	background-repeat: no-repeat;
 	background-attachment: fixed;
+
+
 }
 
+#MainIDE
+{
+
+}
 .loginGrid
 {
 	text-align:center;

@@ -77,7 +77,7 @@ class Navigationbar extends React.Component {
           </NavDropdown>
         
         <NavDropdown title="Settings" id="settings">
-		<MenuItem id="settings">Editor Theme</MenuItem>
+		<MenuItem id="settings" onClick={this.props.changeBackground}>Editor Theme</MenuItem>
 	</NavDropdown>
           </Nav>
 	<Nav pullRight>
