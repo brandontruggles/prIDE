@@ -54,7 +54,7 @@ class SolutionExplorer extends React.Component {
   render(){
     return(
 	<ResponsiveFixedDataTable headerHeight={50} rowsCount={10} rowHeight={50}>
-		<Column allowCellsRecycling={true} header={this.header} cell={this.generateExplorerCell} width={200}/>;
+		<Column allowCellsRecycling={true} header={this.header}  cell={this.generateExplorerCell} width={200}/>
         </ResponsiveFixedDataTable>
     );
   }
