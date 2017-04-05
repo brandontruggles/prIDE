@@ -6,12 +6,29 @@ class ExplorerCell extends React.Component {
 	super(props);
 	this.state = {
 	};
+	this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(){
+	if(this.props.contents.charAt(this.props.contents.length - 1) == "/")
+		this.props.appendToPath(this.props.contents);
   }
   
   render(){
+	var iconClass = "";
+	if(this.props.type == "dir")
+	{
+		iconClass = "glyphicon glyphicon-folder-close"
+	}
+	else if(this.props.type == "file")
+	{
+		iconClass = "glyphicon glyphicon-file";
+	}
+	iconClass += " explorerCellIcon"
     return(
 	<Cell>
-		<a href="#">
+		<a href="#" onClick={this.handleClick}>
+			<span className={iconClass}></span>
 			{this.props.contents}
 		</a>
 	</Cell>
