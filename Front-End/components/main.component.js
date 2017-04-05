@@ -143,6 +143,13 @@ class Main extends React.Component {
 		case "Code-Running-Status":
             this.setState({terminalMessage:contents.output});
 		    break;
+		case "RTU-Broadcast": //RTU 
+			if (res.nickname == nickname)
+			{
+				break;
+			}
+			rtu.rcv(res.dir, res.file, contents);
+			break;
 		default:
 		    break;
 	  }

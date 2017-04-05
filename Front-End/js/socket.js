@@ -11,7 +11,7 @@ var modelist;
 function Connection()//works
 {	
 	//create editor
-  modelist = ace.require('ace/ext/modelist');
+	modelist = ace.require('ace/ext/modelist');
 	editor = ace.edit("codespace");
 	editor.setTheme("ace/theme/monokai");
 	editor.getSession().setMode("ace/mode/java");
