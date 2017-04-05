@@ -18,10 +18,10 @@ class IDE extends React.Component {
 		<Grid fluid={true}>
 			<Row>
 				<Col id="solutionexplorer" xs={2} md={2}>
-					<SolutionExplorer files={this.props.files}/>
+					<SolutionExplorer sendPath={this.props.sendPath} readFile={this.props.readFile} files={this.props.files}/>
 				</Col>
 				<Col id="codewindow" xs={8} md={8}>
-					<CodeWindow aceMode={this.props.aceMode} />
+					<CodeWindow rtuUpdate={this.props.rtuUpdate} body={this.props.body} file={this.props.file} aceMode={this.props.aceMode} />
 				</Col>
 				<Col xs={2} md={2}>
                     			<Chat chatMessage={this.props.chatMessage} message={this.props.message}/>

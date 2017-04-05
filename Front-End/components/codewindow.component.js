@@ -14,9 +14,13 @@ class CodeWindow extends React.Component {
 	    this.state = {
             mode:"text",
             theme:"github",
-            keyboardHandler:"vim"
+            keyboardHandler:"vim",
+            file: '',
+            body:'',
+            readOnly: false
 	    };
 	
+        this.handleChange = this.handleChange.bind(this);
     }
     componentWillReceiveProps(nextProps)
     {
@@ -27,11 +31,21 @@ class CodeWindow extends React.Component {
         {
             this.setState({mode: nextProps.aceMode});
         }
+
+        if(nextProps.body != this.state.body)
+        {
+            this.setState({body: nextProps.body});
+        }
     }
   
+    handleChange(change)
+    {
+       this.props.rtuUpdate(change); 
+    }
+
   render(){
     return(
-	<AceEditor mode={this.state.mode} theme={this.state.theme} keyboardHandler={this.state.keyboardHandler} height={"100%"} width={"100%"}/>
+	<AceEditor value={this.state.body} onChange={this.handleChange} readOnly={this.state.readOnly} mode={this.state.mode} theme={this.state.theme} keyboardHandler={this.state.keyboardHandler} height={"100%"} width={"100%"} editorProps={{$blockScrolling: true}} />
     );
   }
 }

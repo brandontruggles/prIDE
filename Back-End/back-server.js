@@ -170,7 +170,7 @@ function runServer(portNumber) //Function that creates a new server on a specifi
                                 var split = params.split('/');
                                 var dirName = split[split.length-1];
                                 split.pop();
-                                var path = "/"+split.join("/");
+                                var path = split.join("/")+'/';
                                 console.log("New Path after joining: " + path);
                                 ideFS.explorerNew(explorer, path, dirName);
 								response.contents = {"Created": true, "Files": explorer,  "dir": params+'/', "nick": nickname};

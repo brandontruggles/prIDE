@@ -15,16 +15,24 @@ class SolutionExplorer extends React.Component {
 	this.appendToPath = this.appendToPath.bind(this);
 	this.generateExplorerCell = this.generateExplorerCell.bind(this);	
 	this.header = <Cell>Solution Explorer<br/><FormControl readOnly type="text" value={this.state.path} placeholder="Current Path"/><br/><a href="#" onClick={this.goBack}>Back</a></Cell>;
+    this.openFile = this.openFile.bind(this);
   }
 
+    openFile(curfile)
+    {
+        console.log(curfile);
+        this.props.readFile(curfile);
+    }
   goBack(){
 	if(this.state.path != "/")
 	{
+
 		var backPath = this.state.path;
 		backPath = backPath.substring(backPath.length - 1);
 		var lastSlashIndex = backPath.lastIndexOf("/");
 		backPath = backPath.substring(lastSlashIndex);
 		this.setState({path:backPath});
+        this.props.sendPath(backPath);
 	}
   }
 
@@ -32,6 +40,8 @@ class SolutionExplorer extends React.Component {
 	var newPath = this.state.path + item;
 	console.log("New Path: " + newPath);
 	this.setState({path:newPath});
+    this.props.sendPath(newPath);
+    console.log("sendPath should be done");
   }
 
   generateExplorerCell(props){
@@ -42,7 +52,7 @@ class SolutionExplorer extends React.Component {
 	{
 		if(cellItem.charAt(cellItem.length - 1) == "/")
 			type = "dir";
-		cell = <ExplorerCell contents={cellItem} type={type} path={this.state.path} appendToPath={this.appendToPath} openFile={this.props.openFile}></ExplorerCell>;
+		cell = <ExplorerCell contents={cellItem} type={type} path={this.state.path} appendToPath={this.appendToPath} openFile={this.openFile}></ExplorerCell>;
 	}
 	return cell;
   }
