@@ -15,7 +15,8 @@ class Main extends React.Component {
 	curproj:'',
     	curdir:'',
     	curfile:'',
-        aceMode:'text'
+        aceMode:'text',
+	cb:0
 	}; 
 	this.webSocket = null;
 	this.attemptLogin = this.attemptLogin.bind(this);
@@ -221,9 +222,32 @@ class Main extends React.Component {
     }
     changeBackground()
 	{
-		$('#settings').click(function() {
-			$('body').css('background-image', 'url("../image/background3.jpg")');
-});
+		if(this.state.cb == 0)
+		{
+			$('#settings').click(function() {
+				$('body').css('background', 'linear-gradient(to right, rgba(213,236,246,1) 0%, rgba(59,195,237,1) 50%, rgba(222,240,248,1) 100%');
+				$('body').css('filter', 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#d5ecf6\', endColorstr=\'#def0f8\', GradientType=1');
+		
+		});
+			this.setState({cb:1});
+		}
+		if(this.state.cb == 1)
+		{
+			$('#settings').click(function() {
+				$('body').css('background', 'linear-gradient(to right, rgba(198,1,47,1) 0%, rgba(162,1,39,1) 44%, rgba(122,0,29,1) 100%');
+				$('body').css('filter', 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#c6012f\', endColorstr=\'#7a001d\', GradientType=1');
+		
+		});
+			this.setState({cb:2});
+		}
+		if(this.state.cb == 2)
+		{
+			$('#settings').click(function() {
+				$('body').css('background', 'radial-gradient(ellipse at center, rgba(242,246,248,1) 0%, rgba(216,225,231,1) 26%, rgba(181,198,208,1) 57%, rgba(224,239,249,1) 100%');
+				$('body').css('filter', 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#f2f6f8\', endColorstr=\'#e0eff9\', GradientType=1');
+		});
+			this.setState({cb:0});
+		}
 	}
   render(){
     var currComponent = <Login attemptLogin={this.attemptLogin} errorMessage={this.state.errorMessage} url={this.props.url}/>;
