@@ -190,9 +190,9 @@ var exports =
 	},
 	createDirectory:function(dir) //Creates the specified directory on the server
 	{
-		if(!fs.existsSync(global.appRoot + "/Workspace/" + dir))
+		if(!fs.existsSync(global.appRoot + "/Workspace" + dir))
 		{
-			fs.mkdirSync(global.appRoot + "/Workspace/" + dir);
+			fs.mkdirSync(global.appRoot + "/Workspace" + dir);
 		}
 		else
 		{
@@ -247,7 +247,20 @@ var exports =
 			}
 		}//completed array
         */
-	}
+	},
+    explorerNew:function(explorer,path,name)//resorts arrays when something is added to them
+    {
+        explorer[path] = this.getProjectFiles(path);
+        for(var f in explorer[path])
+        {
+            if(fs.lstatSync(global.appRoot + '/Workspace'+path+explorer[path][f]).isDirectory())
+            {
+                if(explorer[path][f] == name)//inserts new array if a new Directory/Project
+                    explorer[path+name+'/'] = [];
+                explorer[path][f] += '/';
+            }
+        }
+    }
 };
 
 module.exports = exports;
