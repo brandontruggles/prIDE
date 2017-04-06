@@ -139,7 +139,7 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 							{
                                 ideFS.explorerNew(explorer, dir, params);
 								response.contents = {"Created": true, "Content": newf,"nick":nickname, "path": dir, "name": params, "Files":explorer};
-								rtu.newfile(dir + "/" + params, newf);
+								rtu.newfile(dir + params, newf);
 							}
               broadcastResponse(connectionList, JSON.stringify(response));
 							//ws.send(JSON.stringify(response));
@@ -153,8 +153,6 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 							else
 							{
 								var split = params.split('/');
-								console.log(split[0]);
-								console.log(split[1]);
 								response.contents = {"Deleted": true, "proj": split[0], "file": split[1]};
 							}
 							ws.send(JSON.stringify(response));
@@ -216,10 +214,11 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 							break;
 						case "readfile":
 							response.type = "Read-File";
-							var str = fs.readFileSync(global.appRoot + "/Workspace/" + dir + "/" + params, "utf8").toString();
+							var str = fs.readFileSync(global.appRoot + "/Workspace/" + dir + params, "utf8").toString();
 							response.contents = {"body": str, "proj": dir, "file": params};
 							ws.send(JSON.stringify(response));
-							rtu.readfile(nickname, dir + "/" + params, str);
+						
+							rtu.readfile(nickname, dir + params, str);
 							break;
 						case "git_init":
 							response.type = "Git";

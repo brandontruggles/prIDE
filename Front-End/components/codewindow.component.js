@@ -16,8 +16,7 @@ class CodeWindow extends React.Component {
             theme:"github",
             keyboardHandler:"vim",
             file: '',
-            body:'',
-            readOnly: false
+            body:''
 	    };
 	
         this.handleChange = this.handleChange.bind(this);
@@ -45,7 +44,7 @@ class CodeWindow extends React.Component {
 
   render(){
     return(
-	<AceEditor value={this.state.body} onLoad={this.props.editorOnLoad} onChange={this.handleChange} readOnly={this.state.readOnly} mode={this.state.mode} theme={this.state.theme} keyboardHandler={this.state.keyboardHandler} height={"100%"} width={"100%"} editorProps={{$blockScrolling: true}} />
+	<AceEditor value={this.state.body} onLoad={this.props.editorOnLoad} onChange={this.handleChange} readOnly={this.props.readOnly} mode={this.state.mode} theme={this.state.theme} keyboardHandler={this.state.keyboardHandler} height={"100%"} width={"100%"} editorProps={{$blockScrolling: true}} />
     );
   }
 }

@@ -28,12 +28,12 @@ class Main extends React.Component {
 	this.onWebSocketMessage = this.onWebSocketMessage.bind(this);
 	this.onWebSocketError = this.onWebSocketError.bind(this);
 	this.onWebSocketClose = this.onWebSocketClose.bind(this);
+
   	
 	/*File, Proj, Dir, Creator*/
    	this.create = this.create.bind(this);
    	this.build = this.build.bind(this);
         this.message = this.message.bind(this);
-	this.changeBackground = this.changeBackground.bind(this);
 	this.readFile = this.readFile.bind(this);
 	this.sendPath = this.sendPath.bind(this);
     
@@ -44,6 +44,9 @@ class Main extends React.Component {
 	this.rtuEnQ = this.rtuEnQ.bind(this);
 	this.rtuDeQ = this.rtuDeQ.bind(this);
 	this.rtuAck = this.rtuAck.bind(this);
+
+	/*etc*/
+	this.changeBackground = this.changeBackground.bind(this);
   }
 
   attemptReconnect(){
@@ -172,7 +175,7 @@ class Main extends React.Component {
 			{
 				break;
 			}
-			this.rtuRcv(res.contents);
+			this.rtuRcv(res.contents, res.dir, res.file);
 			break;
 		default:
 		    break;
@@ -255,7 +258,7 @@ class Main extends React.Component {
         var split = path.split('/');
         var fileName = split[split.length-1];
         split.pop();
-        var dir = split.join('/');
+        var dir = split.join('/') + "/" ;
         var message = {
             "nickname": this.nickname,
             "dir": dir, 
@@ -274,28 +277,24 @@ class Main extends React.Component {
 	{
 		if(this.state.cb == 0)
 		{
-			$('#settings').click(function() {
-				$('body').css('background', 'linear-gradient(to right, rgba(213,236,246,1) 0%, rgba(59,195,237,1) 50%, rgba(222,240,248,1) 100%');
-				$('body').css('filter', 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#d5ecf6\', endColorstr=\'#def0f8\', GradientType=1');
-		
-		});
+			$('body').css('background', 'linear-gradient(to right, rgba(213,236,246,1) 0%, rgba(59,195,237,1) 50%, rgba(222,240,248,1) 100%');
+			$('body').css('filter', 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#d5ecf6\', endColorstr=\'#def0f8\', GradientType=1');
+
 			this.setState({cb:1});
 		}
 		if(this.state.cb == 1)
 		{
-			$('#settings').click(function() {
-				$('body').css('background', 'linear-gradient(to right, rgba(198,1,47,1) 0%, rgba(162,1,39,1) 44%, rgba(122,0,29,1) 100%');
-				$('body').css('filter', 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#c6012f\', endColorstr=\'#7a001d\', GradientType=1');
-		
-		});
+			$('body').css('background', 'linear-gradient(to right, rgba(198,1,47,1) 0%, rgba(162,1,39,1) 44%, rgba(122,0,29,1) 100%');
+			$('body').css('filter', 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#c6012f\', endColorstr=\'#7a001d\', GradientType=1');
+
 			this.setState({cb:2});
 		}
 		if(this.state.cb == 2)
 		{
-			$('#settings').click(function() {
-				$('body').css('background', 'radial-gradient(ellipse at center, rgba(242,246,248,1) 0%, rgba(216,225,231,1) 26%, rgba(181,198,208,1) 57%, rgba(224,239,249,1) 100%');
-				$('body').css('filter', 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#f2f6f8\', endColorstr=\'#e0eff9\', GradientType=1');
-		});
+
+			$('body').css('background', 'radial-gradient(ellipse at center, rgba(242,246,248,1) 0%, rgba(216,225,231,1) 26%, rgba(181,198,208,1) 57%, rgba(224,239,249,1) 100%');
+			$('body').css('filter', 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#f2f6f8\', endColorstr=\'#e0eff9\', GradientType=1');
+
 			this.setState({cb:0});
 		}
 	}
@@ -325,7 +324,7 @@ class Main extends React.Component {
 	this.webSocket.send(JSON.stringify(message));
     }
 
-    rtuRcv(e){
+    rtuRcv(e, dir, file){
 	var message = {
 		"nickname": this.nickname,
 		"dir": this.state.curdir,
@@ -333,21 +332,23 @@ class Main extends React.Component {
 		"contents": "gotupdate"
 	};
 	this.webSocket.send(JSON.stringify(message));
-
-	//e = adjustchange(e);  // adjust
-	this.setState({updateflag:false}); // implement edit
-	var newBody = this.state.body;
-	if (e.action == "insert")
+	if(this.state.curdir == dir && this.state.curfile == file)
 	{
-		this.editor.session.doc.insert(e.start, e.lines.join('\n'));
-		newBody = this.editor.session.getDocument().getAllLines().join('\n');
+		//e = adjustchange(e);  // adjust
+		this.setState({updateflag:false}); // implement edit
+		var newBody = this.state.body;
+		if (e.action == "insert")
+		{
+			this.editor.session.doc.insert(e.start, e.lines.join('\n'));
+			newBody = this.editor.session.getDocument().getAllLines().join('\n');
+		}
+		else
+		{
+			this.editor.session.doc.remove({"start": e.start, "end": e.end});
+			newBody = this.editor.session.getDocument().getAllLines().join('\n');
+		}
+		this.setState({updateflag:true, body:newBody});
 	}
-	else
-	{
-		this.editor.session.doc.remove({"start": e.start, "end": e.end});
-		newBody = this.editor.session.getDocument().getAllLines().join('\n');
-	}
-	this.setState({updateflag:true, body:newBody});
     }
 
     rtuEnQ(e){
@@ -365,7 +366,7 @@ class Main extends React.Component {
   render(){
     var currComponent = <Login attemptLogin={this.attemptLogin} errorMessage={this.state.errorMessage} url={this.props.url}/>;
     if(this.state.connected)
-	currComponent = <IDE rtuUpdate={this.rtuUpdate} sendPath={this.sendPath} readFile={this.readFile} body={this.state.body} files={this.state.files} aceMode={this.state.aceMode} chatMessage={this.state.chatMessage} terminalMessage={this.state.terminalMessage} message={this.message} create={this.create} build={this.build} changeBackground={this.changeBackground} errorMessage={this.state.errorMessage} editorOnLoad={this.setEditor}/>;
+	currComponent = <IDE readOnly={(this.state.curfile == "")} rtuUpdate={this.rtuUpdate} sendPath={this.sendPath} readFile={this.readFile} body={this.state.body} files={this.state.files} aceMode={this.state.aceMode} chatMessage={this.state.chatMessage} terminalMessage={this.state.terminalMessage} message={this.message} create={this.create} build={this.build} changeBackground={this.changeBackground} errorMessage={this.state.errorMessage} editorOnLoad={this.setEditor}/>;
     return(
 	<div>
 		{currComponent}
