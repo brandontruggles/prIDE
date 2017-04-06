@@ -150,6 +150,7 @@ class Main extends React.Component {
 		    break;
 		case "Message-Broadcast":
             this.setState({chatMessage:contents}); 
+            this.setState({chatMessage:null});
 		    break;
 		/*Git cases*/
 		case "Git":
