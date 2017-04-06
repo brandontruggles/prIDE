@@ -17,11 +17,12 @@ class Main extends React.Component {
         body:'',
         aceMode:'text',
         logs:{},/*for rtu*/
-        q: [],
+        rtuQ: [],
         updateflag:true,
 	cb:0
 	}; 
 	this.webSocket = null;
+	this.editor = null;
 	this.attemptLogin = this.attemptLogin.bind(this);
 	this.onWebSocketOpen = this.onWebSocketOpen.bind(this);
 	this.onWebSocketMessage = this.onWebSocketMessage.bind(this);
@@ -31,13 +32,18 @@ class Main extends React.Component {
 	/*File, Proj, Dir, Creator*/
    	this.create = this.create.bind(this);
    	this.build = this.build.bind(this);
-    this.message = this.message.bind(this);
+        this.message = this.message.bind(this);
 	this.changeBackground = this.changeBackground.bind(this);
-    this.readFile = this.readFile.bind(this);
-    this.sendPath = this.sendPath.bind(this);
+	this.readFile = this.readFile.bind(this);
+	this.sendPath = this.sendPath.bind(this);
     
-    /*rtu*/
-    this.rtuUpdate = this.rtuUpdate.bind(this);
+	/*rtu*/
+	this.setEditor = this.setEditor.bind(this);
+	this.rtuUpdate = this.rtuUpdate.bind(this);
+	this.rtuRcv = this.rtuRcv.bind(this);
+	this.rtuEnQ = this.rtuEnQ.bind(this);
+	this.rtuDeQ = this.rtuDeQ.bind(this);
+	this.rtuAck = this.rtuAck.bind(this);
   }
 
   attemptReconnect(){
@@ -161,11 +167,11 @@ class Main extends React.Component {
 		    break;
 
 		case "RTU-Broadcast": //RTU 
-			if (res.nickname == nickname)
+			if (res.nickname == this.nickname)
 			{
 				break;
 			}
-			this.rcv();
+			this.rtuRcv();
 			break;
 		default:
 		    break;
@@ -248,13 +254,14 @@ class Main extends React.Component {
         var split = path.split('/');
         var fileName = split[split.length-1];
         split.pop();
-        var dir = '/'+split.join('/');
+        var dir = split.join('/');
         var message = {
             "nickname": this.nickname,
             "dir": dir, 
             "contents": "readfile "+ fileName
         }
         this.webSocket.send(JSON.stringify(message));
+	this.setState({curfile:fileName});
     }
     
     sendPath(path)
@@ -292,114 +299,69 @@ class Main extends React.Component {
 		}
 	}
 
+    setEditor(editor){
+	this.editor = editor;	
+    }
+
     /*RTU code goes here*/
     rtuUpdate(e)
     {
-        console.log(typeof(e));
-/*
-			if (! this.state.updateflag) 
-			{
-				return;
-			}
-			this.enQ(e);
-			e['indexstart'] = editor.session.doc.positionToIndex(e.start);/*Rugs editor needs to be removed and changed with something else
-			e['indexend'] = e.indexstart + e.lines.join('\n').length;
-			var message = 
-			{
-				"nickname": nickname,
-				"dir": curdir,
-				"file": curfile,
-				"change": e,
-				"contents": "rtu"
-			};
-			this.webSocket.send(JSON.stringify(message));
-*/
+
+	if (! this.state.updateflag) 
+	{
+		return;
+	}
+//	this.enQ(e);
+	e['indexstart'] = this.editor.session.doc.positionToIndex(e.start);//Rugs editor needs to be removed and changed with something else
+	e['indexend'] = e.indexstart + e.lines.join('\n').length;
+	var message = {
+		"nickname": this.nickname,
+		"dir": this.state.curdir,
+		"file": this.state.curfile,
+		"change": e,
+		"contents": "rtu"
+	};
+	this.webSocket.send(JSON.stringify(message));
     }
 
-	/*var updateflag = true;
-	this.q = q;*/
-/*j
-	return {
-		adjustchange : function (change) 
-		{
-			var cur = null;
-			for (var i = 0; i < q.length; i++) 
-			{
-				cur = q[i];
-				if (cur.start.row < change.start.row)
-				{
-					if (change.action == "insert")
-					{
-						change.start.row += cur.lines.length - 1;
-					}
-					else
-					{
-						change.start.row -= cur.lines.length - 1;
-					}
-				}
-				else if (cur.start.row == change.start.row)
-				{
-					if (cur.start.column <= change.start.column)
-					{
-						if (change.action == "insert")
-						{
-							change.start.column += cur.end.column - cur.start.column;
-						}
-						else
-						{
-							change.start.column -= cur.end.column - cur.start.column;
-						}
-					}
-				}
-			}
-			return change;
-		},
-		enQ : function (e) 
-		{
-			q.push(e);
-		},
-		deQ : function () 
-		{
-			q.splice(0, 1);
-		},
-		rtuACK : function () 
-		{
-			this.deQ();
-		},
-		rcv(e) 
-		{
-			var message = 
-			{
-				"nickname": this.nickname,
-				"dir": this.state.curdir,
-				"file": this.state.file,
-				"contents": "gotupdate"
-			};
-			sock.send(JSON.stringify(message));
+    rtuRcv(){
+	var message = {
+		"nickname": this.nickname,
+		"dir": this.state.curdir,
+		"file": this.state.curfile,
+		"contents": "gotupdate"
+	};
+	sock.send(JSON.stringify(message));
 
-			var doc = ide.findtab(dir, file);//rugs needs changes either need to change body to an array i think or change doc to a string
-			if (doc == null) 
-			{
-				return;
-			}
-			//e = adjustchange(e);  // adjust
-			this.setState({updateflag:false}); // implement edit
-			if (e.action == "insert")
-			{
-				doc.insert(e.start, e.lines.join('\n'));
-			}
-			else
-			{
-				doc.remove({"start": e.start, "end": e.end});
-			}
-			updateflag = true;
-		},
-    /*end of RTU code*/
+	//e = adjustchange(e);  // adjust
+	updateflag = false; // implement edit
+	if (e.action == "insert")
+	{
+		this.editor.session.doc.insert(e.start, e.lines.join('\n'));
+	}
+	else
+	{
+		this.editor.session.doc.remove({"start": e.start, "end": e.end});
+	}
+	updateflag = true;	
+    }
 
+    rtuEnQ(e){
+	this.rtuQ.push(e);
+    }
+    
+    rtuDeQ(){
+	this.rtuQ.splice(0, 1);
+    }
+
+    rtuAck(){
+	this.rtuDeQ();
+    }
+	
   render(){
     var currComponent = <Login attemptLogin={this.attemptLogin} errorMessage={this.state.errorMessage} url={this.props.url}/>;
     if(this.state.connected)
-	currComponent = <IDE rtuUpdate={this.rtuUpdate} sendPath={this.sendPath} readFile={this.readFile} body={this.state.body} files={this.state.files} aceMode={this.state.aceMode} chatMessage={this.state.chatMessage} terminalMessage={this.state.terminalMessage} message={this.message} create={this.create} build={this.build} changeBackground={this.changeBackground} errorMessage={this.state.errorMessage}/>;
+	currComponent = <IDE rtuUpdate={this.rtuUpdate} sendPath={this.sendPath} readFile={this.readFile} body={this.state.body} files={this.state.files} aceMode={this.state.aceMode} chatMessage={this.state.chatMessage} terminalMessage={this.state.terminalMessage} message={this.message} create={this.create} build={this.build} changeBackground={this.changeBackground} errorMessage={this.state.errorMessage} editorOnLoad={this.setEditor}/>;
     return(
 	<div>
 		{currComponent}

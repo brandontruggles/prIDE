@@ -199,7 +199,7 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 							response.type = "RTU-Got-Message";
 							ws.send(JSON.stringify(response)); // ack
 
-							var fpath = dir + "/" + file;
+							var fpath = dir + file;
 							change = rtu.adjustchange(fpath, nickname, change); // adjust
 							rtu.enQ(fpath, change); // log
 							rtu.bufwrite(fpath, change); // update buffer

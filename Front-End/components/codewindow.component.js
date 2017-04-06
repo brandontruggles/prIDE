@@ -1,6 +1,6 @@
 import React from 'react';
 import brace from 'brace';
-import AceEditor from 'react-ace';
+import AceEditor from './ace.component';
 
 //browerify ace (brace) imports
 import 'brace/mode/text';
@@ -45,7 +45,7 @@ class CodeWindow extends React.Component {
 
   render(){
     return(
-	<AceEditor value={this.state.body} onChange={this.handleChange} readOnly={this.state.readOnly} mode={this.state.mode} theme={this.state.theme} keyboardHandler={this.state.keyboardHandler} height={"100%"} width={"100%"} editorProps={{$blockScrolling: true}} />
+	<AceEditor value={this.state.body} onLoad={this.props.editorOnLoad} onChange={this.handleChange} readOnly={this.state.readOnly} mode={this.state.mode} theme={this.state.theme} keyboardHandler={this.state.keyboardHandler} height={"100%"} width={"100%"} editorProps={{$blockScrolling: true}} />
     );
   }
 }
