@@ -314,6 +314,7 @@ class Main extends React.Component {
 //	this.enQ(e);
 	e['indexstart'] = this.editor.session.doc.positionToIndex(e.start);//Rugs editor needs to be removed and changed with something else
 	e['indexend'] = e.indexstart + e.lines.join('\n').length;
+	this.setState({body: this.editor.getValue()});
 	var message = {
 		"nickname": this.nickname,
 		"dir": this.state.curdir,
@@ -340,12 +341,12 @@ class Main extends React.Component {
 		if (e.action == "insert")
 		{
 			this.editor.session.doc.insert(e.start, e.lines.join('\n'));
-			newBody = this.editor.session.getDocument().getAllLines().join('\n');
+			newBody = this.editor.getValue();
 		}
 		else
 		{
 			this.editor.session.doc.remove({"start": e.start, "end": e.end});
-			newBody = this.editor.session.getDocument().getAllLines().join('\n');
+			newBody = this.editor.getValue();
 		}
 		this.setState({updateflag:true, body:newBody});
 	}

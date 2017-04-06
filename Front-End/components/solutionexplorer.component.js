@@ -14,7 +14,7 @@ class SolutionExplorer extends React.Component {
 	this.goBack = this.goBack.bind(this);
 	this.appendToPath = this.appendToPath.bind(this);
 	this.generateExplorerCell = this.generateExplorerCell.bind(this);	
-	this.header = <Cell>Solution Explorer<br/><FormControl readOnly type="text" value={this.state.path} placeholder="Current Path"/><br/><a href="#" onClick={this.goBack}>Back</a></Cell>;
+	this.header = <Cell>Solution Explorer<br/><FormControl readOnly type="text" value={this.state.path} placeholder="Current Path"/><br/><a href="#" onClick={this.goBack}><span className="glyphicon glyphicon-arrow-up"></span>Back</a></Cell>;
     this.openFile = this.openFile.bind(this);
   }
 
@@ -61,7 +61,8 @@ class SolutionExplorer extends React.Component {
 	if(this.renderCounter == 0) //We pass a changing dummy prop to the data table Column so that it always re-render when we re-render
 		this.renderCounter = 1;
 	else
-		this.renderCounter = 0;		
+		this.renderCounter = 0;	
+	this.header = <Cell>Solution Explorer<br/><FormControl readOnly type="text" value={nextState.path} placeholder="Current Path"/><br/><a href="#" onClick={this.goBack}><span className="glyphicon glyphicon-arrow-up"></span>Back</a></Cell>;	
   }
   
   render(){
