@@ -93,7 +93,7 @@ class Main extends React.Component {
                 this.setState({terminalMessage: null});
             }
             break;
-        case "Disconnect":
+        case "Disconnected":
             this.setState({terminalMessage: contents.nick+" has disconnected"});
             this.setState({terminalMessage: null});
             break;

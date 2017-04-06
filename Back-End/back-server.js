@@ -302,14 +302,14 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 		});
 		ws.on('close', function()
 		{
-            var response = {type:null, contents};
-            var response.type = "Disconnected";
+            var response = {"type":'',"contents":null};
+            response.type = "Disconnected";
 			var found = false;
 			connectionList.forEach(function(conn)
 			{
 				if(conn.connection == ws) //Find which client disconnected, and remove them from connectionList
 				{
-                    response.contents = {"nick":conn.nick};
+                    response.contents = {"nick":conn.nickname};
 					found = true;
 					console.log("User '" + conn.nickname  + "' has disconnected!");
 					connectionList.splice(connectionList.indexOf(conn), 1);
