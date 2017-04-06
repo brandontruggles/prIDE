@@ -172,7 +172,7 @@ class Main extends React.Component {
 			{
 				break;
 			}
-			this.rtuRcv();
+			this.rtuRcv(res.contents);
 			break;
 		default:
 		    break;
@@ -325,26 +325,29 @@ class Main extends React.Component {
 	this.webSocket.send(JSON.stringify(message));
     }
 
-    rtuRcv(){
+    rtuRcv(e){
 	var message = {
 		"nickname": this.nickname,
 		"dir": this.state.curdir,
 		"file": this.state.curfile,
 		"contents": "gotupdate"
 	};
-	sock.send(JSON.stringify(message));
+	this.webSocket.send(JSON.stringify(message));
 
 	//e = adjustchange(e);  // adjust
-	updateflag = false; // implement edit
+	this.setState({updateflag:false}); // implement edit
+	var newBody = this.state.body;
 	if (e.action == "insert")
 	{
 		this.editor.session.doc.insert(e.start, e.lines.join('\n'));
+		newBody = this.editor.session.getDocument().getAllLines().join('\n');
 	}
 	else
 	{
 		this.editor.session.doc.remove({"start": e.start, "end": e.end});
+		newBody = this.editor.session.getDocument().getAllLines().join('\n');
 	}
-	updateflag = true;	
+	this.setState({updateflag:true, body:newBody});
     }
 
     rtuEnQ(e){

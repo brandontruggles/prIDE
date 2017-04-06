@@ -193,7 +193,7 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 							ws.send(JSON.stringify(response));
 							break;
 						case "gotupdate":
-							incqstate(dir + "/" + file, nickname); // this guy is up to date
+							rtu.incqstate(dir + file, nickname); // this guy is up to date
 							break;
 						case "rtu":
 							response.type = "RTU-Got-Message";

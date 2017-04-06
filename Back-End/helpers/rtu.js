@@ -6,6 +6,8 @@ var exports =
 {
 	incqstate : function (fpath, nick) 
 	{
+		console.log("LOGS: ");
+		console.log(fpath);
 		logs[fpath].nick++;
 	},
 	adjustchange : function (fpath, nick, change) 
