@@ -92,6 +92,11 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 								console.log("Accepted incoming connection from user '"+ nickname  +"'.");
 							}
 							ws.send(JSON.stringify(response));
+                            
+                            response.type = "New-Connection";
+                            response.contents = {"nick":nickname};
+                            broadcastResponse(connectionList, JSON.stringify(response)); 
+
 							break;
 							case "compile":
 							response.type = "Compile-Running-Status";
@@ -297,11 +302,14 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 		});
 		ws.on('close', function()
 		{
+            var response = {type:null, contents};
+            var response.type = "Disconnected";
 			var found = false;
 			connectionList.forEach(function(conn)
 			{
 				if(conn.connection == ws) //Find which client disconnected, and remove them from connectionList
 				{
+                    response.contents = {"nick":conn.nick};
 					found = true;
 					console.log("User '" + conn.nickname  + "' has disconnected!");
 					connectionList.splice(connectionList.indexOf(conn), 1);
@@ -311,6 +319,7 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 			{
 				console.log("An unknown client disconnected!");
 			}
+            broadcastResponse(connectionList, JSON.stringify(response));
 		});
 	});
 }

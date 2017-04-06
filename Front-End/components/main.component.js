@@ -45,6 +45,9 @@ class Main extends React.Component {
 	this.rtuDeQ = this.rtuDeQ.bind(this);
 	this.rtuAck = this.rtuAck.bind(this);
 
+    /*git*/
+    this.process = this.process.bind(this);
+
 	/*etc*/
 	this.changeBackground = this.changeBackground.bind(this);
   }
@@ -83,6 +86,17 @@ class Main extends React.Component {
 			    this.setState({errorMessage:contents.Reason});
 			}
 			break;
+        case "New-Connection":
+            if(this.nickname != contents.nick)
+            {
+                this.setState({terminalMessage: contents.nick+" just connected"});
+                this.setState({terminalMessage: null});
+            }
+            break;
+        case "Disconnect":
+            this.setState({terminalMessage: contents.nick+" has disconnected"});
+            this.setState({terminalMessage: null});
+            break;
 	    /*File, Proj, Dir, Created*/
 		case "Project-Created-Status":
 			if(contents.Created)
@@ -155,19 +169,30 @@ class Main extends React.Component {
             this.setState({chatMessage:contents}); 
             this.setState({chatMessage:null});
 		    break;
-		/*Git cases*/
+		/*Git */
 		case "Git":
+            this.setState({terminalMessage:contents.Message});
+            this.setState({terminalMessage:null});
+            break;
 		    /*add Message to Terminal component*/
-		    break;
-		case "Git-auth":
+		case "Git-Auth":
 		    /*Do something*/
+            this.setState({terminalMessage: contents.Message, errorMessage:contents.Message});/*change this later*/
+            this.setState({terminalMessage: null, errorMessage: null});
 		    break;
 		/*Build and Compile*/
 		case "Compile-Running-Status":
 		    /*add stuff for Terminal component*/
+            if(contents.output == '')
+                this.setState({terminalMessage:"Successfully Compiled"});
+            else
+                this.setState({terminalMessage:contents.output});
+
+            this.setState({terminalMessage:null});
 		    break;
 		case "Code-Running-Status":
             this.setState({terminalMessage:contents.output});
+            this.setState({terminalMessage:null});
 		    break;
 
 		case "RTU-Broadcast": //RTU 
@@ -213,7 +238,7 @@ class Main extends React.Component {
   }
 	
   /*File, Proj, Dir Creator*/
-  create(name, type)
+  create(name,url, type)
   {
     var message = {
       "nickname": this.nickname
@@ -229,7 +254,20 @@ class Main extends React.Component {
       case "file":
         message["dir"] = this.state.curdir;
         message["contents"] = "newfile " + name;
-        break
+        break;
+        case "git_init":
+            message["dir"] = this.state.curdir;
+            message["contents"] = type;
+            break;
+        case "git_add":
+           message["dir"] = this.state.curdir;
+           message["contents"] = type+" "+this.state.curfile;
+            break;
+        case "git_commit":
+            message["contents"] = type+" "+name; 
+            break;
+        case "git_clone":
+            message["contents"] = type+ " " + name;
     }
       this.webSocket.send(JSON.stringify(message));
    } 
@@ -245,6 +283,10 @@ class Main extends React.Component {
         this.webSocket.send(JSON.stringify(message));
     }
 
+    process(message)
+    {
+        this.webSocket.send(JSON.stringify(message));
+    }
     message(type, value)
     {
         var message = {

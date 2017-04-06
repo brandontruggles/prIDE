@@ -10,7 +10,7 @@ var exports =
 		var out = "";
 		try
 		{
-			out = execFileSync("git", ["init"], {"cwd": global.appRoot + "/Workspace/" + dir});
+			out = execFileSync("git", ["init"], {"cwd": global.appRoot + "/Workspace" + dir});
 		}
 		catch(e)
 		{
@@ -23,7 +23,7 @@ var exports =
 		var out = "";
 		try
 		{
-			out = execFileSync("git", ["remote", "add", remoteName, url], {"cwd": global.appRoot + "/Workspace/" + dir}).toString();
+			out = execFileSync("git", ["remote", "add", remoteName, url], {"cwd": global.appRoot + "/Workspace" + dir}).toString();
 		}
 		catch(e)
 		{
@@ -38,11 +38,11 @@ var exports =
 		{
 			if(token != null)
 			{
-				out = execFileSync("git", ["clone", "https://" + token + "@github.com:" + url.replace("https://","")], {"cwd": global.appRoot + "/Workspace/"}).toString();
+				out = execFileSync("git", ["clone", "https://" + token + "@github.com:" + url.replace("https://","")], {"cwd": global.appRoot + "/Workspace"}).toString();
 			}
 			else
 			{
-				out = execFileSync("git", ["clone", url], {"cwd": global.appRoot + "/Workspace/"}).toString();
+				out = execFileSync("git", ["clone", url], {"cwd": global.appRoot + "/Workspace"}).toString();
 			}
 		}
 		catch(e)
@@ -56,7 +56,7 @@ var exports =
 		var out = "";
 		try
 		{
-			out = execFileSync("git", ["pull"], {"cwd": global.appRoot + "/Workspace/" + dir});
+			out = execFileSync("git", ["pull"], {"cwd": global.appRoot + "/Workspace" + dir});
 		}
 		catch(e)
 		{
@@ -69,7 +69,7 @@ var exports =
 		var out = "";
 		try
 		{
-			out = execFileSync("git", ["add", filename], {"cwd": global.appRoot + "/Workspace/" + dir});
+			out = execFileSync("git", ["add", filename], {"cwd": global.appRoot + "/Workspace" + dir});
 		}
 		catch (e)
 		{
@@ -82,7 +82,7 @@ var exports =
 		var out = "";
 		try
 		{
-			out = execFileSync("git", ["config", "--global", "user.email", email], {"cwd": global.appRoot + "/Workspace/" + dir});
+			out = execFileSync("git", ["config", "--global", "user.email", email], {"cwd": global.appRoot + "/Workspace" + dir});
 		}
 		catch(e)
 		{
@@ -95,7 +95,7 @@ var exports =
 		var out = "";
 		try
 		{
-			out = execFileSync("git", ["config", "--global", "user.name", name], {"cwd": global.appRoot + "/Workspace/" + dir});
+			out = execFileSync("git", ["config", "--global", "user.name", name], {"cwd": global.appRoot + "/Workspace" + dir});
 		}
 		catch(e)
 		{
@@ -108,7 +108,7 @@ var exports =
 		var out = "";
 		try
 		{
-			out = execFileSync("git", ["commit", "-am", message], {"cwd": global.appRoot + "/Workspace/" + dir});
+			out = execFileSync("git", ["commit", "-am", message], {"cwd": global.appRoot + "/Workspace" + dir});
 		}
 		catch (e)
 		{
@@ -121,7 +121,7 @@ var exports =
 		var out = "";
 		try
 		{
-			out = execFileSync("git", ["checkout", branchName], {"cwd": global.appRoot + "/Workspace/" + dir});
+			out = execFileSync("git", ["checkout", branchName], {"cwd": global.appRoot + "/Workspace" + dir});
 		}
 		catch (e)
 		{
@@ -134,7 +134,7 @@ var exports =
 		var out = "";
 		try
 		{
-			out = execFileSync("git", ["checkout", "-b", branchName], {"cwd": global.appRoot + "/Workspace/" + dir});
+			out = execFileSync("git", ["checkout", "-b", branchName], {"cwd": global.appRoot + "/Workspace" + dir});
 		}
 		catch (e)
 		{
@@ -149,7 +149,7 @@ var exports =
 		{
 			if(token != null)
 			{
-				out = execFileSync("git", ["push", "https://" + token + "@" + remoteName.replace("https://",""), branchName], {"cwd": global.appRoot + "/Workspace/" + dir});
+				out = execFileSync("git", ["push", "https://" + token + "@" + remoteName.replace("https://",""), branchName], {"cwd": global.appRoot + "/Workspace" + dir});
 			}
 		}
 		catch (e)

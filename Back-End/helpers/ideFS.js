@@ -97,13 +97,13 @@ var exports =
 		switch(extension)
 		{
 			case "java":
-				str = execFileSync("javac", [global.appRoot + "/Workspace/" +dir + "/" +  prog].concat(splitArgs), {stdio: ['pipe', 'pipe', 'pipe']}).toString();
+				str = execFileSync("javac", [global.appRoot + "/Workspace" +dir +  prog].concat(splitArgs), {stdio: ['pipe', 'pipe', 'pipe']}).toString();
 				break;
 			case "c":
-				str = execFileSync("gcc", ["-o", global.appRoot + "/Workspace/" + dir + "/" + prog.replace("." + extension, ""), global.appRoot + "/Workspace/" + dir + "/" + prog].concat(splitArgs), {stdio: ['pipe', 'pipe', 'pipe']}).toString();
+				str = execFileSync("gcc", ["-o", global.appRoot + "/Workspace" + dir + prog.replace("." + extension, ""), global.appRoot + "/Workspace" + dir + prog].concat(splitArgs), {stdio: ['pipe', 'pipe', 'pipe']}).toString();
 				break;
 			case "cpp":
-				str = execFileSync("g++", ["-o", global.appRoot + "/Workspace/" + dir + "/" + prog.replace("." + extension, ""), global.appRoot + "/Workspace/" + dir + "/" + prog].concat(splitArgs), {stdio: ['pipe', 'pipe', 'pipe']}).toString();
+				str = execFileSync("g++", ["-o", global.appRoot + "/Workspace" + dir + prog.replace("." + extension, ""), global.appRoot + "/Workspace" + dir + prog].concat(splitArgs), {stdio: ['pipe', 'pipe', 'pipe']}).toString();
 				break;
 			default:
 				str = "File extension not recognized! Unable to compile!";
