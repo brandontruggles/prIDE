@@ -1,19 +1,4 @@
 
-/*body 
-{
-	background: rgba(73,155,234,1);
-	background: -moz-radial-gradient(center, ellipse cover, rgba(73,155,234,1) 0%, rgba(13,94,181,1) 100%);
-	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(73,155,234,1)), color-stop(100%, rgba(13,94,181,1)));
-	background: -webkit-radial-gradient(center, ellipse cover, rgba(73,155,234,1) 0%, rgba(13,94,181,1) 100%);
-	background: -o-radial-gradient(center, ellipse cover, rgba(73,155,234,1) 0%, rgba(13,94,181,1) 100%);
-	background: -ms-radial-gradient(center, ellipse cover, rgba(73,155,234,1) 0%, rgba(13,94,181,1) 100%);
-	background: radial-gradient(ellipse at center, rgba(73,155,234,1) 0%, rgba(13,94,181,1) 100%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#499bea', endColorstr='#0d5eb5', GradientType=1 );
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-
-}*/
-
 body
 {
 background: rgba(242,246,248,1);
@@ -96,11 +81,11 @@ height:64px;
 }
 #chatbox
 {
-height: 440px;
+height: 467px;
 }
 #messagebox
 {
-height: 60px;
+/*height: 60px;*/
 }
 #codewindow
 {
@@ -165,11 +150,11 @@ height: 60px;
 }
 #chatbox
 {
-height: 520px;
+height: 567px;
 }
 #messagebox
 {
-height: 80px;
+/*height: 80px;*/
 }
 }
 

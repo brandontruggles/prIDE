@@ -78,7 +78,7 @@ var exports =
 		var files = null;
 		try
 		{
-			files = fs.readdirSync(global.appRoot + "/Workspace/" + dir);
+			files = fs.readdirSync(global.appRoot + "/Workspace" + dir);
 		}
 		catch(err)
 		{
@@ -125,18 +125,18 @@ var exports =
 		switch(extension)
 		{
 			case "java":
-				str = execFileSync("java", ["-cp", global.appRoot + "/Workspace/" + dir, prog].concat(splitArgs)).toString();	
+				str = execFileSync("java", ["-cp", global.appRoot + "/Workspace" + dir, prog].concat(splitArgs)).toString();	
 				break;
 			case "c":
-				str = execFileSync(global.appRoot + "/Workspace/" + dir + "/" +  prog,[].concat(splitArgs)).toString();
+				str = execFileSync(global.appRoot + "/Workspace" + dir +  prog,[].concat(splitArgs)).toString();
 				str = str.concat("\n");
 				break;
 			case "cpp":
-				str = execFileSync(global.appRoot + "/Workspace/" + dir + "/" +  prog,[].concat(splitArgs)).toString();
+				str = execFileSync(global.appRoot + "/Workspace" + dir + prog,[].concat(splitArgs)).toString();
 				str = str.concat("\n");
 				break;
 			case "py":
-				str = execFileSync("python", [global.appRoot + "/Workspace/" + dir + "/" + prog + ".py"].concat(splitArgs)).toString();
+				str = execFileSync("python", [global.appRoot + "/Workspace" + dir + prog + ".py"].concat(splitArgs)).toString();
 				break;
 			default:
 				str = "File extension not recognized! Unable to execute the program!";
@@ -166,9 +166,9 @@ var exports =
 			default:
 				break;
 		}
-		if(!fs.existsSync(global.appRoot + "/Workspace/" + dir + "/" + fileName))
+		if(!fs.existsSync(global.appRoot + "/Workspace" + dir + fileName))
 		{
-			fs.writeFileSync(global.appRoot + "/Workspace/" + dir + "/" + fileName, fileContents);
+			fs.writeFileSync(global.appRoot + "/Workspace" + dir + fileName, fileContents);
 			return fileContents;
 		}
 

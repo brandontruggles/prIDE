@@ -144,11 +144,11 @@ class Main extends React.Component {
 			    {
 			    /*needs to be connected to terminal component*/
 
-                    this.setState({terminalMessage:"File: '"+contents.name+"' created.", files:contents.Files, body: contents.Content});
+                    this.setState({terminalMessage:"File: '"+contents.name+"' created.", curfile:contents.name, files:contents.Files, body: contents.Content});
 			    }
 			    else
 			    {
-                    this.setState({terminalMessage:contents.nick+" Just Created File: '"+contents.name+"'", files:contents.Files});
+                    this.setState({terminalMessage:contents.nick+" Just Created File: '"+contents.name+"'", curfile:contents.name, files:contents.Files});
 			    }
 			}
 			else

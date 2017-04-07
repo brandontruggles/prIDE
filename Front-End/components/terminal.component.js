@@ -34,7 +34,6 @@ class Terminal extends React.Component
         return (
             <form onSubmit={this.handleSubmit}>
                 <FormControl id="terminal" componentClass="textarea" placeholder="Terminal box" value={this.state.log}readOnly />
-                <FormControl id="command" type="text" placeholder="Command" ref={(input) => {this.command = ReactDOM.findDOMNode(input);}}/>
             </form>
         )
 

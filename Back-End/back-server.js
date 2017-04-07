@@ -121,7 +121,7 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 							break;
 						case "newproject":
 							response.type = "Project-Created-Status";
-							if(!ideFS.createProject(global.appRoot + "/Workspace/" + params))
+							if(!ideFS.createProject(global.appRoot + "/Workspace" + params))
 							{
 								response.contents = {"Created": false, "Reason": "Failed to create a new project with the name '" + params + "'! That project name is already taken."};
 							}
@@ -176,7 +176,7 @@ function runServer(portNumber) //Function that creates a new server on a specifi
                                 var path = split.join("/")+'/';
                                 console.log("New Path after joining: " + path);
                                 ideFS.explorerNew(explorer, path, dirName);
-								response.contents = {"Created": true, "Files": explorer,  "dir": params+'/', "nick": nickname};
+								response.contents = {"Created": true, "Files": explorer,  "dir": path+dirName, "nick": nickname};
 
 							}
               broadcastResponse(connectionList, JSON.stringify(response));
@@ -219,7 +219,7 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 							break;
 						case "readfile":
 							response.type = "Read-File";
-							var str = fs.readFileSync(global.appRoot + "/Workspace/" + dir + params, "utf8").toString();
+							var str = fs.readFileSync(global.appRoot + "/Workspace" + dir + params, "utf8").toString();
 							response.contents = {"body": str, "proj": dir, "file": params};
 							ws.send(JSON.stringify(response));
 						
