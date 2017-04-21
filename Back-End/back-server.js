@@ -121,7 +121,7 @@ function runServer(portNumber) //Function that creates a new server on a specifi
 							break;
 						case "newproject":
 							response.type = "Project-Created-Status";
-							if(!ideFS.createProject(global.appRoot + "/Workspace" + params))
+							if(!ideFS.createProject(global.appRoot + "/Workspace/" + params))
 							{
 								response.contents = {"Created": false, "Reason": "Failed to create a new project with the name '" + params + "'! That project name is already taken."};
 							}
