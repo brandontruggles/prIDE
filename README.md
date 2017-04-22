@@ -20,8 +20,6 @@ Why is it called prIDE? While brainstorming names for the project, we decided th
 
 3. Navigate to the root `prIDE/` directory and type the command `npm install` to install all of our Node.js dependencies.
 
-4. If you wish to contribute to our project, you must install gulp-cli with `npm install -g gulp-cli`.
-
 ## Running prIDE
 
 The easiest way to run prIDE is to navigate to the root `prIDE/` directory and type the command `npm start`. This will automatically launch the Express server for the front-end, as well as the websocket server for the back-end. 
@@ -38,7 +36,7 @@ On the host server, prIDE projects are simply represented as named directories f
 
 ## Configuring prIDE
 
-When prIDE is started for the first time, two new config files will be generated within the root `prIDE/` directory named `front-server.conf` and `back-server.conf`. These two config files are read by prIDE during startup, and allow the server admin to modify different server settings such as the default ports for the front-end and back-end servers, as well as the maximum number of allowed clients on the back-end server, using simple JSON syntax. The default port for the front-end server is `80`, while the default port for the back-end server is `9000`.
+When prIDE is started for the first time, two new config files will be generated within the root `prIDE/` directory named `front-server.conf` and `back-server.conf`. These two config files are read by prIDE during startup, and allow the server admin to modify different server settings such as the default ports for the front-end and back-end servers, as well as the maximum number of allowed clients on the back-end server, using simple JSON syntax. The default port for the front-end server is `80`, while the default port for the back-end server is `9000`. For development, the live reload server port is 8080.
 
 ## Currently Supported Languages
 
@@ -50,8 +48,9 @@ When prIDE is started for the first time, two new config files will be generated
 ## Feature To-Do List
 
 - [x] Re-design the front-end using React.js.
-- [x] Add functionality to install external libraries on the host server.
+- [x] Add functionality to use external libraries on the host server.
 - [x] Allow users to compile and run multiple languages.
+- [ ] Implement Gulp for a simpler development cycle. 
 - [ ] Add more settings so prIDE can be configured better (you should be able to compile/run any language if prIDE is pointed to the correct programs through some kind of config file, you should be able to push to any remote git repo, etc).
 - [ ] Implement read-only links for inviting others to view code changes in real-time.
 - [ ] Create a dedicated mobile client using React Native.

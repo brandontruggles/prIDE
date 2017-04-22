@@ -143,8 +143,28 @@ class Main extends React.Component {
 			    if(contents.nick == this.nickname)
 			    {
 			    /*needs to be connected to terminal component*/
-
-                    this.setState({terminalMessage:"File: '"+contents.name+"' created.", curfile:contents.name, files:contents.Files, body: contents.Content});
+			var fileName = contents.name;
+			var mode = "text";
+			if(fileName.indexOf(".") != -1)
+			{
+				var fileType = fileName.split(".")[1];
+				switch(fileType)
+				{
+					case "c":
+						mode = "c_cpp";
+						break;
+					case "cpp":
+						mode = "c_cpp";
+						break;
+					case "java":
+						mode = "java";
+						break;
+					case "py":
+						mode = "python";
+						break;
+				}
+			}
+                    this.setState({terminalMessage:"File: '"+contents.name+"' created.", curfile:contents.name, files:contents.Files, body: contents.Content, aceMode: mode});
 			    }
 			    else
 			    {
@@ -428,7 +448,7 @@ class Main extends React.Component {
   render(){
     var currComponent = <Login attemptLogin={this.attemptLogin} errorMessage={this.state.errorMessage} url={this.props.url}/>;
     if(this.state.connected)
-	currComponent = <IDE readOnly={(this.state.curfile == "")} rtuUpdate={this.rtuUpdate} sendPath={this.sendPath} readFile={this.readFile} body={this.state.body} files={this.state.files} aceMode={this.state.aceMode} chatMessage={this.state.chatMessage} terminalMessage={this.state.terminalMessage} message={this.message} create={this.create} build={this.build} changeBackground={this.changeBackground} errorMessage={this.state.errorMessage} editorOnLoad={this.setEditor}/>;
+	currComponent = <IDE curfile={this.state.curfile} readOnly={(this.state.curfile == "")} rtuUpdate={this.rtuUpdate} sendPath={this.sendPath} readFile={this.readFile} body={this.state.body} files={this.state.files} aceMode={this.state.aceMode} chatMessage={this.state.chatMessage} terminalMessage={this.state.terminalMessage} message={this.message} create={this.create} build={this.build} changeBackground={this.changeBackground} errorMessage={this.state.errorMessage} editorOnLoad={this.setEditor}/>;
     return(
 	<div>
 		{currComponent}

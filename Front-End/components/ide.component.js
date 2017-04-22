@@ -14,7 +14,7 @@ class IDE extends React.Component {
   render(){
     return(
       <div id="MainIDE">
-		<Navigationbar process={this.props.process} create={this.props.create} build={this.props.build} errorMessage={this.props.ErrorMessage} changeBackground={this.props.changeBackground}/>
+		<Navigationbar process={this.props.process} create={this.props.create} build={this.props.build} errorMessage={this.props.ErrorMessage} changeBackground={this.props.changeBackground} curfile={this.props.curfile}/>
 		<Grid fluid={true}>
 			<Row>
 				<Col id="solutionexplorer" xs={2} md={2}>

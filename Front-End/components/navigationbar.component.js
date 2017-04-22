@@ -149,6 +149,9 @@ class Navigationbar extends React.Component {
         <NavDropdown title="Settings" id="settings">
 		<MenuItem id="settings" onClick={this.props.changeBackground}>Editor Theme</MenuItem>
 	</NavDropdown>
+	<Navbar.Text pullRight>
+		Current File: {this.props.curfile}
+	</Navbar.Text>
           </Nav>
 	<Nav pullRight>
 		<NavItem eventKey={1} href="https://github.com/brandonrninefive/prIDE" src="image/githubmini.png">

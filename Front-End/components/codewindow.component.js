@@ -9,6 +9,8 @@ import 'brace/mode/c_cpp';
 import 'brace/mode/python';
 import 'brace/theme/github';
 import 'brace/keybinding/vim';
+import 'brace/ext/language_tools';
+
 /*need to import everything for later use*/
 
 class CodeWindow extends React.Component {
@@ -47,7 +49,7 @@ class CodeWindow extends React.Component {
 
   render(){
     return(
-	<AceEditor value={this.state.body} onLoad={this.props.editorOnLoad} onChange={this.handleChange} readOnly={this.props.readOnly} mode={this.state.mode} theme={this.state.theme} keyboardHandler={this.state.keyboardHandler} height={"100%"} width={"100%"} editorProps={{$blockScrolling: true}} />
+	<AceEditor value={this.state.body} onLoad={this.props.editorOnLoad} onChange={this.handleChange} readOnly={this.props.readOnly} mode={this.state.mode} showPrintMargin={false} enableBasicAutocompletion={true} enableLiveAutocompletion={true} theme={this.state.theme} keyboardHandler={this.state.keyboardHandler} height={"100%"} width={"100%"} editorProps={{$blockScrolling: true}} />
     );
   }
 }
