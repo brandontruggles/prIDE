@@ -9,16 +9,25 @@ background: -o-radial-gradient(center, ellipse cover, rgba(242,246,248,1) 0%, rg
 background: -ms-radial-gradient(center, ellipse cover, rgba(242,246,248,1) 0%, rgba(216,225,231,1) 26%, rgba(181,198,208,1) 57%, rgba(224,239,249,1) 100%);
 background: radial-gradient(ellipse at center, rgba(242,246,248,1) 0%, rgba(216,225,231,1) 26%, rgba(181,198,208,1) 57%, rgba(224,239,249,1) 100%);
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f6f8', endColorstr='#e0eff9', GradientType=1 );
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-
-
+background-repeat: no-repeat;
+background-attachment: fixed;
 }
 
 #MainIDE
 {
 
 }
+
+.explorerCellIcon
+{
+	margin-right: 5px;
+}
+
+textarea 
+{
+	resize: none;
+}
+
 .loginGrid
 {
 	text-align:center;
@@ -74,6 +83,7 @@ height:64px;
 {
 	margin-top:10px;
 	height:100px;
+	margin-bottom:10px;
 }
 #command
 {

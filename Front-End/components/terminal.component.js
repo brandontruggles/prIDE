@@ -18,6 +18,7 @@ class Terminal extends React.Component
         if(nextProps.terminalMessage != null)
         {
             this.setState({log:this.state.log+nextProps.terminalMessage+'\n'});
+	    this.outputBox.scrollTop = this.outputBox.scrollHeight;
         }
     }
     handleSubmit(event)
@@ -33,7 +34,7 @@ class Terminal extends React.Component
         
         return (
             <form onSubmit={this.handleSubmit}>
-                <FormControl id="terminal" componentClass="textarea" placeholder="Terminal box" value={this.state.log}readOnly />
+                <FormControl id="terminal" componentClass="textarea" placeholder="Terminal box" value={this.state.log} ref={(input) => {this.outputBox = ReactDOM.findDOMNode(input);}} readOnly />
             </form>
         )
 

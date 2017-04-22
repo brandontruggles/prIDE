@@ -109,8 +109,8 @@ var exports =
 				str = "File extension not recognized! Unable to compile!";
 				str = str.concat("\n").
 				break;	
-		}	
-		console.log(prog);	
+		}
+		console.log("STRING: " + str);	
 		return str;
 	},
 	run:function(prog, args, dir) //Runs a specified file on the server, within a specified directory, and with the specified arguments

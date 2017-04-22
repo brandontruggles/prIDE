@@ -75,6 +75,18 @@ class Navigationbar extends React.Component {
 			};
 	}
 */
+
+  cut(){
+
+  }
+
+  copy(){
+ 
+  }
+
+  paste(){
+
+  }
         
   render(){
     if(this.state.isInput)
@@ -122,9 +134,9 @@ class Navigationbar extends React.Component {
             <MenuItem id="file" onClick={this.EnterInput.bind(this,"proj")}>New Project</MenuItem>
           </NavDropdown>
           <NavDropdown title="Edit" id="edit">
-	    <MenuItem id="edit">Cut</MenuItem>
-            <MenuItem id="edit">Copy</MenuItem>
-            <MenuItem id="edit">Paste</MenuItem>	
+	    <MenuItem id="edit" onClick={this.cut.bind(this)}>Cut</MenuItem>
+            <MenuItem id="edit" onClick={this.copy.bind(this)}>Copy</MenuItem>
+            <MenuItem id="edit" onClick={this.paste.bind(this)}>Paste</MenuItem>	
 	  </NavDropdown>
 
           <NavDropdown title="Build" id="build">

@@ -18,6 +18,7 @@ class Chat extends React.Component{
         if(nextProps.chatMessage != null)
         {
             this.setState({log:this.state.log+nextProps.chatMessage+'\n'});
+	    this.chatBox.scrollTop = this.chatBox.scrollHeight;	    
         }
     }
     handleSubmit(event)

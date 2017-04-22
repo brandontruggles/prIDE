@@ -14,13 +14,12 @@ class SolutionExplorer extends React.Component {
 	this.goBack = this.goBack.bind(this);
 	this.appendToPath = this.appendToPath.bind(this);
 	this.generateExplorerCell = this.generateExplorerCell.bind(this);	
-	this.header = <Cell>Solution Explorer<br/><FormControl readOnly type="text" value={this.state.path} placeholder="Current Path"/><br/><a href="#" onClick={this.goBack}><span className="glyphicon glyphicon-arrow-up"></span>Back</a></Cell>;
+	this.header = <Cell>Solution Explorer<br/><FormControl readOnly type="text" className="solutionExplorerInput" value={this.state.path} placeholder="Current Path"/><br/><a href="#" onClick={this.goBack}><span className="glyphicon glyphicon-arrow-up"></span>Back</a></Cell>;
     this.openFile = this.openFile.bind(this);
   }
 
     openFile(curfile)
     {
-        console.log(curfile);
         this.props.readFile(curfile);
     }
   goBack(){
@@ -28,11 +27,11 @@ class SolutionExplorer extends React.Component {
 	{
 
 		var backPath = this.state.path;
-		backPath = backPath.substring(backPath.length - 1);
+		backPath = backPath.substring(0, backPath.length - 1);
 		var lastSlashIndex = backPath.lastIndexOf("/");
-		backPath = backPath.substring(lastSlashIndex);
+		backPath = backPath.substring(0, lastSlashIndex + 1);
 		this.setState({path:backPath});
-        this.props.sendPath(backPath);
+		this.props.sendPath(backPath);
 	}
   }
 

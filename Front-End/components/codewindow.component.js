@@ -4,6 +4,9 @@ import AceEditor from './ace.component';
 
 //browerify ace (brace) imports
 import 'brace/mode/text';
+import 'brace/mode/java';
+import 'brace/mode/c_cpp';
+import 'brace/mode/python';
 import 'brace/theme/github';
 import 'brace/keybinding/vim';
 /*need to import everything for later use*/

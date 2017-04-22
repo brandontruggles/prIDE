@@ -160,6 +160,7 @@ class Main extends React.Component {
         case "Read-File":
             /*check for later*/
            this.setState({body:contents.body});
+	   this.editor.session.getUndoManager().reset();
            break;
 		/*Chat and Console Messages*/
 		case "Console":
@@ -299,6 +300,26 @@ class Main extends React.Component {
     {
         var split = path.split('/');
         var fileName = split[split.length-1];
+	var mode = "text";
+	if(fileName.indexOf(".") != -1)
+	{
+		var fileType = fileName.split(".")[1];
+		switch(fileType)
+		{
+			case "c":
+				mode = "c_cpp";
+				break;
+			case "cpp":
+				mode = "c_cpp";
+				break;
+			case "java":
+				mode = "java";
+				break;
+			case "py":
+				mode = "python";
+				break;
+		}
+	}
         split.pop();
         var dir = split.join('/') + "/" ;
         var message = {
@@ -307,12 +328,10 @@ class Main extends React.Component {
             "contents": "readfile "+ fileName
         }
         this.webSocket.send(JSON.stringify(message));
-	this.setState({curfile:fileName});
+	this.setState({curfile:fileName, aceMode: mode});
     }
-    
     sendPath(path)
     {
-        console.log("main component path: "+path);
         this.setState({curdir:path});
     }
     changeBackground()

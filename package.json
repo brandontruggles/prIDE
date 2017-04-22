@@ -5,7 +5,7 @@
   "main": "Server/index.js",
   "scripts": {
     "test": "watchify Front-End/app.js -t babelify -o Front-End/build/bundle.js --debug --verbose & nodemon --watch Front-End/ Front-End/front-server.js test.html & reload -b --dir Front-End --start-page test.html & node Back-End/back-server.js",
-    "start": "node Front-End/front-server.js index.html & node Back-End/back-server.js"
+    "start": "node Front-End/front-server.js test.html & node Back-End/back-server.js & gulp"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
     "ace-builds": "^1.2.6",
     "brace": "^0.10.0",
     "classnames": "^2.2.5",
+    "clipboard": "^1.6.1",
     "express": "^4.14.1",
     "fixed-data-table": "^0.6.3",
     "hound": "^1.0.5",
@@ -45,13 +46,18 @@
     "ws": "^1.1.1"
   },
   "devDependencies": {
-    "babelify": "^7.3.0",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.23.0",
+    "babelify": "^7.3.0",
     "browserify": "^14.1.0",
-    "nodemon": "^1.11.0",
-    "reload": "^1.1.1",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-livereload": "^3.8.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-util": "^3.0.8",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.9.0"
   }
 }
